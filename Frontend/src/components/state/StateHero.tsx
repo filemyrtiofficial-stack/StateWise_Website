@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StateHero as StateHeroData } from '../../data/states';
 import { PublicAuthoritiesList } from './PublicAuthoritiesList';
@@ -154,14 +154,18 @@ const TestimonialsCarousel: React.FC = () => {
   );
 };
 
-export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, stateSlug: _stateSlug, departments: _departments }) => {
+const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, stateSlug: _stateSlug, departments: _departments }) => {
   const navigate = useNavigate();
   const [callbackPhone, setCallbackPhone] = useState('');
   const [consultationForm, setConsultationForm] = useState({
     fullName: '',
     email: '',
     mobile: '',
-    pinCode: ''
+    pinCode: '',
+    address: '',
+    city: '',
+    state: '',
+    acceptTerms: false
   });
 
   const rtiModels = [
@@ -230,7 +234,7 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
   const handleConsultationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Consultation form submitted:', consultationForm);
-    setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '' });
+    setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '', address: '', city: '', state: '', acceptTerms: false });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -415,10 +419,58 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
                   />
                 </div>
 
+                {/* Address */}
+                <div>
+                  <label className="block text-xs font-bold text-black mb-1">
+                    Address <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="address"
+                    value={consultationForm.address}
+                    onChange={(e) => setConsultationForm({ ...consultationForm, address: e.target.value })}
+                    required
+                    placeholder="Street Address, Building, Apartment"
+                    rows={2}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none"
+                  />
+                </div>
+
+                {/* City and State */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-bold text-black mb-1">
+                      City <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={consultationForm.city}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="City"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-black mb-1">
+                      State <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={consultationForm.state}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="State"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    />
+                  </div>
+                </div>
+
                 {/* Pin Code */}
                 <div>
                   <label className="block text-xs font-bold text-black mb-1">
-                    Pin Code
+                    Pin Code <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -427,8 +479,24 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
                     onChange={handleInputChange}
                     required
                     placeholder="Enter your pin code"
+                    maxLength={6}
                     className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                   />
+                </div>
+
+                {/* Terms and Conditions */}
+                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                  <input
+                    type="checkbox"
+                    id="acceptTermsConsultation"
+                    checked={consultationForm.acceptTerms}
+                    onChange={(e) => setConsultationForm({ ...consultationForm, acceptTerms: e.target.checked })}
+                    className="mt-0.5 w-3.5 h-3.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                    required
+                  />
+                  <label htmlFor="acceptTermsConsultation" className="text-xs text-gray-700 cursor-pointer leading-tight">
+                    I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-red-500">*</span>
+                  </label>
                 </div>
 
                 {/* Submit Button */}
@@ -516,4 +584,6 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
     </section>
   );
 };
+
+export const StateHero = memo(StateHeroComponent);
 

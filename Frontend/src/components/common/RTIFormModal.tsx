@@ -12,6 +12,11 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
     phone: '',
     department: '',
     query: '',
+    address: '',
+    city: '',
+    state: '',
+    pincode: '',
+    acceptTerms: false,
   });
 
   useEffect(() => {
@@ -43,6 +48,11 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
       phone: '',
       department: '',
       query: '',
+      address: '',
+      city: '',
+      state: '',
+      pincode: '',
+      acceptTerms: false,
     });
   };
 
@@ -153,15 +163,75 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
               />
             </div>
 
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
+                Address *
+              </label>
+              <textarea
+                required
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                rows={2}
+                className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all resize-none"
+                placeholder="Street Address, Building, Apartment"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-0.5">
+                  City *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
+                  placeholder="City"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-0.5">
+                  State *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.state}
+                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
+                  placeholder="State"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
+                Pin Code *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.pincode}
+                onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                maxLength={6}
+                className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
+                placeholder="Pin Code"
+              />
+            </div>
+
             <div className="flex items-start gap-1.5 p-2 bg-blue-50 rounded-md border border-blue-200">
               <input
                 type="checkbox"
                 id="terms"
+                checked={formData.acceptTerms}
+                onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                 required
                 className="w-3.5 h-3.5 mt-0.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
               />
               <label htmlFor="terms" className="text-xs text-gray-700 leading-tight">
-                I agree to terms. RTI fee ₹10 included.
+                I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-red-500">*</span>
               </label>
             </div>
 

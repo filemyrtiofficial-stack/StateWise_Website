@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useStateData, getStateSlugFromSubdomain } from '../hooks/useStateData';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
-import { StateHero } from '../components/state/StateHero';
-import { StateDepartments } from '../components/state/StateDepartments';
-import { StateProcess } from '../components/state/StateProcess';
-import { StateFAQ } from '../components/state/StateFAQ';
-import { StateCTA } from '../components/state/StateCTA';
-import { AboutFileMyRTI } from '../components/common/AboutFileMyRTI';
-import { RTIByDepartment } from '../components/common/RTIByDepartment';
-// import { RTIFormModal } from '../components/common/RTIFormModal';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
+
+// Lazy load heavy components for better performance
+const StateHero = lazy(() => import('../components/state/StateHero').then(m => ({ default: m.StateHero })));
+const StateDepartments = lazy(() => import('../components/state/StateDepartments').then(m => ({ default: m.StateDepartments })));
+const StateProcess = lazy(() => import('../components/state/StateProcess').then(m => ({ default: m.StateProcess })));
+const StateFAQ = lazy(() => import('../components/state/StateFAQ').then(m => ({ default: m.StateFAQ })));
+const StateCTA = lazy(() => import('../components/state/StateCTA').then(m => ({ default: m.StateCTA })));
+const AboutFileMyRTI = lazy(() => import('../components/common/AboutFileMyRTI').then(m => ({ default: m.AboutFileMyRTI })));
+const RTIByDepartment = lazy(() => import('../components/common/RTIByDepartment').then(m => ({ default: m.RTIByDepartment })));
+
+// Lightweight loading placeholder
+const ComponentLoader = () => <div className="min-h-[200px]" />;
 
 export const StatePage: React.FC = () => {
   // Try to get state from route param first, then fallback to subdomain, then default to delhi
@@ -116,6 +120,8 @@ export const StatePage: React.FC = () => {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI, RTI Act 2005, ${stateData.name} government information, RTI filing ${stateData.name}, RTI application ${stateData.name}, ${stateData.name} RTI commission`} />
         <meta name="author" content="FileMyRTI" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
         <link rel="canonical" href={canonicalUrl} />
 
         {/* Open Graph / Facebook */}
@@ -148,18 +154,41 @@ export const StatePage: React.FC = () => {
         )}
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          {renderHero()}
+        <header role="banner">
+          <Navbar />
+        </header>
+        <main className="flex-grow" role="main" aria-label="Main content">
+          <Suspense fallback={<ComponentLoader />}>
+            {renderHero()}
+          </Suspense>
 
-          <StateDepartments stateName={stateData.name} />
-          <StateProcess process={stateData.process} />
-          <AboutFileMyRTI />
-          <RTIByDepartment />
-          <StateFAQ faqs={stateData.faqs} />
-          <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
+          <Suspense fallback={<ComponentLoader />}>
+            <StateDepartments stateName={stateData.name} />
+          </Suspense>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <StateProcess process={stateData.process} />
+          </Suspense>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <AboutFileMyRTI />
+          </Suspense>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <RTIByDepartment />
+          </Suspense>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <StateFAQ faqs={stateData.faqs} />
+          </Suspense>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
+          </Suspense>
         </main>
-        <Footer />
+        <footer role="contentinfo">
+          <Footer />
+        </footer>
         {/* <RTIFormModal stateName={stateData.name} /> */}
         <LazyChatbot />
       </div>

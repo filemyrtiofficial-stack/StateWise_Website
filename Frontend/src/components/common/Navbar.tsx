@@ -110,7 +110,7 @@ const NavbarComponent: React.FC = () => {
               <Link to="/state/delhi" className="flex items-center">
                 <img
                   src={logo}
-                  alt="File My RTI"
+                  alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service"
                   className="h-8 w-auto"
                   loading="eager"
                   fetchPriority="high"

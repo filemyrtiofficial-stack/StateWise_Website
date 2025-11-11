@@ -26,7 +26,7 @@ const FooterComponent: React.FC = () => {
             <Link to="/state/delhi" className="flex items-center">
               <img
                 src={blackIcon}
-                alt="File My RTI"
+                alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service Logo"
                 className="h-10 sm:h-12 w-auto"
                 loading="lazy"
                 width="120"

@@ -58,6 +58,8 @@ export const AboutUs: React.FC = () => {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content="About FileMyRTI, RTI filing service, Right to Information, transparency, government information, RTI Act 2005, RTI online filing, RTI application service" />
         <meta name="author" content="FileMyRTI" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
         <link rel="canonical" href={canonicalUrl} />
 
         {/* Open Graph / Facebook */}
@@ -85,22 +87,24 @@ export const AboutUs: React.FC = () => {
         </script>
       </Helmet>
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
-        <main className="flex-grow">
+        <header role="banner">
+          <Navbar />
+        </header>
+        <main className="flex-grow" role="main" aria-label="Main content">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16" aria-label="About FileMyRTI">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">About FileMyRTI Telangana</h1>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">About FileMyRTI</h1>
                 <p className="text-xl md:text-2xl text-primary-100 max-w-3xl mx-auto">
-                  Empowering Telangana citizens with easy access to government information through the Right to Information Act
+                  Empowering citizens with easy access to government information through the Right to Information Act
                 </p>
               </div>
             </div>
           </section>
 
           {/* Mission & Vision Section */}
-          <section className="py-16">
+          <section className="py-16" aria-label="Mission and Vision">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                 {/* Mission */}
@@ -138,7 +142,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* Why Choose Us Section */}
-          <section className="py-16 bg-white">
+          <section className="py-16 bg-white" aria-label="Why Choose FileMyRTI">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose FileMyRTI?</h2>
@@ -191,7 +195,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* Our Values Section */}
-          <section className="py-16 bg-gray-50">
+          <section className="py-16 bg-gray-50" aria-label="Our Core Values">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Core Values</h2>
@@ -219,7 +223,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* What We Do Section */}
-          <section className="py-16 bg-white">
+          <section className="py-16 bg-white" aria-label="What We Do">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
@@ -270,22 +274,25 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* CTA Section */}
-          <section className="py-16 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+          <section className="py-16 bg-gradient-to-br from-primary-600 to-primary-800 text-white" aria-label="Call to Action">
             <div className="container-responsive max-w-7xl mx-auto     text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to File Your RTI in Telangana?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to File Your RTI?</h2>
               <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of Telangana citizens who trust FileMyRTI for their RTI filing needs
+                Join thousands of citizens who trust FileMyRTI for their RTI filing needs
               </p>
               <Link
-                to="/state/telangana"
+                to="/"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg bg-white text-primary-600 hover:bg-gray-50 transition-colors shadow-lg"
+                aria-label="Get started with FileMyRTI RTI filing service"
               >
                 Get Started Now
               </Link>
             </div>
           </section>
         </main>
-        <Footer />
+        <footer role="contentinfo">
+          <Footer />
+        </footer>
         <LazyChatbot />
       </div>
     </>

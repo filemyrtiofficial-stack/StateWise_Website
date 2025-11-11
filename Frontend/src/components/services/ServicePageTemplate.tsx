@@ -38,6 +38,9 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
     query: '',
     urgency: 'normal',
     preferredLanguage: 'english',
+    address: '',
+    city: '',
+    acceptTerms: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -95,18 +98,21 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
       const result = await response.json();
 
       setIsSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: title,
-        department: '',
-        state: '',
-        pincode: '',
-        query: '',
-        urgency: 'normal',
-        preferredLanguage: 'english',
-      });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          service: title,
+          department: '',
+          state: '',
+          pincode: '',
+          query: '',
+          urgency: 'normal',
+          preferredLanguage: 'english',
+          address: '',
+          city: '',
+          acceptTerms: false,
+        });
 
       setTimeout(() => setIsSubmitted(false), 5000);
 
@@ -334,7 +340,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="pincode" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Pin Code
+                            Pin Code <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="text"
@@ -343,8 +349,41 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             value={formData.pincode}
                             onChange={handleChange}
                             maxLength={6}
+                            required
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white"
                             placeholder="110001"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div>
+                          <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Address <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            id="address"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            required
+                            rows={2}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white resize-none"
+                            placeholder="Street Address, Building, Apartment"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="city" className="block text-sm font-semibold text-gray-700 mb-2">
+                            City <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white"
+                            placeholder="City"
                           />
                         </div>
                       </div>

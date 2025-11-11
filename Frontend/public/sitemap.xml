@@ -7,7 +7,7 @@
   <!-- Home Page -->
   <url>
     <loc>https://filemyrti.com/</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -15,7 +15,7 @@
   <!-- About Us Page -->
   <url>
     <loc>https://filemyrti.com/about-us</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -23,7 +23,7 @@
   <!-- State Pages -->
   <url>
     <loc>https://filemyrti.com/state/delhi</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,42 +31,42 @@
   <!-- Service Pages -->
   <url>
     <loc>https://filemyrti.com/services/seamless-online-filing</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://filemyrti.com/services/anonymous</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://filemyrti.com/services/1st-appeal</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://filemyrti.com/services/bulk</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://filemyrti.com/services/custom-rti</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://filemyrti.com/services/15-minute-consultation</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 
 interface FAQ {
   q: string;
@@ -9,12 +9,12 @@ interface StateFAQProps {
   faqs: FAQ[];
 }
 
-export const StateFAQ: React.FC<StateFAQProps> = ({ faqs }) => {
+const StateFAQComponent: React.FC<StateFAQProps> = ({ faqs }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const toggleFAQ = useCallback((index: number) => {
+    setOpenIndex(prevIndex => prevIndex === index ? null : index);
+  }, []);
 
   return (
     <section className="py-16 md:py-20 bg-gradient-to-b from-white to-gray-50">
@@ -40,8 +40,8 @@ export const StateFAQ: React.FC<StateFAQProps> = ({ faqs }) => {
             <div
               key={index}
               className={`bg-white border-2 rounded-xl overflow-hidden shadow-sm transition-all duration-300 ${openIndex === index
-                  ? 'border-primary-500 shadow-lg scale-[1.01]'
-                  : 'border-gray-200 hover:border-primary-300 hover:shadow-md'
+                ? 'border-primary-500 shadow-lg scale-[1.01]'
+                : 'border-gray-200 hover:border-primary-300 hover:shadow-md'
                 }`}
             >
               <button
@@ -53,8 +53,8 @@ export const StateFAQ: React.FC<StateFAQProps> = ({ faqs }) => {
                 <div className="flex items-start gap-4 flex-1">
                   {/* Question Number Badge */}
                   <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${openIndex === index
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-600'
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-100 text-gray-600'
                     }`}>
                     {index + 1}
                   </div>
@@ -105,4 +105,6 @@ export const StateFAQ: React.FC<StateFAQProps> = ({ faqs }) => {
     </section>
   );
 };
+
+export const StateFAQ = memo(StateFAQComponent);
 

@@ -27,7 +27,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Split node_modules into separate chunks
+          // Split node_modules into separate chunks for better caching
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
               return 'react-vendor';
@@ -35,7 +35,21 @@ export default defineConfig({
             if (id.includes('react-helmet')) {
               return 'helmet-vendor';
             }
+            // Split large libraries
+            if (id.includes('@heroicons') || id.includes('lucide')) {
+              return 'icons-vendor';
+            }
             return 'vendor';
+          }
+          // Split large components into separate chunks
+          if (id.includes('/components/state/')) {
+            return 'state-components';
+          }
+          if (id.includes('/components/common/')) {
+            return 'common-components';
+          }
+          if (id.includes('/pages/services/')) {
+            return 'service-pages';
           }
         },
         // Optimize chunk file names
@@ -57,8 +71,8 @@ export default defineConfig({
         },
       },
     },
-    // Optimize chunk size
-    chunkSizeWarningLimit: 1000,
+    // Optimize chunk size - increased limit for better splitting
+    chunkSizeWarningLimit: 500,
     // Enable minification (esbuild is faster than terser)
     minify: 'esbuild',
     // Remove console.log in production
@@ -70,8 +84,8 @@ export default defineConfig({
     sourcemap: false,
     // Enable CSS code splitting
     cssCodeSplit: true,
-    // Optimize assets
-    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
+    // Optimize assets - reduce inline limit for better caching
+    assetsInlineLimit: 2048, // Inline assets smaller than 2kb
     // Report compressed size
     reportCompressedSize: false, // Faster builds
   },
