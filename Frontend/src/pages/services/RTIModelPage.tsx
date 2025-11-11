@@ -152,6 +152,16 @@ const serviceImages: Record<string, string> = {
   '15-minute-consultation': '/images/15min.webp'
 };
 
+// Image mapping for X versions (inside Why This Service box)
+const serviceImagesX: Record<string, string> = {
+  'seamless-online-filing': '/images/SOFX.webp',
+  'anonymous': '/images/AnonyX.webp',
+  'bulk': '/images/BulkX.webp',
+  'custom-rti': '/images/CustomX.webp',
+  '1st-appeal': '/images/FirstX.webp',
+  '15-minute-consultation': '/images/15miX.webp'
+};
+
 // FAQ Accordion Component for Service Pages - Memoized for performance
 const ServiceFAQAccordion: React.FC<{ faqs: Array<{ q: string; a: string }> }> = React.memo(({ faqs }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -597,15 +607,12 @@ export const RTIModelPage: React.FC = () => {
                     {/* Service Image Section */}
                     {modelSlug && serviceImages[modelSlug] && (
                       <div className="mb-8">
-                        <img
-                          src={serviceImages[modelSlug]}
-                          alt={`${model?.name || 'RTI Service'} - File RTI Online with FileMyRTI | Expert RTI Filing Service`}
+                        <img 
+                          src={serviceImages[modelSlug]} 
+                          alt={model?.name || 'RTI Service'} 
                           className="w-full h-auto rounded-lg shadow-md"
                           style={{ objectFit: 'contain' }}
                           draggable="false"
-                          loading="lazy"
-                          width="800"
-                          height="600"
                         />
                       </div>
                     )}
@@ -800,6 +807,19 @@ export const RTIModelPage: React.FC = () => {
                           </div>
                         </div>
                       </div>
+
+                      {/* Service Image X version inside Why This Service box - at the end */}
+                      {modelSlug && serviceImagesX[modelSlug] && (
+                        <div className="mt-8">
+                          <img 
+                            src={serviceImagesX[modelSlug]} 
+                            alt={`${model?.name || 'RTI Service'} - Features`} 
+                            className="w-full h-auto rounded-lg shadow-md"
+                            style={{ objectFit: 'contain' }}
+                            draggable="false"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {/* How It Works Section */}
