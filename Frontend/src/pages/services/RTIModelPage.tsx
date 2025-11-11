@@ -791,18 +791,18 @@ export const RTIModelPage: React.FC = () => {
                             <p className="text-gray-600 text-sm">Track your RTI application status in real-time with instant notifications and regular updates on submission and response progress.</p>
                           </div>
 
-                          {/* Card 3 - Authority Verification */}
-                          <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-                            <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4">
-                              <svg className="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                              </svg>
-                            </div>
-                            <h5 className="font-semibold text-gray-900 text-lg mb-2">Verified Authority Submission</h5>
-                            <p className="text-gray-600 text-sm">We verify and submit your RTI to the correct public authority with all required documentation, ensuring proper channel compliance.</p>
+                        {/* Card 3 - Authority Verification */}
+                        <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+                          <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4">
+                            <svg className="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+                            </svg>
                           </div>
+                          <h5 className="font-semibold text-gray-900 text-lg mb-2">Verified Authority Submission</h5>
+                          <p className="text-gray-600 text-sm">We verify and submit your RTI to the correct public authority with all required documentation, ensuring proper channel compliance.</p>
                         </div>
                       </div>
+                    </div>
 
                       {/* Why This Service Section */}
                       <div className="rounded-lg shadow-lg border border-gray-200 p-4 md:p-6 lg:p-8 mb-6 md:mb-8">
