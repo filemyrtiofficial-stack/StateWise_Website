@@ -478,9 +478,9 @@ export const RTIModelPage: React.FC = () => {
         </div>
 
         {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Navbar starts immediately after sidebar, NO gap */}
-        {/* Navbar - Starts exactly at sidebar edge, occupies remaining space - NO gap, NO margin/padding */}
+        {/* Navbar - Starts exactly at sidebar edge, occupies remaining space - NO gap, NO margin/padding - STICKY */}
         <div
-          className="lg:max-w-full lg:w-full"
+          className="lg:max-w-full lg:w-full sticky top-0 z-[100]"
           style={{
             marginLeft: 'min(30vw, 384px)',
             width: 'calc(100% - min(30vw, 384px))',
