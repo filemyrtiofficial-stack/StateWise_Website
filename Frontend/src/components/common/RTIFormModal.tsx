@@ -167,7 +167,7 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 required
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                rows={3}
+                rows={2}
                 className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all resize-none"
                 placeholder="Street Address, Building, Apartment, City, State"
               />

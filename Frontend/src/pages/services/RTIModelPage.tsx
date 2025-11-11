@@ -955,19 +955,19 @@ export const RTIModelPage: React.FC = () => {
         {/* Consultation Modal */}
         {isModalOpen && model && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={() => setIsModalOpen(false)}>
-            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 relative" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-4 sm:p-5 relative" onClick={(e) => e.stopPropagation()}>
               {/* Close Button */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
 
               {/* Title */}
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Book Your Consultation</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Book Your Consultation</h2>
 
               {/* Form */}
               <form onSubmit={(e) => {
@@ -975,7 +975,7 @@ export const RTIModelPage: React.FC = () => {
                 console.log('Form submitted:', formData);
                 // Handle form submission here
               }}>
-                <div className="space-y-4 mb-6">
+                <div className="space-y-3 mb-4">
                   {/* Full Name */}
                   <div>
                     <input
@@ -983,33 +983,33 @@ export const RTIModelPage: React.FC = () => {
                       placeholder="Full Name"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
 
-                  {/* Mobile */}
-                  <div>
-                    <input
-                      type="tel"
-                      placeholder="Mobile"
-                      value={formData.mobile}
-                      onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      required
-                    />
+                  {/* Mobile and Email in Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input
+                        type="tel"
+                        placeholder="Mobile"
+                        value={formData.mobile}
+                        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
                   </div>
 
                   {/* RTI Query */}
@@ -1018,55 +1018,49 @@ export const RTIModelPage: React.FC = () => {
                       placeholder="Enter your RTI Query / Information Request here"
                       value={formData.rtiQuery}
                       onChange={(e) => setFormData({ ...formData, rtiQuery: e.target.value })}
-                      rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                      rows={3}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                       required
                     />
                   </div>
 
                   {/* Address */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Address <span className="text-red-500">*</span>
-                    </label>
                     <textarea
-                      placeholder="Street Address, Building, Apartment, City, State"
+                      placeholder="Address (Street, Building, City, State)"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                      rows={2}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                       required
                     />
                   </div>
 
                   {/* Pin Code */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Pin Code <span className="text-red-500">*</span>
-                    </label>
                     <input
                       type="text"
                       placeholder="Pin Code"
                       value={formData.pincode}
                       onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
                       maxLength={6}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
 
                   {/* Terms and Conditions */}
-                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-start gap-2 p-2.5 bg-gray-50 rounded-lg border border-gray-200">
                     <input
                       type="checkbox"
                       id="acceptTerms"
                       checked={formData.acceptTerms}
                       onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
-                      className="mt-1 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                      className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                       required
                     />
-                    <label htmlFor="acceptTerms" className="text-sm text-gray-700 cursor-pointer">
-                      I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. I understand that the RTI fee of ₹10 is included in the service charge. <span className="text-red-500">*</span>
+                    <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
+                      I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-red-500">*</span>
                     </label>
                   </div>
                 </div>
@@ -1074,7 +1068,7 @@ export const RTIModelPage: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors mb-4"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-3 text-sm"
                 >
                   Book Consultation Now - ₹{model.price}
                 </button>
