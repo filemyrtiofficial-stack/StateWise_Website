@@ -249,7 +249,7 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
 
   return (
     <section className="bg-gray-50 pt-12 pb-12 sm:pb-16 md:pb-20">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="container-responsive max-w-7xl mx-auto">
         {/* Main Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12">
           {/* Left Column - Main Content (2/3 width) */}
@@ -445,7 +445,7 @@ export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, st
       </div>
 
       {/* List of Public Authorities and RTI Models Section */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-12 sm:mt-16">
+      <div className="container-responsive max-w-7xl mx-auto mt-12 sm:mt-16">
         {/* Section Header */}
         <div className="mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-left">

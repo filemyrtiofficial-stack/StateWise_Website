@@ -91,7 +91,7 @@ const NavbarComponent: React.FC = () => {
 
       {/* Main Navbar */}
       <nav className="bg-white shadow-md sticky top-0 z-[100]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+        <div className="container-responsive max-w-7xl mx-auto">
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
             <div className="flex items-center">

@@ -89,7 +89,7 @@ export const AboutUs: React.FC = () => {
         <main className="flex-grow">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">About FileMyRTI Telangana</h1>
                 <p className="text-xl md:text-2xl text-primary-100 max-w-3xl mx-auto">
@@ -101,7 +101,7 @@ export const AboutUs: React.FC = () => {
 
           {/* Mission & Vision Section */}
           <section className="py-16">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                 {/* Mission */}
                 <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
@@ -139,7 +139,7 @@ export const AboutUs: React.FC = () => {
 
           {/* Why Choose Us Section */}
           <section className="py-16 bg-white">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose FileMyRTI?</h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -192,7 +192,7 @@ export const AboutUs: React.FC = () => {
 
           {/* Our Values Section */}
           <section className="py-16 bg-gray-50">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Core Values</h2>
               </div>
@@ -220,7 +220,7 @@ export const AboutUs: React.FC = () => {
 
           {/* What We Do Section */}
           <section className="py-16 bg-white">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -271,7 +271,7 @@ export const AboutUs: React.FC = () => {
 
           {/* CTA Section */}
           <section className="py-16 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 text-center">
+            <div className="container-responsive max-w-7xl mx-auto     text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to File Your RTI in Telangana?</h2>
               <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
                 Join thousands of Telangana citizens who trust FileMyRTI for their RTI filing needs

@@ -18,6 +18,9 @@ export default {
   },
   theme: {
     extend: {
+      maxWidth: {
+        '7xl': '84rem', // 1344px
+      },
       colors: {
         primary: {
           50: '#f0f9ff',

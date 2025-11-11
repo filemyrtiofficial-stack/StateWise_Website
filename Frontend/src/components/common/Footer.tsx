@@ -18,7 +18,7 @@ const FooterComponent: React.FC = () => {
 
   return (
     <footer className="bg-[#333333] text-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-8 sm:py-12">
+      <div className="container-responsive max-w-7xl mx-auto py-8 sm:py-12">
         {/* Top Section - Logo and Social Icons */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-8 pb-8 border-b border-gray-600">
           {/* Left - Logo and Tagline */}

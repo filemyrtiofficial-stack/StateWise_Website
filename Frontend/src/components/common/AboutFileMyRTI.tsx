@@ -32,7 +32,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="container-responsive max-w-7xl mx-auto">
         <div className="text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4">
             What is FileMyRTI all about?
@@ -49,7 +49,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
 
           {/* Video Section */}
           <div className="flex justify-center">
-            <div className="bg-white border-2 border-black rounded-lg shadow-lg px-6 sm:px-8 py-4 sm:py-6 inline-block w-full" style={{ maxWidth: '680px' }}>
+            <div className="bg-white border-2 border-black rounded-lg shadow-lg px-6  py-4 sm:py-6 inline-block w-full" style={{ maxWidth: '680px' }}>
               <div className="flex flex-col items-center gap-2 sm:gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-600">FileMy</span>

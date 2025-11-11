@@ -333,7 +333,7 @@ export const RTIModelPage: React.FC = () => {
         <main className="flex-grow">
           {/* Main Content - Two Column Layout */}
           <section className="pb-12">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+            <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                 {/* Left Sidebar */}
                 <div className="lg:col-span-1 -ml-6 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:-ml-24 -mt-12 max-w-md">

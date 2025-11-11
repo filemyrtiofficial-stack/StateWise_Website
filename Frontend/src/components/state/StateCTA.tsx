@@ -9,7 +9,7 @@ interface StateCTAProps {
 export const StateCTA: React.FC<StateCTAProps> = ({ ctaText, stateName }) => {
   return (
     <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-      <div className="max-w-4xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 text-center">
+      <div className="container-responsive max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Ready to File Your RTI in {stateName}?
         </h2>

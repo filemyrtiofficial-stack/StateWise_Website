@@ -19,7 +19,7 @@ export const StateProcess: React.FC<StateProcessProps> = ({ process }) => {
 
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="container-responsive max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             How It Works

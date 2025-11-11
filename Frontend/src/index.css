@@ -33,6 +33,38 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Responsive Container with 0.75 inch (72px) margins on large screens */
+  .container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    /* 16px on mobile */
+    padding-right: 1rem;
+    /* 16px on mobile */
+  }
+
+  /* Tablet: ~32px padding */
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding-left: 2rem;
+      /* 32px */
+      padding-right: 2rem;
+      /* 32px */
+    }
+  }
+
+  /* Large screens: 0.75 inch (72px) fixed margins */
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: 4.5rem;
+      /* 72px = 0.75 inch */
+      padding-right: 4.5rem;
+      /* 72px = 0.75 inch */
+      max-width: 100%;
+    }
+  }
 }
 
 /* Departments scrollable container */

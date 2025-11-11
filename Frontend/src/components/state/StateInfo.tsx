@@ -17,7 +17,7 @@ export const StateInfo: React.FC<StateInfoProps> = ({
 }) => {
   return (
     <section className="py-16 bg-primary-50">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="container-responsive max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">

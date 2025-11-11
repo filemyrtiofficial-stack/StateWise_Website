@@ -121,7 +121,7 @@ const RTIByDepartmentComponent: React.FC = () => {
 
   return (
     <section className="py-8 sm:py-12 bg-white" aria-label="RTI Services by Delhi Department">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="container-responsive max-w-7xl mx-auto">
         {/* RTI by Department Columns */}
         <nav aria-label="RTI Department Navigation">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
