@@ -6,10 +6,10 @@ import { Footer } from '../components/common/Footer';
 import { StateHero } from '../components/state/StateHero';
 import { StateDepartments } from '../components/state/StateDepartments';
 import { StateProcess } from '../components/state/StateProcess';
-import { StateInfo } from '../components/state/StateInfo';
 import { StateFAQ } from '../components/state/StateFAQ';
 import { StateCTA } from '../components/state/StateCTA';
 import { AboutFileMyRTI } from '../components/common/AboutFileMyRTI';
+import { RTILinksGrid } from '../components/common/RTILinksGrid';
 // import { RTIFormModal } from '../components/common/RTIFormModal';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
@@ -153,14 +153,8 @@ export const StatePage: React.FC = () => {
 
           <StateDepartments stateName={stateData.name} />
           <StateProcess process={stateData.process} />
-          <StateInfo
-            highlights={stateData.highlights}
-            languages={stateData.languages}
-            commission={stateData.commission}
-            fee={stateData.fee}
-            stateName={stateData.name}
-          />
           <AboutFileMyRTI />
+          <RTILinksGrid />
           <StateFAQ faqs={stateData.faqs} />
           <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
         </main>
