@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Delhi departments organized in columns (similar to the image layout)
@@ -109,21 +109,21 @@ const delhiDepartments = [
   },
 ];
 
-export const RTIByDepartment: React.FC = () => {
+const RTIByDepartmentComponent: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleDepartmentClick = (department: string) => {
+  const handleDepartmentClick = useCallback((department: string) => {
     // Navigate to service page with department info - default to seamless online filing
     navigate('/services/seamless-online-filing', {
       state: { department, serviceName: 'Seamless Online Filing' },
     });
-  };
+  }, [navigate]);
 
   return (
-    <section className="py-8 sm:py-12 bg-white">
+    <section className="py-8 sm:py-12 bg-white" aria-label="RTI Services by Delhi Department">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
         {/* RTI by Department Columns */}
-        <div>
+        <nav aria-label="RTI Department Navigation">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {delhiDepartments.map((column, columnIndex) => (
               <div key={columnIndex} className="space-y-1">
@@ -133,6 +133,7 @@ export const RTIByDepartment: React.FC = () => {
                     key={itemIndex}
                     onClick={() => handleDepartmentClick(item)}
                     className="block text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors py-0.5 text-left w-full"
+                    aria-label={`File RTI for ${item}`}
                   >
                     {item}
                   </button>
@@ -140,9 +141,11 @@ export const RTIByDepartment: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </nav>
       </div>
     </section>
   );
 };
+
+export const RTIByDepartment = memo(RTIByDepartmentComponent);
 
