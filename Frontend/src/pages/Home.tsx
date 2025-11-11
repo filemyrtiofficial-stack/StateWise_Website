@@ -13,18 +13,20 @@ import { RTIByDepartment } from '../components/common/RTIByDepartment';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
 export const Home: React.FC = () => {
-  // Default to Delhi for home page
+  // Default to Delhi for home page - always ensure we have data
   const stateData = useStateData('delhi');
 
+  // Fallback to Delhi data if somehow stateData is null (shouldn't happen, but safety check)
   if (!stateData) {
+    // Redirect to state page or show loading - but this should never happen
     return (
       <>
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-grow flex items-center justify-center bg-gray-50">
             <div className="text-center px-4">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">Page Not Found</h1>
-              <p className="text-gray-600 mb-8">The requested page is not available.</p>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+              <p className="mt-4 text-gray-600">Loading...</p>
             </div>
           </main>
           <Footer />

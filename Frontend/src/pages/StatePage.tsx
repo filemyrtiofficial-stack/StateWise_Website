@@ -15,13 +15,14 @@ import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
 
 export const StatePage: React.FC = () => {
-  // Try to get state from route param first, then fallback to subdomain
+  // Try to get state from route param first, then fallback to subdomain, then default to delhi
   const { stateSlug } = useParams<{ stateSlug?: string }>();
   const subdomainSlug = getStateSlugFromSubdomain();
-  const effectiveSlug = stateSlug || subdomainSlug || '';
+  const effectiveSlug = stateSlug || subdomainSlug || 'delhi'; // Default to delhi if no slug provided
 
   const stateData = useStateData(effectiveSlug);
 
+  // If state not found, show proper 404 with navigation
   if (!stateData) {
     return (
       <>

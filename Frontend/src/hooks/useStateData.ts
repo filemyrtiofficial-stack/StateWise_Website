@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { StateData, getStateBySlug } from '../data/states';
 
 export const useStateData = (stateSlug: string): StateData | null => {
-  const [stateData, setStateData] = useState<StateData | null>(null);
-
-  useEffect(() => {
-    const data = getStateBySlug(stateSlug);
-    setStateData(data || null);
+  // Use useMemo to get state data synchronously, avoiding the null initial state issue
+  const stateData = useMemo(() => {
+    if (!stateSlug) return null;
+    return getStateBySlug(stateSlug) || null;
   }, [stateSlug]);
 
   return stateData;
