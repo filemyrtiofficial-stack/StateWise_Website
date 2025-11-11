@@ -9,7 +9,7 @@ import { StateProcess } from '../components/state/StateProcess';
 import { StateFAQ } from '../components/state/StateFAQ';
 import { StateCTA } from '../components/state/StateCTA';
 import { AboutFileMyRTI } from '../components/common/AboutFileMyRTI';
-import { RTILinksGrid } from '../components/common/RTILinksGrid';
+import { RTIByDepartment } from '../components/common/RTIByDepartment';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
 export const Home: React.FC = () => {
@@ -130,7 +130,7 @@ export const Home: React.FC = () => {
           <StateDepartments stateName={stateData.name} />
           <StateProcess process={stateData.process} />
           <AboutFileMyRTI />
-          <RTILinksGrid />
+          <RTIByDepartment />
           <StateFAQ faqs={stateData.faqs} />
           <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
         </main>
