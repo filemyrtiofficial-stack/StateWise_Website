@@ -338,84 +338,113 @@ export const RTIModelPage: React.FC = () => {
           </script>
         )}
       </Helmet>
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
-        <main className="flex-grow">
-          {/* Main Content - Two Column Layout */}
-          <section className="pb-12">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                {/* Left Sidebar */}
-                <div className="lg:col-span-1 -ml-6 sm:-ml-8 md:-ml-12 lg:-ml-16 xl:-ml-24 -mt-12 max-w-md">
-                  <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg shadow-lg border border-primary-700 p-6 sticky top-0 z-[60] overflow-visible">
-                    {/* Back to Home Button */}
-                    <button
-                      onClick={() => navigate('/')}
-                      className="w-full mb-4 bg-transparent hover:bg-primary-700/20 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3"
-                    >
-                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </div>
-                      <span className="text-white font-semibold">Back to Home</span>
-                    </button>
+      <div className="min-h-screen flex flex-col">
+        {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Fixed sidebar on left, NO gap with navbar */}
+        {/* Sidebar - Fixed on left, 30% width (max 384px), perfectly flush with navbar - NO shadow, NO right border */}
+        <div
+          className="hidden lg:block fixed left-0 top-0 max-w-sm h-screen z-[110] overflow-y-auto"
+          style={{
+            width: 'min(30vw, 384px)',
+            boxShadow: 'none'
+          }}
+        >
+          <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-l-lg border-t border-b border-l border-primary-700 p-6 h-screen">
+            {/* Back to Home Button */}
+            <button
+              onClick={() => navigate('/')}
+              className="w-full mb-4 bg-transparent hover:bg-primary-700/20 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3"
+            >
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </div>
+              <span className="text-white font-semibold">Back to Home</span>
+            </button>
 
-                    {/* Video Section - Lazy Loaded */}
-                    <div ref={videoRef} className="mb-6 mt-12 bg-white rounded-lg shadow-lg overflow-visible border-2 border-white">
-                      <div className="relative w-full bg-black mr-[-4rem] pr-16 rounded-lg" style={{ paddingBottom: '56.25%' }}>
-                        {shouldLoadVideo ? (
-                          <iframe
-                            className="absolute top-0 left-0 w-full h-full rounded-lg"
-                            src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
-                            title="RTI Service Video"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            loading="lazy"
-                          ></iframe>
-                        ) : (
-                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
-                            <div className="text-white">Loading video...</div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* What Will You Get */}
-                    <div className="mb-6">
-                      <h4 className="text-lg font-bold text-white mb-4">What Will You Get:</h4>
-                      <ul className="space-y-3">
-                        {model.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <svg className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                            <span className="text-sm text-white">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* CTA Button */}
-                    <div className="mt-6">
-                      <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-white flex items-center justify-center gap-2"
-                      >
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        {model.buttonText}
-                      </button>
-                    </div>
+            {/* Video Section - Lazy Loaded */}
+            <div ref={videoRef} className="mb-6 mt-12 bg-white rounded-lg shadow-lg overflow-visible border-2 border-white">
+              <div className="relative w-full bg-black rounded-lg" style={{ paddingBottom: '56.25%' }}>
+                {shouldLoadVideo ? (
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
+                    title="RTI Service Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  ></iframe>
+                ) : (
+                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
+                    <div className="text-white">Loading video...</div>
                   </div>
-                </div>
+                )}
+              </div>
+            </div>
 
+            {/* What Will You Get */}
+            <div className="mb-6">
+              <h4 className="text-lg font-bold text-white mb-4">What Will You Get:</h4>
+              <ul className="space-y-3">
+                {model.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <svg className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm text-white">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-white flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                {model.buttonText}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Navbar starts immediately after sidebar, NO gap */}
+        {/* Navbar - Starts exactly at sidebar edge, occupies remaining space - NO gap, NO margin/padding */}
+        <div
+          className="lg:max-w-full lg:w-full"
+          style={{
+            marginLeft: 'min(30vw, 384px)',
+            width: 'calc(100% - min(30vw, 384px))',
+            maxWidth: 'calc(100% - min(30vw, 384px))'
+          }}
+        >
+          <Navbar />
+        </div>
+
+        {/* Main Content - Starts exactly at sidebar edge, occupies remaining space - NO gap */}
+        {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Main content aligned with navbar, no gap */}
+        <main
+          className="flex-grow"
+          style={{
+            marginLeft: 'min(30vw, 384px)',
+            width: 'calc(100% - min(30vw, 384px))',
+            maxWidth: 'calc(100% - min(30vw, 384px))'
+          }}
+        >
+          {/* Main Content - Two Column Layout */}
+          {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Content container with padding for readability */}
+          <section className="pb-12">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
                 {/* Main Content */}
                 <div className="lg:col-span-4">
                   {/* Course Overview */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
                     <div className="mb-6">
                       <span className="text-sm font-semibold text-primary-600 uppercase tracking-wide">RTI Services</span>
                       <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
@@ -460,7 +489,7 @@ export const RTIModelPage: React.FC = () => {
 
                   {/* Feature Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 text-center">
+                    <div className="rounded-lg shadow-md border border-gray-200 p-6 text-center">
                       <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -469,7 +498,7 @@ export const RTIModelPage: React.FC = () => {
                       <h3 className="font-semibold text-gray-900 mb-2">Expert Guidance</h3>
                       <p className="text-sm text-gray-600">We focus on what matters most & bring you the most important RTI solutions</p>
                     </div>
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 text-center">
+                    <div className="rounded-lg shadow-md border border-gray-200 p-6 text-center">
                       <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -478,7 +507,7 @@ export const RTIModelPage: React.FC = () => {
                       <h3 className="font-semibold text-gray-900 mb-2">Fast Response</h3>
                       <p className="text-sm text-gray-600">Get quick responses and timely updates on your RTI application status</p>
                     </div>
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 text-center">
+                    <div className="rounded-lg shadow-md border border-gray-200 p-6 text-center">
                       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -492,9 +521,9 @@ export const RTIModelPage: React.FC = () => {
                   {/* Service Image Section */}
                   {modelSlug && serviceImages[modelSlug] && (
                     <div className="mb-8">
-                      <img 
-                        src={serviceImages[modelSlug]} 
-                        alt={model?.name || 'RTI Service'} 
+                      <img
+                        src={serviceImages[modelSlug]}
+                        alt={model?.name || 'RTI Service'}
                         className="w-full h-auto rounded-lg shadow-md"
                         style={{ objectFit: 'contain' }}
                         draggable="false"
@@ -503,7 +532,7 @@ export const RTIModelPage: React.FC = () => {
                   )}
 
                   {/* Service Outline Section */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 mb-8">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-8 mb-8">
                     {/* Title with underline */}
                     <div className="mb-6">
                       <h3 className="text-3xl font-bold text-gray-900 mb-2">Service Outline</h3>
@@ -566,7 +595,7 @@ export const RTIModelPage: React.FC = () => {
                     {/* What You Get Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                       {/* Card 1 - Expert Drafting */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+                      <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
                         <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
                           <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -577,7 +606,7 @@ export const RTIModelPage: React.FC = () => {
                       </div>
 
                       {/* Card 2 - Application Tracking */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+                      <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
                         <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
                           <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -588,7 +617,7 @@ export const RTIModelPage: React.FC = () => {
                       </div>
 
                       {/* Card 3 - Authority Verification */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+                      <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
                         <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4">
                           <svg className="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
@@ -601,7 +630,7 @@ export const RTIModelPage: React.FC = () => {
                   </div>
 
                   {/* Why This Service Section */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 mb-8">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-8 mb-8">
                     {/* Title with underline */}
                     <div className="mb-8">
                       <h3 className="text-3xl font-bold text-gray-900 mb-2">Why This Service?</h3>
@@ -639,7 +668,7 @@ export const RTIModelPage: React.FC = () => {
                       {/* Right Side - 2x2 Grid of Cards */}
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Card 1: Expert Professional Service */}
-                        <div className="bg-white border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
+                        <div className="border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
                           <div className="flex-shrink-0">
                             <svg className="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -652,7 +681,7 @@ export const RTIModelPage: React.FC = () => {
                         </div>
 
                         {/* Card 2: Time-Saving Convenience */}
-                        <div className="bg-white border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
+                        <div className="border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
                           <div className="flex-shrink-0">
                             <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -665,7 +694,7 @@ export const RTIModelPage: React.FC = () => {
                         </div>
 
                         {/* Card 3: Guaranteed Compliance */}
-                        <div className="bg-white border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
+                        <div className="border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
                           <div className="flex-shrink-0">
                             <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -678,7 +707,7 @@ export const RTIModelPage: React.FC = () => {
                         </div>
 
                         {/* Card 4: Complete Transparency */}
-                        <div className="bg-white border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
+                        <div className="border-t-2 border-l-2 border-b border-r border-primary-600 rounded-lg p-3 shadow-md relative z-0 flex items-start gap-3" style={{ borderBottomColor: '#93c5fd', borderRightColor: '#93c5fd' }}>
                           <div className="flex-shrink-0">
                             <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -695,7 +724,7 @@ export const RTIModelPage: React.FC = () => {
                   </div>
 
                   {/* How It Works Section */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
                     <h3 className="text-2xl font-bold text-gray-900 mb-6">How It Works</h3>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                       <div className="text-center">
@@ -730,7 +759,7 @@ export const RTIModelPage: React.FC = () => {
                   </div>
 
                   {/* Testimonials Section */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
                     <h3 className="text-2xl font-bold text-gray-900 mb-6">What Our Customers Say</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
@@ -813,7 +842,7 @@ export const RTIModelPage: React.FC = () => {
                   </div>
 
                   {/* FAQ Section */}
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                  <div className="rounded-lg shadow-lg border border-gray-200 p-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h3>
                     <div className="space-y-4">
                       {faqs.map((faq, index) => (

@@ -24,6 +24,12 @@
 
 @layer utilities {
 
+  /* Service page sidebar width - ensures perfect alignment with navbar */
+  :root {
+    --sidebar-width: 30vw;
+    --sidebar-max-width: 384px;
+  }
+
   /* Custom utility classes can go here */
   .scrollbar-hide {
     -ms-overflow-style: none;

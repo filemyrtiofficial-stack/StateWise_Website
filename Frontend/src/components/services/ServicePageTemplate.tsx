@@ -147,7 +147,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
         <main className="flex-grow">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-purple-600 text-white py-16 md:py-24">
-            <div className="container-responsive max-w-7xl mx-auto    ">
+            <div className="container-responsive max-w-7xl mx-auto">
               <div className="text-center max-w-4xl mx-auto">
                 <div className="text-6xl mb-6">{icon}</div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{title}</h1>
@@ -159,7 +159,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
 
           {/* Features Section */}
           <section className="py-16 bg-white">
-            <div className="container-responsive max-w-7xl mx-auto    ">
+            <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 Key Features
               </h2>
@@ -193,7 +193,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
 
           {/* Benefits Section */}
           <section className="py-16 bg-gray-50">
-            <div className="container-responsive max-w-7xl mx-auto    ">
+            <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 Why Choose This Service?
               </h2>
@@ -212,7 +212,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
 
           {/* Process Section */}
           <section className="py-16 bg-white">
-            <div className="container-responsive max-w-7xl mx-auto    ">
+            <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 How It Works
               </h2>

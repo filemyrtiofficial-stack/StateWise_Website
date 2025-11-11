@@ -1,10 +1,14 @@
 import React, { useState, memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/icons/logo.webp';
 
 const NavbarComponent: React.FC = () => {
+  const location = useLocation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Check if we're on a service page (has sidebar)
+  const isServicePage = location.pathname.startsWith('/services/');
 
   const handleServicesMouseEnter = useCallback(() => setIsServicesOpen(true), []);
   const handleServicesMouseLeave = useCallback(() => setIsServicesOpen(false), []);
@@ -90,8 +94,9 @@ const NavbarComponent: React.FC = () => {
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-white shadow-md sticky top-0 z-[100]">
-        <div className="container-responsive max-w-7xl mx-auto">
+      {/* FILE: Frontend/src/components/common/Navbar.tsx - Conditional padding: Navbar background flush with sidebar, but content has responsive left padding (16px mobile, 24px desktop) for spacing */}
+      <nav className={`bg-white shadow-md sticky top-0 z-[100] ${isServicePage ? 'ml-0 pl-0' : ''}`}>
+        <div className={isServicePage ? "w-full pl-4 md:pl-6 pr-4 md:pr-6" : "container-responsive max-w-7xl mx-auto"}>
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
             <div className="flex items-center">
