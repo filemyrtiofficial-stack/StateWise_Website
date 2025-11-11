@@ -413,20 +413,30 @@ export const RTIModelPage: React.FC = () => {
       </Helmet>
       <div className="min-h-screen flex flex-col">
         {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Fixed sidebar on left, NO gap with navbar */}
-        {/* Sidebar - Fixed on left, 30% width (max 384px), perfectly flush with navbar - NO shadow, NO right border */}
+        {/* Sidebar - Fixed on left, 30% width (max 384px), perfectly flush with navbar - NO shadow, NO right border - NO SCROLLING */}
         <div
-          className="hidden lg:block fixed left-0 top-0 max-w-sm z-[110] overflow-y-auto"
+          className="hidden lg:block fixed left-0 top-0 max-w-sm z-[110]"
           style={{
             width: 'min(30vw, 384px)',
             height: '100vh',
-            boxShadow: 'none'
+            maxHeight: '100vh',
+            boxShadow: 'none',
+            overflow: 'hidden'
           }}
         >
-          <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-l-lg border-t border-b border-l border-primary-700 p-6 min-h-full">
-            {/* Back to Home Button */}
+          <div
+            className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-l-lg border-t border-b border-l border-primary-700 p-6 h-full flex flex-col"
+            style={{
+              height: '100%',
+              maxHeight: '100%',
+              overflow: 'hidden',
+              boxSizing: 'border-box'
+            }}
+          >
+            {/* Back to Home Button - Fixed at top */}
             <button
               onClick={() => navigate('/')}
-              className="w-full mb-4 bg-transparent hover:bg-primary-700/20 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3"
+              className="w-full mb-4 bg-transparent hover:bg-primary-700/20 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 flex-shrink-0"
             >
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -436,44 +446,49 @@ export const RTIModelPage: React.FC = () => {
               <span className="text-white font-semibold">Back to Home</span>
             </button>
 
-            {/* Video Section - Lazy Loaded */}
-            <div ref={videoRef} className="mb-6 mt-12 bg-white rounded-lg shadow-lg overflow-visible border-2 border-white">
-              <div className="relative w-full bg-black rounded-lg" style={{ paddingBottom: '56.25%' }}>
-                {shouldLoadVideo ? (
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full rounded-lg"
-                    src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
-                    title="RTI Service Video"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  ></iframe>
-                ) : (
-                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
-                    <div className="text-white">Loading video...</div>
-                  </div>
-                )}
+            {/* Content Area - Flex grow to fill available space, overflow hidden */}
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden" style={{ overflow: 'hidden' }}>
+              {/* Video Section - Lazy Loaded - Flexible height */}
+              <div ref={videoRef} className="mb-6 mt-4 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-white flex-shrink-0">
+                <div className="relative w-full bg-black rounded-lg" style={{ paddingBottom: '56.25%' }}>
+                  {shouldLoadVideo ? (
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full rounded-lg"
+                      src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
+                      title="RTI Service Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      loading="lazy"
+                    ></iframe>
+                  ) : (
+                    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
+                      <div className="text-white">Loading video...</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* What Will You Get - Scrollable content area to show all text */}
+              <div className="flex-1 flex flex-col min-h-0 overflow-hidden" style={{ overflow: 'hidden' }}>
+                <h4 className="text-lg font-bold text-white mb-4 flex-shrink-0">What Will You Get:</h4>
+                <div className="flex-1 overflow-y-auto sidebar-features-scroll" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+                  <ul className="space-y-3 pr-2">
+                    {model.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <svg className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-sm text-white">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
 
-            {/* What Will You Get */}
-            <div className="mb-6">
-              <h4 className="text-lg font-bold text-white mb-4">What Will You Get:</h4>
-              <ul className="space-y-3">
-                {model.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-white">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-6">
+            {/* CTA Button - Fixed at bottom */}
+            <div className="mt-6 flex-shrink-0">
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-white flex items-center justify-center gap-2"
@@ -607,9 +622,9 @@ export const RTIModelPage: React.FC = () => {
                     {/* Service Image Section */}
                     {modelSlug && serviceImages[modelSlug] && (
                       <div className="mb-8">
-                        <img 
-                          src={serviceImages[modelSlug]} 
-                          alt={model?.name || 'RTI Service'} 
+                        <img
+                          src={serviceImages[modelSlug]}
+                          alt={model?.name || 'RTI Service'}
                           className="w-full h-auto rounded-lg shadow-md"
                           style={{ objectFit: 'contain' }}
                           draggable="false"
@@ -811,9 +826,9 @@ export const RTIModelPage: React.FC = () => {
                       {/* Service Image X version inside Why This Service box - at the end */}
                       {modelSlug && serviceImagesX[modelSlug] && (
                         <div className="mt-8">
-                          <img 
-                            src={serviceImagesX[modelSlug]} 
-                            alt={`${model?.name || 'RTI Service'} - Features`} 
+                          <img
+                            src={serviceImagesX[modelSlug]}
+                            alt={`${model?.name || 'RTI Service'} - Features`}
                             className="w-full h-auto rounded-lg shadow-md"
                             style={{ objectFit: 'contain' }}
                             draggable="false"
