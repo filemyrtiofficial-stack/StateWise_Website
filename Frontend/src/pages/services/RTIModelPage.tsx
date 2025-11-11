@@ -342,13 +342,14 @@ export const RTIModelPage: React.FC = () => {
         {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Fixed sidebar on left, NO gap with navbar */}
         {/* Sidebar - Fixed on left, 30% width (max 384px), perfectly flush with navbar - NO shadow, NO right border */}
         <div
-          className="hidden lg:block fixed left-0 top-0 max-w-sm h-screen z-[110] overflow-y-auto"
+          className="hidden lg:block fixed left-0 top-0 max-w-sm z-[110] overflow-y-auto"
           style={{
             width: 'min(30vw, 384px)',
+            height: '100vh',
             boxShadow: 'none'
           }}
         >
-          <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-l-lg border-t border-b border-l border-primary-700 p-6 h-screen">
+          <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-l-lg border-t border-b border-l border-primary-700 p-6 min-h-full">
             {/* Back to Home Button */}
             <button
               onClick={() => navigate('/')}
@@ -433,7 +434,8 @@ export const RTIModelPage: React.FC = () => {
           style={{
             marginLeft: 'min(30vw, 384px)',
             width: 'calc(100% - min(30vw, 384px))',
-            maxWidth: 'calc(100% - min(30vw, 384px))'
+            maxWidth: 'calc(100% - min(30vw, 384px))',
+            minHeight: 'calc(100vh - 48px)' // Account for navbar height
           }}
         >
           {/* Main Content - Two Column Layout */}
@@ -858,7 +860,18 @@ export const RTIModelPage: React.FC = () => {
             </div>
           </section>
         </main>
-        <Footer />
+
+        {/* Footer - Positioned beside sidebar, not under it */}
+        {/* FILE: Frontend/src/pages/services/RTIModelPage.tsx - Footer aligned with main content, no overlap with sidebar */}
+        <div
+          style={{
+            marginLeft: 'min(30vw, 384px)',
+            width: 'calc(100% - min(30vw, 384px))',
+            maxWidth: 'calc(100% - min(30vw, 384px))'
+          }}
+        >
+          <Footer />
+        </div>
         <LazyChatbot />
 
         {/* Consultation Modal */}
