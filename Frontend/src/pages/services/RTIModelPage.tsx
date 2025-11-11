@@ -728,6 +728,17 @@ export const RTIModelPage: React.FC = () => {
                           <p className="text-gray-600 text-sm">We verify and submit your RTI to the correct public authority with all required documentation, ensuring proper channel compliance.</p>
                         </div>
                       </div>
+
+                      {/* Demo Image in Service Outline */}
+                      <div className="mt-8">
+                        <img 
+                          src="/images/Demo.webp" 
+                          alt="Service Demo" 
+                          className="w-full h-auto rounded-lg shadow-md"
+                          style={{ objectFit: 'contain' }}
+                          draggable="false"
+                        />
+                      </div>
                     </div>
 
                     {/* Why This Service Section */}
