@@ -1038,6 +1038,17 @@ export const RTIModelPage: React.FC = () => {
                             <p className="text-gray-700 italic">"Outstanding support! The team was very helpful and guided me through every step. Got my information quickly and efficiently."</p>
                           </div>
                         </div>
+
+                        {/* Customer Testimonial Image */}
+                        <div className="mt-8">
+                          <img 
+                            src="/images/15minTESTI.webp" 
+                            alt="Customer Testimonials" 
+                            className="w-full h-auto rounded-lg shadow-md"
+                            style={{ objectFit: 'contain' }}
+                            draggable="false"
+                          />
+                        </div>
                       </div>
 
                       {/* FAQ Section - Improved with Accordion */}
