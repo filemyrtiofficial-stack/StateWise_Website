@@ -20,10 +20,10 @@ const NavbarComponent: React.FC = () => {
 
   return (
     <>
-      {/* Social Media Bar - Only shown on homepage, hidden on all other pages */}
-      {/* FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar conditionally rendered only on homepage */}
+      {/* Social Media Bar - Only shown on homepage, hidden on small screens, visible on large screens */}
+      {/* FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar conditionally rendered only on homepage, hidden on mobile */}
       {isHomepage && (
-        <div className="relative lg:fixed top-0 left-0 right-0 lg:left-auto lg:right-0 lg:top-1/2 lg:-translate-y-1/2 z-[60] flex flex-row lg:flex-col justify-center lg:justify-start gap-1.5 bg-white border-b lg:border-b-0 lg:border-t lg:border-l border-gray-300 lg:rounded-l-lg shadow-md lg:shadow-2xl p-1.5">
+        <div className="hidden lg:flex fixed right-0 top-1/2 -translate-y-1/2 z-[60] flex-col justify-start gap-1.5 bg-white border-t border-l border-gray-300 rounded-l-lg shadow-2xl p-1.5">
           {/* X (Twitter) */}
           <a
             href="#"
