@@ -12,8 +12,8 @@ const NavbarComponent: React.FC = () => {
 
   return (
     <>
-      {/* Fixed Vertical Social Media Bar */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-1.5 bg-white border-t border-b border-l border-gray-300 rounded-l-lg shadow-2xl p-1.5">
+      {/* Social Media Bar - Top on small screens (scrolls), Right side on large screens (fixed) */}
+      <div className="relative lg:fixed top-0 left-0 right-0 lg:left-auto lg:right-0 lg:top-1/2 lg:-translate-y-1/2 z-[60] flex flex-row lg:flex-col justify-center lg:justify-start gap-1.5 bg-white border-b lg:border-b-0 lg:border-t lg:border-l border-gray-300 lg:rounded-l-lg shadow-md lg:shadow-2xl p-1.5">
         {/* X (Twitter) */}
         <a
           href="#"
@@ -90,7 +90,7 @@ const NavbarComponent: React.FC = () => {
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-white shadow-md sticky top-0 z-50">
+      <nav className="bg-white shadow-md sticky top-0 z-[100]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
