@@ -39,7 +39,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
     urgency: 'normal',
     preferredLanguage: 'english',
     address: '',
-    city: '',
     acceptTerms: false,
   });
 
@@ -98,21 +97,20 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
       const result = await response.json();
 
       setIsSubmitted(true);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          service: title,
-          department: '',
-          state: '',
-          pincode: '',
-          query: '',
-          urgency: 'normal',
-          preferredLanguage: 'english',
-          address: '',
-          city: '',
-          acceptTerms: false,
-        });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: title,
+        department: '',
+        state: '',
+        pincode: '',
+        query: '',
+        urgency: 'normal',
+        preferredLanguage: 'english',
+        address: '',
+        acceptTerms: false,
+      });
 
       setTimeout(() => setIsSubmitted(false), 5000);
 
@@ -355,7 +353,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                           />
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                      <div className="mt-6">
                         <div>
                           <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-2">
                             Address <span className="text-red-500">*</span>
@@ -366,24 +364,9 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             value={formData.address}
                             onChange={handleChange}
                             required
-                            rows={2}
+                            rows={3}
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white resize-none"
-                            placeholder="Street Address, Building, Apartment"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="city" className="block text-sm font-semibold text-gray-700 mb-2">
-                            City <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white"
-                            placeholder="City"
+                            placeholder="Street Address, Building, Apartment, City, State"
                           />
                         </div>
                       </div>
@@ -503,6 +486,24 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         <p className="text-red-700 font-medium">{errors.submit}</p>
                       </div>
                     )}
+
+                    {/* Terms and Conditions */}
+                    <div className="border-t border-gray-200 pt-6">
+                      <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <input
+                          type="checkbox"
+                          id="acceptTerms"
+                          name="acceptTerms"
+                          checked={formData.acceptTerms}
+                          onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                          className="mt-1 w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                          required
+                        />
+                        <label htmlFor="acceptTerms" className="text-sm text-gray-700 cursor-pointer">
+                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. I understand that the RTI fee of ₹10 is included in the service charge. <span className="text-red-500">*</span>
+                        </label>
+                      </div>
+                    </div>
 
                     {/* Submit Button */}
                     <div className="pt-6">

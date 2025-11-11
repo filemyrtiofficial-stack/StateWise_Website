@@ -163,8 +163,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     mobile: '',
     pinCode: '',
     address: '',
-    city: '',
-    state: '',
     acceptTerms: false
   });
 
@@ -234,7 +232,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
   const handleConsultationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Consultation form submitted:', consultationForm);
-    setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '', address: '', city: '', state: '', acceptTerms: false });
+    setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '', address: '', acceptTerms: false });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -348,9 +346,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
           {/* Right Column - Consultation Form (1/3 width) */}
           <div className="lg:col-span-1">
-            <div className="bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-5 lg:sticky lg:top-4">
+            <div className="bg-white border-2 border-black rounded-lg shadow-lg p-3 sm:p-4 lg:sticky lg:top-4">
               {/* Call Us Phone Number - At the top */}
-              <div className="flex items-center gap-2 mb-3 p-2 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-2 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
                 <svg className="w-4 h-4 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
@@ -363,14 +361,14 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                 </a>
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1.5 border-b-2 border-black">
+              <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1 border-b-2 border-black">
                 Get a free Micro Consultation now!
               </h3>
-              <p className="text-xs sm:text-sm text-black mb-3">
+              <p className="text-xs sm:text-sm text-black mb-2">
                 Let the FileMyRTI Team help you in exercising your Legal Rights.
               </p>
 
-              <form onSubmit={handleConsultationSubmit} className="space-y-2.5">
+              <form onSubmit={handleConsultationSubmit} className="space-y-2">
                 {/* Full Name */}
                 <div>
                   <label className="block text-xs font-bold text-black mb-1">
@@ -383,7 +381,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     onChange={handleInputChange}
                     required
                     placeholder="Enter your full name"
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                   />
                 </div>
 
@@ -399,7 +397,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     onChange={handleInputChange}
                     required
                     placeholder="Enter your email"
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                   />
                 </div>
 
@@ -415,7 +413,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     onChange={handleInputChange}
                     required
                     placeholder="Enter your mobile number"
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                   />
                 </div>
 
@@ -429,42 +427,10 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     value={consultationForm.address}
                     onChange={(e) => setConsultationForm({ ...consultationForm, address: e.target.value })}
                     required
-                    placeholder="Street Address, Building, Apartment"
+                    placeholder="Street Address, Building, Apartment, City, State"
                     rows={2}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none"
+                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none"
                   />
-                </div>
-
-                {/* City and State */}
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-xs font-bold text-black mb-1">
-                      City <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={consultationForm.city}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="City"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-black mb-1">
-                      State <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={consultationForm.state}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="State"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                    />
-                  </div>
                 </div>
 
                 {/* Pin Code */}
@@ -480,12 +446,12 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     required
                     placeholder="Enter your pin code"
                     maxLength={6}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                   />
                 </div>
 
                 {/* Terms and Conditions */}
-                <div className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-start gap-2 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
                   <input
                     type="checkbox"
                     id="acceptTermsConsultation"
@@ -502,7 +468,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm"
+                  className="w-full px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm"
                 >
                   Submit
                 </button>
