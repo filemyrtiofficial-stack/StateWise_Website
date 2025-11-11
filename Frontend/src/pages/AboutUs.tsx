@@ -3,15 +3,86 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
-import { Chatbot } from '../components/common/Chatbot';
+import { LazyChatbot } from '../components/common/LazyChatbot';
 
 export const AboutUs: React.FC = () => {
+  const pageTitle = "About Us - FileMyRTI | Your Trusted RTI Filing Partner";
+  const pageDescription = "Learn about FileMyRTI - Your trusted partner for filing RTI applications online. We make the Right to Information process simple, transparent, and accessible. Expert team, easy process, and complete transparency.";
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : "https://filemyrti.com/about-us";
+  const ogImage = "https://filemyrti.com/src/assets/icons/logo.webp";
+
+  // Structured Data (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About FileMyRTI",
+    "description": pageDescription,
+    "url": "https://filemyrti.com/about-us",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "FileMyRTI",
+      "url": "https://filemyrti.com",
+      "logo": "https://filemyrti.com/src/assets/icons/logo.webp",
+      "description": "FileMyRTI is a trusted platform for filing RTI applications online. We make the Right to Information process simple, transparent, and accessible to every citizen.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
+      "sameAs": []
+    }
+  };
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://filemyrti.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About Us",
+        "item": canonicalUrl
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
-        <title>About Us - FileMyRTI Telangana</title>
-        <meta name="description" content="Learn about FileMyRTI Telangana - Your trusted partner for filing RTI applications online in Telangana. We make the Right to Information process simple, transparent, and accessible." />
-        <meta name="keywords" content="About FileMyRTI Telangana, RTI filing service Telangana, Right to Information Telangana, transparency, government information Telangana" />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta name="keywords" content="About FileMyRTI, RTI filing service, Right to Information, transparency, government information, RTI Act 2005, RTI online filing, RTI application service" />
+        <meta name="author" content="FileMyRTI" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="FileMyRTI" />
+        <meta property="og:locale" content="en_IN" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbStructuredData)}
+        </script>
       </Helmet>
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Navbar />
@@ -215,7 +286,7 @@ export const AboutUs: React.FC = () => {
           </section>
         </main>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
       </div>
     </>
   );

@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import blackIcon from '../../assets/icons/blackicons.png';
 
-export const Footer: React.FC = () => {
+const FooterComponent: React.FC = () => {
   const [email, setEmail] = useState('');
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     // Handle email subscription
     console.log('Email submitted:', email);
     setEmail('');
-  };
+  }, [email]);
+
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }, []);
 
   return (
     <footer className="bg-[#333333] text-white">
@@ -20,7 +24,14 @@ export const Footer: React.FC = () => {
           {/* Left - Logo and Tagline */}
           <div className="flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-4">
             <Link to="/state/delhi" className="flex items-center">
-              <img src={blackIcon} alt="File My RTI" className="h-10 sm:h-12 w-auto" />
+              <img
+                src={blackIcon}
+                alt="File My RTI"
+                className="h-10 sm:h-12 w-auto"
+                loading="lazy"
+                width="120"
+                height="48"
+              />
             </Link>
             <p className="text-sm md:text-base text-white text-center md:text-left">
               India's Simplest Way to File RTI Online.
@@ -147,7 +158,7 @@ export const Footer: React.FC = () => {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="Your Email Address"
                 required
                 className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
@@ -183,3 +194,5 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+
+export const Footer = memo(FooterComponent);

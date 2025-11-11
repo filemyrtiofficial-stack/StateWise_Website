@@ -11,7 +11,7 @@ import { StateFAQ } from '../components/state/StateFAQ';
 import { StateCTA } from '../components/state/StateCTA';
 import { AboutFileMyRTI } from '../components/common/AboutFileMyRTI';
 // import { RTIFormModal } from '../components/common/RTIFormModal';
-import { Chatbot } from '../components/common/Chatbot';
+import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
 
 export const StatePage: React.FC = () => {
@@ -40,7 +40,7 @@ export const StatePage: React.FC = () => {
             </div>
           </main>
           <Footer />
-          <Chatbot />
+          <LazyChatbot />
         </div>
       </>
     );
@@ -53,18 +53,98 @@ export const StatePage: React.FC = () => {
 
   // SEO Metadata
   const pageTitle = `File RTI Online in ${stateData.name} - FileMyRTI`;
-  const pageDescription = stateData.hero.subtitle;
+  const pageDescription = stateData.hero.subtitle || `File RTI applications online in ${stateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://${stateData.slug}.filemyrti.com`;
+  const ogImage = `https://filemyrti.com/src/assets/icons/logo.webp`;
+
+  // Structured Data (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "RTI Filing Service",
+    "provider": {
+      "@type": "Organization",
+      "name": "FileMyRTI",
+      "url": "https://filemyrti.com",
+      "logo": "https://filemyrti.com/src/assets/icons/logo.webp"
+    },
+    "areaServed": {
+      "@type": "State",
+      "name": stateData.name
+    },
+    "description": pageDescription,
+    "name": `RTI Filing Service in ${stateData.name}`
+  };
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://filemyrti.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `RTI in ${stateData.name}`,
+        "item": canonicalUrl
+      }
+    ]
+  };
+
+  const faqStructuredData = stateData.faqs && stateData.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": stateData.faqs.map((faq: any) => ({
+      "@type": "Question",
+      "name": faq.question || faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer || faq.a
+      }
+    }))
+  } : null;
 
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI`} />
+        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI, RTI Act 2005, ${stateData.name} government information, RTI filing ${stateData.name}, RTI application ${stateData.name}, ${stateData.name} RTI commission`} />
+        <meta name="author" content="FileMyRTI" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href={`https://${stateData.slug}.filemyrti.com`} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="FileMyRTI" />
+        <meta property="og:locale" content="en_IN" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbStructuredData)}
+        </script>
+        {faqStructuredData && (
+          <script type="application/ld+json">
+            {JSON.stringify(faqStructuredData)}
+          </script>
+        )}
       </Helmet>
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -86,7 +166,7 @@ export const StatePage: React.FC = () => {
         </main>
         <Footer />
         {/* <RTIFormModal stateName={stateData.name} /> */}
-        <Chatbot />
+        <LazyChatbot />
       </div>
     </>
   );

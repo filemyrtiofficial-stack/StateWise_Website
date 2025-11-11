@@ -4,6 +4,18 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Enable JIT mode for faster builds and smaller CSS
+  mode: 'jit',
+  // Remove unused styles in production
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: [
+      "./index.html",
+      "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    // Safelist any dynamic classes that might be missed
+    safelist: [],
+  },
   theme: {
     extend: {
       colors: {
@@ -38,5 +50,10 @@ export default {
     },
   },
   plugins: [],
+  // Optimize for production
+  corePlugins: {
+    // Disable unused features to reduce CSS size
+    preflight: true,
+  },
 }
 

@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 
-export const AboutFileMyRTI: React.FC = () => {
+const AboutFileMyRTIComponent: React.FC = () => {
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoadVideo(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before video enters viewport
+      }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
@@ -29,17 +58,25 @@ export const AboutFileMyRTI: React.FC = () => {
                 <p className="text-sm sm:text-base text-black italic">
                   Empowering the masses...
                 </p>
-                {/* Video Player */}
-                <div className="mt-4 w-full">
+                {/* Video Player - Lazy Loaded */}
+                <div ref={videoRef} className="mt-4 w-full">
                   <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border-2 border-gray-300">
-                    <video
-                      className="w-full h-full object-cover"
-                      controls
-                      poster="/images/video-poster.jpg"
-                    >
-                      <source src="/videos/filemyrti-intro.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                    {shouldLoadVideo ? (
+                      <video
+                        className="w-full h-full object-cover"
+                        controls
+                        preload="metadata"
+                        poster="/images/video-poster.jpg"
+                        playsInline
+                      >
+                        <source src="/videos/filemyrti-intro.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                        <div className="text-gray-400">Loading video...</div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -50,4 +87,6 @@ export const AboutFileMyRTI: React.FC = () => {
     </section>
   );
 };
+
+export const AboutFileMyRTI = memo(AboutFileMyRTIComponent);
 

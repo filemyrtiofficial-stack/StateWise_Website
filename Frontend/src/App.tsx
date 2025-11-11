@@ -1,27 +1,42 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { Home } from './pages/Home';
-import { StatePage } from './pages/StatePage';
-import { NotFound } from './pages/NotFound';
-import { RTIModelPage } from './pages/services/RTIModelPage';
-import { AboutUs } from './pages/AboutUs';
+
+// Lazy load pages for code splitting
+const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
+const StatePage = lazy(() => import('./pages/StatePage').then(module => ({ default: module.StatePage })));
+const AboutUs = lazy(() => import('./pages/AboutUs').then(module => ({ default: module.AboutUs })));
+const RTIModelPage = lazy(() => import('./pages/services/RTIModelPage').then(module => ({ default: module.RTIModelPage })));
+const NotFound = lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="text-center">
+      <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <p className="mt-4 text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
 
 function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/state/:stateSlug" element={<StatePage />} />
-          <Route path="/services/seamless-online-filing" element={<RTIModelPage />} />
-          <Route path="/services/anonymous" element={<RTIModelPage />} />
-          <Route path="/services/1st-appeal" element={<RTIModelPage />} />
-          <Route path="/services/bulk" element={<RTIModelPage />} />
-          <Route path="/services/custom-rti" element={<RTIModelPage />} />
-          <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/state/:stateSlug" element={<StatePage />} />
+            <Route path="/services/seamless-online-filing" element={<RTIModelPage />} />
+            <Route path="/services/anonymous" element={<RTIModelPage />} />
+            <Route path="/services/1st-appeal" element={<RTIModelPage />} />
+            <Route path="/services/bulk" element={<RTIModelPage />} />
+            <Route path="/services/custom-rti" element={<RTIModelPage />} />
+            <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </HelmetProvider>
   );

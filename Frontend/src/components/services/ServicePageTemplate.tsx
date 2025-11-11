@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../common/Navbar';
 import { Footer } from '../common/Footer';
-import { Chatbot } from '../common/Chatbot';
+import { LazyChatbot } from '../common/LazyChatbot';
 
 interface ServicePageProps {
   title: string;
@@ -500,7 +500,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
           </section>
         </main>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
       </div>
     </>
   );

@@ -1,12 +1,23 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
-import { Chatbot } from '../components/common/Chatbot';
+import { LazyChatbot } from '../components/common/LazyChatbot';
 
 export const NotFound: React.FC = () => {
+  const pageTitle = "404 - Page Not Found | FileMyRTI";
+  const pageDescription = "The page you're looking for doesn't exist. Return to FileMyRTI homepage to file RTI applications online.";
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : "https://filemyrti.com/404";
+
   return (
     <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow flex items-center justify-center bg-gray-50">
@@ -25,7 +36,7 @@ export const NotFound: React.FC = () => {
           </div>
         </main>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
       </div>
     </>
   );

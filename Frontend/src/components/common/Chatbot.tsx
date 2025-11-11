@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 
-export const Chatbot: React.FC = () => {
+const ChatbotComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleChat = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
 
   return (
     <>
@@ -151,5 +151,7 @@ export const Chatbot: React.FC = () => {
     </>
   );
 };
+
+export const Chatbot = memo(ChatbotComponent);
 
 

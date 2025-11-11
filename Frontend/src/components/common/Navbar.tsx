@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/icons/logo.webp';
 
-export const Navbar: React.FC = () => {
+const NavbarComponent: React.FC = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleServicesMouseEnter = useCallback(() => setIsServicesOpen(true), []);
+  const handleServicesMouseLeave = useCallback(() => setIsServicesOpen(false), []);
+  const toggleMobileMenu = useCallback(() => setIsMobileMenuOpen(prev => !prev), []);
 
   return (
     <>
@@ -92,7 +96,15 @@ export const Navbar: React.FC = () => {
             {/* Logo */}
             <div className="flex items-center">
               <Link to="/state/delhi" className="flex items-center">
-                <img src={logo} alt="File My RTI" className="h-8 w-auto" />
+                <img
+                  src={logo}
+                  alt="File My RTI"
+                  className="h-8 w-auto"
+                  loading="eager"
+                  fetchPriority="high"
+                  width="120"
+                  height="32"
+                />
               </Link>
             </div>
 
@@ -105,8 +117,8 @@ export const Navbar: React.FC = () => {
               {/* Services Dropdown */}
               <div
                 className="relative"
-                onMouseEnter={() => setIsServicesOpen(true)}
-                onMouseLeave={() => setIsServicesOpen(false)}
+                onMouseEnter={handleServicesMouseEnter}
+                onMouseLeave={handleServicesMouseLeave}
               >
                 <button className="flex items-center gap-1 text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
                   Services
@@ -156,8 +168,9 @@ export const Navbar: React.FC = () => {
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onClick={toggleMobileMenu}
                 className="text-primary-600 hover:text-primary-700"
+                aria-label="Toggle mobile menu"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -219,4 +232,6 @@ export const Navbar: React.FC = () => {
     </>
   );
 };
+
+export const Navbar = memo(NavbarComponent);
 

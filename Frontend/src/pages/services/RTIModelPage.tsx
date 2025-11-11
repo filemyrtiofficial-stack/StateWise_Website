@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/common/Navbar';
 import { Footer } from '../../components/common/Footer';
-import { Chatbot } from '../../components/common/Chatbot';
+import { LazyChatbot } from '../../components/common/LazyChatbot';
 
 interface RTIModel {
   id: string;
@@ -147,12 +147,41 @@ export const RTIModelPage: React.FC = () => {
   const modelSlug = location.pathname.split('/services/')[1];
   const model = modelSlug ? rtiModels[modelSlug] : null;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     fullName: '',
     mobile: '',
     email: '',
     rtiQuery: ''
   });
+
+  // Lazy load YouTube iframe
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoadVideo(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before video enters viewport
+      }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
 
   if (!model) {
     return (
@@ -165,7 +194,7 @@ export const RTIModelPage: React.FC = () => {
           </div>
         </div>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
       </>
     );
   }
@@ -193,11 +222,111 @@ export const RTIModelPage: React.FC = () => {
     }
   ];
 
+  const pageTitle = `${model.name} - FileMyRTI | RTI Filing Service`;
+  const pageDescription = model.fullDescription || model.description;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://filemyrti.com/services/${modelSlug}`;
+  const ogImage = "https://filemyrti.com/src/assets/icons/logo.webp";
+
+  // Structured Data (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": model.name,
+    "description": pageDescription,
+    "provider": {
+      "@type": "Organization",
+      "name": "FileMyRTI",
+      "url": "https://filemyrti.com",
+      "logo": "https://filemyrti.com/src/assets/icons/logo.webp"
+    },
+    "serviceType": "RTI Filing Service",
+    "offers": {
+      "@type": "Offer",
+      "price": model.price.toString(),
+      "priceCurrency": "INR",
+      "description": model.name
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "India"
+    }
+  };
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://filemyrti.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://filemyrti.com/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": model.name,
+        "item": canonicalUrl
+      }
+    ]
+  };
+
+  const faqStructuredData = faqs && faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  } : null;
+
   return (
     <>
       <Helmet>
-        <title>{model.name} - FileMyRTI</title>
-        <meta name="description" content={model.description} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta name="keywords" content={`${model.name}, RTI filing, RTI online, Right to Information, RTI Act 2005, RTI application, ${model.name} service, RTI filing service, government information, RTI India`} />
+        <meta name="author" content="FileMyRTI" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="FileMyRTI" />
+        <meta property="og:locale" content="en_IN" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbStructuredData)}
+        </script>
+        {faqStructuredData && (
+          <script type="application/ld+json">
+            {JSON.stringify(faqStructuredData)}
+          </script>
+        )}
       </Helmet>
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Navbar />
@@ -222,17 +351,24 @@ export const RTIModelPage: React.FC = () => {
                       <span className="text-white font-semibold">Back to Home</span>
                     </button>
 
-                    {/* Video Section */}
-                    <div className="mb-6 mt-12 bg-white rounded-lg shadow-lg overflow-visible border-2 border-white">
+                    {/* Video Section - Lazy Loaded */}
+                    <div ref={videoRef} className="mb-6 mt-12 bg-white rounded-lg shadow-lg overflow-visible border-2 border-white">
                       <div className="relative w-full bg-black mr-[-4rem] pr-16 rounded-lg" style={{ paddingBottom: '56.25%' }}>
-                        <iframe
-                          className="absolute top-0 left-0 w-full h-full rounded-lg"
-                          src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
-                          title="RTI Service Video"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        ></iframe>
+                        {shouldLoadVideo ? (
+                          <iframe
+                            className="absolute top-0 left-0 w-full h-full rounded-lg"
+                            src="https://www.youtube.com/embed/fKam-c_Rugo?start=8"
+                            title="RTI Service Video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                          ></iframe>
+                        ) : (
+                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
+                            <div className="text-white">Loading video...</div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -671,7 +807,7 @@ export const RTIModelPage: React.FC = () => {
           </section>
         </main>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
 
         {/* Consultation Modal */}
         {isModalOpen && model && (

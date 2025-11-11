@@ -1,0 +1,22 @@
+# robots.txt for FileMyRTI
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas (if any)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Allow important pages
+Allow: /
+Allow: /about-us
+Allow: /state/
+Allow: /services/
+
+# Sitemap location
+Sitemap: https://filemyrti.com/sitemap.xml
+
+# Crawl-delay (optional, adjust as needed)
+Crawl-delay: 1
+

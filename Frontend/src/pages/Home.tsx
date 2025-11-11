@@ -10,7 +10,7 @@ import { StateInfo } from '../components/state/StateInfo';
 import { StateFAQ } from '../components/state/StateFAQ';
 import { StateCTA } from '../components/state/StateCTA';
 import { AboutFileMyRTI } from '../components/common/AboutFileMyRTI';
-import { Chatbot } from '../components/common/Chatbot';
+import { LazyChatbot } from '../components/common/LazyChatbot';
 
 export const Home: React.FC = () => {
   // Default to Delhi for home page
@@ -28,7 +28,7 @@ export const Home: React.FC = () => {
             </div>
           </main>
           <Footer />
-          <Chatbot />
+          <LazyChatbot />
         </div>
       </>
     );
@@ -41,17 +41,86 @@ export const Home: React.FC = () => {
 
   // SEO Metadata
   const pageTitle = `File RTI Online in ${stateData.name} - FileMyRTI`;
-  const pageDescription = stateData.hero.subtitle;
+  const pageDescription = stateData.hero.subtitle || `File RTI applications online in ${stateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://filemyrti.com/`;
+  const ogImage = `https://filemyrti.com/src/assets/icons/logo.webp`;
+
+  // Structured Data (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FileMyRTI",
+    "url": "https://filemyrti.com",
+    "logo": "https://filemyrti.com/src/assets/icons/logo.webp",
+    "description": pageDescription,
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IN"
+    },
+    "sameAs": [],
+    "areaServed": {
+      "@type": "State",
+      "name": stateData.name
+    },
+    "serviceType": "RTI Filing Service",
+    "offers": {
+      "@type": "Offer",
+      "description": "RTI Filing Services",
+      "areaServed": stateData.name
+    }
+  };
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://filemyrti.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `RTI in ${stateData.name}`,
+        "item": canonicalUrl
+      }
+    ]
+  };
 
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI`} />
+        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI, RTI Act 2005, ${stateData.name} government information, RTI filing ${stateData.name}, RTI application ${stateData.name}`} />
+        <meta name="author" content="FileMyRTI" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="website" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="FileMyRTI" />
+        <meta property="og:locale" content="en_IN" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbStructuredData)}
+        </script>
       </Helmet>
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -72,7 +141,7 @@ export const Home: React.FC = () => {
           <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
         </main>
         <Footer />
-        <Chatbot />
+        <LazyChatbot />
       </div>
     </>
   );
