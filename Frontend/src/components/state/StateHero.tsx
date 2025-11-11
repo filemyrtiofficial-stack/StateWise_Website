@@ -1,0 +1,519 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { StateHero as StateHeroData } from '../../data/states';
+import { PublicAuthoritiesList } from './PublicAuthoritiesList';
+
+interface StateHeroProps {
+  hero: StateHeroData;
+  stateName: string;
+  stateSlug: string;
+  departments?: string[];
+}
+
+interface Testimonial {
+  name: string;
+  text: string;
+  rating: number;
+  location?: string;
+}
+
+// Testimonials Carousel Component
+const TestimonialsCarousel: React.FC = () => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const testimonials: Testimonial[] = [
+    {
+      name: 'Rajesh Kumar',
+      text: 'Got my RTI response in 25 days. Excellent service! Very professional team.',
+      rating: 5,
+      location: 'Hyderabad, Telangana'
+    },
+    {
+      name: 'Priya Sharma',
+      text: 'Very professional team. Highly recommended! The process was smooth and transparent.',
+      rating: 5,
+      location: 'Warangal, Telangana'
+    },
+    {
+      name: 'Suresh Reddy',
+      text: 'Quick response and excellent support. Got the information I needed within 30 days.',
+      rating: 5,
+      location: 'Vijayawada, Telangana'
+    },
+    {
+      name: 'Anita Patel',
+      text: 'Easy to use platform. The RTI application was drafted perfectly and submitted on time.',
+      rating: 5,
+      location: 'Karimnagar, Telangana'
+    },
+    {
+      name: 'Kiran Kumar',
+      text: 'Best RTI filing service! The team helped me throughout the process. Very satisfied!',
+      rating: 5,
+      location: 'Nizamabad, Telangana'
+    },
+    {
+      name: 'Meera Devi',
+      text: 'Transparent process and great customer service. Received my RTI response quickly.',
+      rating: 5,
+      location: 'Khammam, Telangana'
+    },
+  ];
+
+  // Duplicate testimonials for seamless infinite scroll
+  const duplicatedTestimonials = [...testimonials, ...testimonials];
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    let animationId: number | null = null;
+    let scrollPosition = 0;
+    const scrollSpeed = 0.5; // pixels per frame
+    const cardWidth = 320; // Width of each card (w-80 = 320px)
+    const gap = 16; // gap-4 = 16px
+
+    const scroll = () => {
+      if (!scrollContainer || isPaused) {
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+        return;
+      }
+
+      scrollPosition += scrollSpeed;
+      const maxScroll = testimonials.length * (cardWidth + gap);
+
+      // Reset scroll position when reaching the duplicate set
+      if (scrollPosition >= maxScroll) {
+        scrollPosition = 0;
+      }
+
+      scrollContainer.scrollLeft = scrollPosition;
+      animationId = requestAnimationFrame(scroll);
+    };
+
+    // Start scrolling
+    animationId = requestAnimationFrame(scroll);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isPaused, testimonials.length]);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-4 overflow-x-hidden scrollbar-hide"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
+        {duplicatedTestimonials.map((testimonial, idx) => (
+          <div
+            key={idx}
+            className="flex-shrink-0 w-72 sm:w-80 bg-white p-4 sm:p-5 rounded-xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm">
+                  {testimonial.name.charAt(0)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-gray-900 text-xs sm:text-sm truncate">{testimonial.name}</div>
+                  {testimonial.location && (
+                    <div className="text-xs text-gray-500 truncate">{testimonial.location}</div>
+                  )}
+                </div>
+              </div>
+              <div className="flex text-yellow-500 text-xs sm:text-sm flex-shrink-0 ml-2">
+                {'⭐'.repeat(testimonial.rating)}
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed italic break-words">
+              "{testimonial.text}"
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Gradient fade on edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-purple-50 to-transparent pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-purple-50 to-transparent pointer-events-none"></div>
+    </div>
+  );
+};
+
+export const StateHero: React.FC<StateHeroProps> = ({ hero: _hero, stateName, stateSlug: _stateSlug, departments: _departments }) => {
+  const navigate = useNavigate();
+  const [callbackPhone, setCallbackPhone] = useState('');
+  const [consultationForm, setConsultationForm] = useState({
+    fullName: '',
+    email: '',
+    mobile: '',
+    pinCode: ''
+  });
+
+  const rtiModels = [
+    {
+      id: '1',
+      name: 'Seamless Online Filing',
+      icon: '⚡',
+      iconText: 'Seamless Online Filing',
+      description: 'File RTI applications online easily with expert drafting, submission, and timely dispatch.',
+      route: '/services/seamless-online-filing',
+      buttonText: 'File Now'
+    },
+    {
+      id: '2',
+      name: 'Anonymous RTI Filing',
+      icon: '🎭',
+      iconText: 'ANONYMOUS RTI Filing',
+      description: 'Protect your identity with our discreet service for filing RTI applications on your behalf.',
+      route: '/services/anonymous',
+      buttonText: 'Start Anonymously'
+    },
+    {
+      id: '3',
+      name: 'Online First Appeal Filing',
+      icon: '📋',
+      iconText: 'First Appeal',
+      description: 'File your First Appeal online with expert drafting, review, and quick submission.',
+      route: '/services/1st-appeal',
+      buttonText: 'Appeal Now'
+    },
+    {
+      id: '4',
+      name: 'Efficient Bulk RTI Filing',
+      icon: '📦',
+      iconText: 'Efficient Bulk RTI Filing',
+      description: 'Manage and submit multiple RTI applications efficiently with our professional bulk service.',
+      route: '/services/bulk',
+      buttonText: 'Request Quote'
+    },
+    {
+      id: '5',
+      name: 'Custom RTI',
+      icon: '✏️',
+      iconText: 'Custom RTI',
+      description: 'Can\'t find the right RTI? Create a personalized application designed for your exact information need.',
+      route: '/services/custom-rti',
+      buttonText: 'Custom RTI'
+    },
+    {
+      id: '6',
+      name: '15 min RTI',
+      icon: '⏱️',
+      iconText: '15-MIN TALK TO EXPERT',
+      description: 'Get personalized advice from legal experts to navigate complex RTI applications effectively.',
+      route: '/services/15-minute-consultation',
+      buttonText: 'Pay Now'
+    },
+  ];
+
+  const handleCallbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Callback requested:', callbackPhone);
+    setCallbackPhone('');
+  };
+
+  const handleConsultationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Consultation form submitted:', consultationForm);
+    setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '' });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setConsultationForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const statistics = [
+    { value: '93%', label: 'Success Rate' },
+    { value: '130+', label: 'Business Benefited' },
+    { value: '7,161+', label: 'Consultation Delivered' },
+    { value: '12,599+', label: 'RTI Filed' },
+    { value: '32,000+', label: 'Happy User' },
+    { value: '₹10', label: 'Official Fee' },
+  ];
+
+  return (
+    <section className="bg-gray-50 pt-12 pb-12 sm:pb-16 md:pb-20">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24">
+        {/* Main Hero Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12">
+          {/* Left Column - Main Content (2/3 width) */}
+          <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+            {/* Main Headline */}
+            <div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight">
+                Empowering the masses...
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-black">
+                through sensible content & result-driven legal solutions!
+              </p>
+            </div>
+
+            {/* Talk to the Expert Section */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-black">Talk to the Expert</h2>
+                <div className="h-0.5 w-12 bg-orange-500"></div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <form onSubmit={handleCallbackSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md flex-1">
+                  <div className="flex-1 relative">
+                    <div className="absolute left-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+                      <span className="text-xs">🇮🇳</span>
+                      <svg className="w-2 h-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    <input
+                      type="tel"
+                      value={callbackPhone}
+                      onChange={(e) => setCallbackPhone(e.target.value)}
+                      placeholder="Mobile Number"
+                      required
+                      className="w-full pl-8 pr-2 py-1.5 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    Get Callback
+                  </button>
+                </form>
+                <button
+                  onClick={() => {
+                    // Handle Book Appointment
+                    console.log('Book Appointment clicked');
+                    // You can add navigation or modal here
+                  }}
+                  className="px-4 sm:px-6 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Book Appointment
+                </button>
+              </div>
+            </div>
+
+            {/* Statistics Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              {statistics.map((stat, index) => (
+                <div
+                  key={index}
+                  className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
+                >
+                  <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs font-medium">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Testimonials Section - At the bottom of left column */}
+            <div className="mt-6 sm:mt-8">
+              <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+                  What People Are Saying
+                </h2>
+                <TestimonialsCarousel />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Consultation Form (1/3 width) */}
+          <div className="lg:col-span-1">
+            <div className="bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-5 lg:sticky lg:top-4">
+              {/* Call Us Phone Number - At the top */}
+              <div className="flex items-center gap-2 mb-3 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                <svg className="w-4 h-4 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span className="text-xs font-semibold text-gray-700">Call Us :</span>
+                <a
+                  href="tel:+919911100589"
+                  className="text-xs font-bold text-primary-600 hover:text-primary-700 transition-colors"
+                >
+                  +91-99111-00589
+                </a>
+              </div>
+
+              <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1.5 border-b-2 border-black">
+                Get a free Micro Consultation now!
+              </h3>
+              <p className="text-xs sm:text-sm text-black mb-3">
+                Let the FileMyRTI Team help you in exercising your Legal Rights.
+              </p>
+
+              <form onSubmit={handleConsultationSubmit} className="space-y-2.5">
+                {/* Full Name */}
+                <div>
+                  <label className="block text-xs font-bold text-black mb-1">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={consultationForm.fullName}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your full name"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                  />
+                </div>
+
+                {/* Email Address */}
+                <div>
+                  <label className="block text-xs font-bold text-black mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={consultationForm.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your email"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                  />
+                </div>
+
+                {/* Mobile Number */}
+                <div>
+                  <label className="block text-xs font-bold text-black mb-1">
+                    Mobile Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="mobile"
+                    value={consultationForm.mobile}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your mobile number"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                  />
+                </div>
+
+                {/* Pin Code */}
+                <div>
+                  <label className="block text-xs font-bold text-black mb-1">
+                    Pin Code
+                  </label>
+                  <input
+                    type="text"
+                    name="pinCode"
+                    value={consultationForm.pinCode}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your pin code"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* List of Public Authorities and RTI Models Section */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-12 sm:mt-16">
+        {/* Section Header */}
+        <div className="mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-left">
+            Our Services & Public Authorities
+          </h2>
+        </div>
+
+        {/* Two Column Layout - Equal Width and Height */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-stretch">
+          {/* Left Column - List of Public Authorities */}
+          <div className="flex flex-col h-full">
+            <div className="flex-1 flex items-stretch">
+              <PublicAuthoritiesList stateName={stateName} />
+            </div>
+          </div>
+
+          {/* Right Column - RTI Models Grid */}
+          <div className="flex flex-col h-full">
+            <div className="mb-5 sm:mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-left">
+                RTI Models
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 text-left">
+                Choose the service that best fits your needs
+              </p>
+            </div>
+
+            {/* RTI Models Grid */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              {rtiModels.map((model) => (
+                <div
+                  key={model.id}
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
+                >
+                  {/* Icon Section */}
+                  <div className="mb-3 flex flex-col items-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mb-2 border-2 border-blue-200 group-hover:border-blue-400 transition-colors">
+                      <span className="text-3xl sm:text-4xl">{model.icon}</span>
+                    </div>
+                    <p className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-wide text-center leading-tight px-0.5" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {model.iconText}
+                    </p>
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
+                    {model.name}
+                  </h4>
+
+                  {/* Description */}
+                  <p className="text-[10px] sm:text-xs text-gray-600 mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {model.description}
+                  </p>
+
+                  {/* CTA Button */}
+                  <button
+                    onClick={() => navigate(model.route)}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-[10px] sm:text-xs shadow-sm hover:shadow-md active:scale-95"
+                  >
+                    {model.buttonText}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
