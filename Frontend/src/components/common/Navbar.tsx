@@ -26,7 +26,9 @@ const NavbarComponent: React.FC = () => {
         <div className="hidden lg:flex fixed right-0 top-1/2 -translate-y-1/2 z-[60] flex-col justify-start gap-1.5 bg-white border-t border-l border-gray-300 rounded-l-lg shadow-2xl p-1.5">
           {/* X (Twitter) */}
           <a
-            href="#"
+            href="https://x.com/FileMyRTI"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-9 h-9 bg-white rounded-md flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110"
             aria-label="X (Twitter)"
             title="X (Twitter)"
@@ -52,7 +54,9 @@ const NavbarComponent: React.FC = () => {
 
           {/* YouTube */}
           <a
-            href="#"
+            href="https://www.youtube.com/@FileMyRTI"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-9 h-9 bg-white rounded-md flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110"
             aria-label="YouTube"
             title="YouTube"
@@ -64,7 +68,9 @@ const NavbarComponent: React.FC = () => {
 
           {/* Facebook */}
           <a
-            href="#"
+            href="https://www.facebook.com/profile.php?id=61572512135057"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-9 h-9 bg-white rounded-md flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110"
             aria-label="Facebook"
             title="Facebook"
@@ -76,7 +82,9 @@ const NavbarComponent: React.FC = () => {
 
           {/* Instagram */}
           <a
-            href="#"
+            href="https://www.instagram.com/filemyrtiofficial/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-9 h-9 bg-white rounded-md flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110"
             aria-label="Instagram"
             title="Instagram"
@@ -88,7 +96,9 @@ const NavbarComponent: React.FC = () => {
 
           {/* LinkedIn */}
           <a
-            href="#"
+            href="https://www.linkedin.com/company/105639903/admin/dashboard/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-9 h-9 bg-white rounded-md flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110"
             aria-label="LinkedIn"
             title="LinkedIn"
