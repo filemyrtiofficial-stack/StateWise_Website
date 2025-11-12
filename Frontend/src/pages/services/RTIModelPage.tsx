@@ -210,7 +210,7 @@ export const RTIModelPage: React.FC = () => {
         applicationId,
         paymentId
       });
-      
+
       // Close consultation modal and show success modal
       setIsModalOpen(false);
       setIsSuccessModalOpen(true);
@@ -290,6 +290,11 @@ export const RTIModelPage: React.FC = () => {
     resetForm();
     resetPayment();
     setIsProcessingPayment(false);
+  };
+
+  const handleSuccessModalClose = () => {
+    setIsSuccessModalOpen(false);
+    setSuccessData(null);
   };
 
   // Handle form submit event
