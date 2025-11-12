@@ -357,11 +357,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
               {/* Main Headline */}
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight">
-                  Empowering the masses...
+                  Empowering every voice with clarity, rights, and legal transparency.
                 </h1>
-                <p className="text-sm sm:text-base md:text-lg text-black">
-                  through sensible content & result-driven legal solutions!
-                </p>
               </div>
 
               {/* Talk to the Expert Section */}
@@ -387,13 +384,13 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           placeholder="Mobile Number"
                           required
                           disabled={callbackStatus === 'submitting'}
-                          className="w-full pl-8 pr-2 py-1.5 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed"
                         />
                       </div>
                       <button
                         type="submit"
                         disabled={callbackStatus === 'submitting'}
-                        className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-3 py-2.5 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {callbackStatus === 'submitting' ? (
                           <>
@@ -449,7 +446,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       console.log('Book Appointment clicked');
                       // You can add navigation or modal here
                     }}
-                    className="px-4 sm:px-6 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
