@@ -21,10 +21,12 @@ export interface ConnectionTestResult {
  */
 export const testBackendConnection = async (): Promise<ConnectionTestResult> => {
   try {
-    console.log('🧪 Testing backend connection...');
-    console.log(`📍 Endpoint: ${API_ENDPOINTS.HEALTH}`);
+    if (import.meta.env.DEV) {
+      console.log('🧪 Testing backend connection...');
+      console.log(`📍 Endpoint: ${API_ENDPOINTS.HEALTH}`);
+    }
 
-    const result = await healthAPI.check();
+    await healthAPI.check();
 
     return {
       success: true,

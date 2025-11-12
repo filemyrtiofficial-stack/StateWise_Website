@@ -188,8 +188,11 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     address: '',
     acceptTerms: false
   });
+  const [consultationErrors, setConsultationErrors] = useState<Record<string, string>>({});
   const [consultationStatus, setConsultationStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [consultationErrorMessage, setConsultationErrorMessage] = useState<string>('');
   const [callbackStatus, setCallbackStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [callbackError, setCallbackError] = useState<string>('');
 
   const rtiModels = [
     {
@@ -248,10 +251,25 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     },
   ];
 
+  const validatePhone = (phone: string): boolean => {
+    // Indian mobile: 10 digits, may start with +91
+    const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
   const handleCallbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setCallbackError('');
 
-    if (!callbackPhone.trim()) {
+    const phone = callbackPhone.trim();
+    
+    if (!phone) {
+      setCallbackError('Please enter your mobile number');
+      return;
+    }
+
+    if (!validatePhone(phone)) {
+      setCallbackError('Please enter a valid 10-digit mobile number');
       return;
     }
 
@@ -261,29 +279,51 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
       const { callbackRequestsAPI } = await import('../../services/api');
 
       const result = await callbackRequestsAPI.createPublic({
-        phone: callbackPhone,
+        phone: phone,
         state_slug: _stateSlug || undefined
       });
 
       if (result && typeof result === 'object' && 'success' in result && result.success) {
         setCallbackStatus('success');
         setCallbackPhone('');
+        setCallbackError('');
       } else {
         throw new Error('Failed to submit callback request');
       }
-    } catch (error) {
-      console.error('❌ Failed to submit callback request:', error);
+    } catch (error: any) {
+      if (import.meta.env.DEV) {
+        console.error('❌ Failed to submit callback request:', error);
+      }
       setCallbackStatus('error');
+      if (error instanceof Error) {
+        setCallbackError(error.message || 'Failed to submit. Please try again.');
+      } else if (error?.message) {
+        setCallbackError(error.message);
+      } else {
+        setCallbackError('Failed to submit callback request. Please try again.');
+      }
     }
   };
 
   const resetCallbackForm = () => {
     setCallbackStatus('idle');
     setCallbackPhone('');
+    setCallbackError('');
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePincode = (pincode: string): boolean => {
+    return /^\d{6}$/.test(pincode);
   };
 
   const handleConsultationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setConsultationErrors({});
+    setConsultationErrorMessage('');
 
     // Validate form - safely check if fields exist and are not empty
     const fullName = consultationForm.fullName?.trim() || '';
@@ -292,11 +332,44 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     const address = consultationForm.address?.trim() || '';
     const pinCode = consultationForm.pinCode?.trim() || '';
 
-    if (!fullName || !email || !mobile || !address || !pinCode) {
-      return;
+    const errors: Record<string, string> = {};
+
+    if (!fullName) {
+      errors.fullName = 'Full name is required';
+    } else if (fullName.length < 2) {
+      errors.fullName = 'Full name must be at least 2 characters';
+    }
+
+    if (!email) {
+      errors.email = 'Email address is required';
+    } else if (!validateEmail(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (!mobile) {
+      errors.mobile = 'Mobile number is required';
+    } else if (!validatePhone(mobile)) {
+      errors.mobile = 'Please enter a valid 10-digit mobile number';
+    }
+
+    if (!address) {
+      errors.address = 'Address is required';
+    } else if (address.length < 10) {
+      errors.address = 'Address must be at least 10 characters';
+    }
+
+    if (!pinCode) {
+      errors.pinCode = 'Pin code is required';
+    } else if (!validatePincode(pinCode)) {
+      errors.pinCode = 'Please enter a valid 6-digit pin code';
     }
 
     if (!consultationForm.acceptTerms) {
+      errors.acceptTerms = 'You must accept the terms and conditions';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setConsultationErrors(errors);
       return;
     }
 
@@ -317,23 +390,50 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
       if (result && typeof result === 'object' && 'success' in result && result.success) {
         setConsultationStatus('success');
+        setConsultationErrors({});
+        setConsultationErrorMessage('');
       } else {
         throw new Error('Failed to submit consultation');
       }
-    } catch (error) {
-      console.error('❌ Failed to submit consultation:', error);
+    } catch (error: any) {
+      if (import.meta.env.DEV) {
+        console.error('❌ Failed to submit consultation:', error);
+      }
       setConsultationStatus('error');
+      
+      // Extract error message
+      let errorMessage = 'Failed to submit consultation. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (error?.errors && Array.isArray(error.errors)) {
+        // Handle validation errors from API
+        const validationErrors = error.errors.map((err: any) => `${err.field}: ${err.message}`).join(', ');
+        errorMessage = validationErrors;
+      }
+      setConsultationErrorMessage(errorMessage);
     }
   };
 
   const resetConsultationForm = () => {
     setConsultationStatus('idle');
     setConsultationForm({ fullName: '', email: '', mobile: '', pinCode: '', address: '', acceptTerms: false });
+    setConsultationErrors({});
+    setConsultationErrorMessage('');
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setConsultationForm(prev => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (consultationErrors[name]) {
+      setConsultationErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const statistics = [
@@ -380,12 +480,20 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         <input
                           type="tel"
                           value={callbackPhone}
-                          onChange={(e) => setCallbackPhone(e.target.value)}
+                          onChange={(e) => {
+                            setCallbackPhone(e.target.value);
+                            if (callbackError) setCallbackError('');
+                          }}
                           placeholder="Mobile Number"
                           required
                           disabled={callbackStatus === 'submitting'}
-                          className="w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                          className={`w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed ${
+                            callbackError ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {callbackError && (
+                          <p className="text-xs text-red-600 mt-1">{callbackError}</p>
+                        )}
                       </div>
                       <button
                         type="submit"
@@ -430,7 +538,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                   ) : (
                     <div className="flex-1 max-w-md animate-fadeIn">
                       <div className="bg-red-50 border border-red-200 rounded-md p-4 text-center">
-                        <p className="text-sm font-semibold text-red-800 mb-2">Something went wrong. Please try again.</p>
+                        <p className="text-sm font-semibold text-red-800 mb-2">
+                          {callbackError || 'Something went wrong. Please try again.'}
+                        </p>
                         <button
                           onClick={resetCallbackForm}
                           className="text-xs text-red-700 hover:text-red-900 underline"
@@ -443,8 +553,10 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                   <button
                     onClick={() => {
                       // Handle Book Appointment
-                      console.log('Book Appointment clicked');
-                      // You can add navigation or modal here
+                      // TODO: Add navigation or modal for appointment booking
+                      if (import.meta.env.DEV) {
+                        console.log('Book Appointment clicked');
+                      }
                     }}
                     className="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
                   >
@@ -523,8 +635,13 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your full name"
-                          className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
+                            consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {consultationErrors.fullName && (
+                          <p className="text-xs text-red-600 mt-0.5">{consultationErrors.fullName}</p>
+                        )}
                       </div>
 
                       {/* Email Address */}
@@ -539,8 +656,13 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your email"
-                          className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
+                            consultationErrors.email ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {consultationErrors.email && (
+                          <p className="text-xs text-red-600 mt-0.5">{consultationErrors.email}</p>
+                        )}
                       </div>
 
                       {/* Mobile Number */}
@@ -555,8 +677,14 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your mobile number"
-                          className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                          maxLength={10}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
+                            consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {consultationErrors.mobile && (
+                          <p className="text-xs text-red-600 mt-0.5">{consultationErrors.mobile}</p>
+                        )}
                       </div>
 
                       {/* Address */}
@@ -567,12 +695,17 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         <textarea
                           name="address"
                           value={consultationForm.address}
-                          onChange={(e) => setConsultationForm({ ...consultationForm, address: e.target.value })}
+                          onChange={handleInputChange}
                           required
                           placeholder="Street Address, Building, Apartment, City, State"
                           rows={2}
-                          className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none"
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none ${
+                            consultationErrors.address ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {consultationErrors.address && (
+                          <p className="text-xs text-red-600 mt-0.5">{consultationErrors.address}</p>
+                        )}
                       </div>
 
                       {/* Pin Code */}
@@ -588,17 +721,34 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           required
                           placeholder="Enter your pin code"
                           maxLength={6}
-                          className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                          pattern="[0-9]{6}"
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
+                            consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
+                          }`}
                         />
+                        {consultationErrors.pinCode && (
+                          <p className="text-xs text-red-600 mt-0.5">{consultationErrors.pinCode}</p>
+                        )}
                       </div>
 
                       {/* Terms and Conditions */}
-                      <div className="flex items-start gap-2 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
+                      <div className={`flex items-start gap-2 p-1.5 rounded-lg border ${
+                        consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
+                      }`}>
                         <input
                           type="checkbox"
                           id="acceptTermsConsultation"
                           checked={consultationForm.acceptTerms}
-                          onChange={(e) => setConsultationForm({ ...consultationForm, acceptTerms: e.target.checked })}
+                          onChange={(e) => {
+                            setConsultationForm({ ...consultationForm, acceptTerms: e.target.checked });
+                            if (consultationErrors.acceptTerms) {
+                              setConsultationErrors(prev => {
+                                const newErrors = { ...prev };
+                                delete newErrors.acceptTerms;
+                                return newErrors;
+                              });
+                            }
+                          }}
                           className="mt-0.5 w-3.5 h-3.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                           required
                         />
@@ -606,6 +756,14 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-red-500">*</span>
                         </label>
                       </div>
+                      {consultationErrors.acceptTerms && (
+                        <p className="text-xs text-red-600 mt-0.5">{consultationErrors.acceptTerms}</p>
+                      )}
+                      {consultationErrorMessage && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                          <p className="text-xs text-red-800">{consultationErrorMessage}</p>
+                        </div>
+                      )}
 
                       {/* Submit Button */}
                       <button
@@ -664,8 +822,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                         Something went wrong
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-700 mb-6">
-                        Please try again.
+                      <p className="text-sm sm:text-base text-gray-700 mb-4">
+                        {consultationErrorMessage || 'Please try again.'}
                       </p>
                       <button
                         onClick={resetConsultationForm}

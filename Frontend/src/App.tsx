@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
@@ -22,25 +23,27 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/state/:stateSlug" element={<StatePage />} />
-            <Route path="/services/seamless-online-filing" element={<RTIModelPage />} />
-            <Route path="/services/anonymous" element={<RTIModelPage />} />
-            <Route path="/services/1st-appeal" element={<RTIModelPage />} />
-            <Route path="/services/bulk" element={<RTIModelPage />} />
-            <Route path="/services/custom-rti" element={<RTIModelPage />} />
-            <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
-            <Route path="/test-connection" element={<TestConnection />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <BrowserRouter>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/state/:stateSlug" element={<StatePage />} />
+              <Route path="/services/seamless-online-filing" element={<RTIModelPage />} />
+              <Route path="/services/anonymous" element={<RTIModelPage />} />
+              <Route path="/services/1st-appeal" element={<RTIModelPage />} />
+              <Route path="/services/bulk" element={<RTIModelPage />} />
+              <Route path="/services/custom-rti" element={<RTIModelPage />} />
+              <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
+              <Route path="/test-connection" element={<TestConnection />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 

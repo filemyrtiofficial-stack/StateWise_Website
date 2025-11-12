@@ -6,12 +6,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
-require('dotenv').config();
 
-// Import configurations
-const { testConnection } = require('./config/database');
+// Import configurations (env.js validates on require)
+const config = require('./config/env');
+const { testConnection, closePool } = require('./config/database');
 const { errorHandler, notFound } = require('./middlewares/errorHandler');
 const { cors, limiter, helmet, xss } = require('./middlewares/security');
+const { sanitize } = require('./middlewares/sanitize');
 const logger = require('./utils/logger');
 
 // Import routes
@@ -27,19 +28,38 @@ app.set('trust proxy', 1);
 app.use(helmet);
 app.use(cors);
 app.use(xss);
+app.use(sanitize); // Sanitize all input
 
 // Compression middleware
 app.use(compression());
 
 // Body parsing middlewares
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: config.SECURITY.REQUEST_SIZE_LIMIT }));
+app.use(express.urlencoded({ extended: true, limit: config.SECURITY.REQUEST_SIZE_LIMIT }));
+
+// Request ID middleware for tracking
+app.use((req, res, next) => {
+  req.id = require('crypto').randomUUID();
+  res.setHeader('X-Request-ID', req.id);
+  next();
+});
 
 // Logging middleware
-if (process.env.NODE_ENV === 'development') {
+if (config.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
-  app.use(morgan('combined'));
+  // Production logging with request ID
+  app.use(morgan((tokens, req, res) => {
+    return JSON.stringify({
+      method: tokens.method(req, res),
+      url: tokens.url(req, res),
+      status: tokens.status(req, res),
+      responseTime: tokens['response-time'](req, res),
+      requestId: req.id,
+      ip: req.ip,
+      timestamp: new Date().toISOString()
+    });
+  }));
 }
 
 // Rate limiting
@@ -54,11 +74,9 @@ app.use(notFound);
 // Error handler (must be last)
 app.use(errorHandler);
 
-// Server configuration
-const PORT = process.env.PORT || 5000;
-const NODE_ENV = process.env.NODE_ENV || 'development';
-
 // Start server
+let server;
+
 const startServer = async () => {
   try {
     // Test database connection
@@ -69,10 +87,20 @@ const startServer = async () => {
     }
 
     // Start listening
-    app.listen(PORT, () => {
-      logger.info(`🚀 Server running in ${NODE_ENV} mode on port ${PORT}`);
-      logger.info(`📍 API endpoints available at http://localhost:${PORT}/api/v1`);
-      logger.info(`💚 Health check: http://localhost:${PORT}/health`);
+    server = app.listen(config.PORT, () => {
+      logger.info(`🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`);
+      logger.info(`📍 API endpoints available at http://localhost:${config.PORT}/api/v1`);
+      logger.info(`💚 Health check: http://localhost:${config.PORT}/health`);
+    });
+
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        logger.error(`Port ${config.PORT} is already in use`);
+      } else {
+        logger.error('Server error:', error);
+      }
+      process.exit(1);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);
@@ -93,11 +121,36 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM signal received: closing HTTP server');
-  process.exit(0);
-});
+// Graceful shutdown handler
+const gracefulShutdown = async (signal) => {
+  logger.info(`${signal} signal received: starting graceful shutdown`);
+
+  // Stop accepting new requests
+  if (server) {
+    server.close(async () => {
+      logger.info('HTTP server closed');
+
+      // Close database connections
+      await closePool();
+
+      logger.info('Graceful shutdown complete');
+      process.exit(0);
+    });
+
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+      logger.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+  } else {
+    await closePool();
+    process.exit(0);
+  }
+};
+
+// Handle shutdown signals
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 // Start the server
 startServer();

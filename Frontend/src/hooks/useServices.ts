@@ -17,7 +17,7 @@ export const useServices = () => {
       setError(null);
 
       try {
-        const response = await servicesAPI.getAll();
+        const response = await servicesAPI.getAll() as any;
 
         if (response.success && response.data) {
           // Convert backend services to RTIModel format

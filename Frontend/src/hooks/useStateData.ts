@@ -28,7 +28,7 @@ export const useStateData = (stateSlug: string): {
       setError(null);
 
       try {
-        const response = await statesAPI.getBySlug(stateSlug);
+        const response = await statesAPI.getBySlug(stateSlug) as any;
 
         if (response.success && response.data) {
           setBackendState(response.data);

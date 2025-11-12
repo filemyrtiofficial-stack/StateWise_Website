@@ -24,7 +24,7 @@ export const useStates = () => {
       setError(null);
 
       try {
-        const response = await statesAPI.getAll();
+        const response = await statesAPI.getAll() as any;
 
         if (response.success && response.data) {
           setStates(response.data);

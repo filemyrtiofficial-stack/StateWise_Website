@@ -18,6 +18,8 @@ export interface StateData {
   departments: string[];
   highlights: string[];
   faqs: StateFAQ[];
+  description?: string;
+  rtiPortalUrl?: string;
   process?: {
     steps: Array<{
       step: number;

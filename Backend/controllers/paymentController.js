@@ -5,6 +5,7 @@
 
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const config = require('../config/env');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 
@@ -13,16 +14,13 @@ let razorpay = null;
 
 const getRazorpayInstance = () => {
   if (!razorpay) {
-    const keyId = process.env.RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
-
-    if (!keyId || !keySecret) {
+    if (!config.RAZORPAY.KEY_ID || !config.RAZORPAY.KEY_SECRET) {
       throw new Error('Razorpay credentials are not configured. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in your .env file.');
     }
 
     razorpay = new Razorpay({
-      key_id: keyId,
-      key_secret: keySecret
+      key_id: config.RAZORPAY.KEY_ID,
+      key_secret: config.RAZORPAY.KEY_SECRET
     });
   }
 
@@ -108,7 +106,7 @@ const verifyPayment = async (req, res, next) => {
     // Create signature
     const text = `${razorpay_order_id}|${razorpay_payment_id}`;
     const generated_signature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .createHmac('sha256', config.RAZORPAY.KEY_SECRET)
       .update(text)
       .digest('hex');
 

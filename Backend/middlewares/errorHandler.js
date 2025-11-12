@@ -5,12 +5,24 @@
 
 const logger = require('../utils/logger');
 const { sendError } = require('../utils/response');
+const config = require('../config/env');
 
 /**
  * Global error handler middleware
  */
 const errorHandler = (err, req, res, next) => {
-  logger.error('Error:', err);
+  // Log error with request context
+  logger.error('Request error', {
+    requestId: req.id,
+    method: req.method,
+    url: req.originalUrl || req.url,
+    error: {
+      message: err.message,
+      code: err.code,
+      name: err.name,
+      stack: config.NODE_ENV === 'development' ? err.stack : undefined
+    }
+  });
 
   // Database errors
   if (err.code === 'ER_DUP_ENTRY') {
@@ -31,7 +43,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.name === 'TokenExpiredError') {
-    return sendError(res, 'Token expired.', 401);
+    return sendError(res, 'Token expired. Please login again.', 401);
   }
 
   // Validation errors
@@ -39,13 +51,35 @@ const errorHandler = (err, req, res, next) => {
     return sendError(res, err.message, 400);
   }
 
-  // Default error
+  // CORS errors
+  if (err.message && err.message.includes('CORS')) {
+    return sendError(res, 'CORS policy violation.', 403);
+  }
+
+  // Rate limit errors
+  if (err.statusCode === 429) {
+    return sendError(res, err.message || 'Too many requests, please try again later.', 429);
+  }
+
+  // Default error - don't expose internal details in production
   const statusCode = err.statusCode || 500;
-  const message = process.env.NODE_ENV === 'production'
-    ? 'Internal server error'
+  const message = config.NODE_ENV === 'production'
+    ? (statusCode === 500 ? 'Internal server error' : err.message)
     : err.message;
 
-  return sendError(res, message, statusCode);
+  // Include request ID in error response for tracking
+  const errorResponse = {
+    success: false,
+    message,
+    requestId: req.id
+  };
+
+  // Include stack trace in development
+  if (config.NODE_ENV === 'development' && err.stack) {
+    errorResponse.stack = err.stack;
+  }
+
+  return res.status(statusCode).json(errorResponse);
 };
 
 /**

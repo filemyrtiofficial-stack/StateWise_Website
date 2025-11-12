@@ -4,17 +4,20 @@
  */
 
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-
-const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
-const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
+const config = require('../config/env');
 
 /**
  * Generate JWT token
  */
 const generateToken = (payload) => {
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRE
+  if (!config.JWT.SECRET) {
+    throw new Error('JWT_SECRET is not configured');
+  }
+
+  return jwt.sign(payload, config.JWT.SECRET, {
+    expiresIn: config.JWT.EXPIRE,
+    issuer: 'filemyrti-api',
+    audience: 'filemyrti-client'
   });
 };
 
@@ -22,9 +25,25 @@ const generateToken = (payload) => {
  * Verify JWT token
  */
 const verifyToken = (token) => {
+  if (!config.JWT.SECRET) {
+    throw new Error('JWT_SECRET is not configured');
+  }
+
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, config.JWT.SECRET, {
+      issuer: 'filemyrti-api',
+      audience: 'filemyrti-client'
+    });
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      const expiredError = new Error('Token expired');
+      expiredError.name = 'TokenExpiredError';
+      throw expiredError;
+    } else if (error.name === 'JsonWebTokenError') {
+      const invalidError = new Error('Invalid token');
+      invalidError.name = 'JsonWebTokenError';
+      throw invalidError;
+    }
     throw new Error('Invalid or expired token');
   }
 };

@@ -4,103 +4,113 @@
  */
 
 const mysql = require('mysql2/promise');
-require('dotenv').config();
-
-// Validate environment variables
-const requiredEnvVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-
-if (missingVars.length > 0) {
-  console.error('❌ Missing required environment variables:');
-  missingVars.forEach(varName => {
-    console.error(`   - ${varName}`);
-  });
-  console.error('💡 Tip: Make sure your .env file exists and contains all required variables');
-}
+const config = require('./env');
+const logger = require('../utils/logger');
 
 // Create connection pool for better performance
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306, // Default MySQL port
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: config.DB.HOST,
+  port: config.DB.PORT,
+  user: config.DB.USER,
+  password: config.DB.PASSWORD,
+  database: config.DB.NAME,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: config.DB.CONNECTION_LIMIT,
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
-  // Add connection timeout
-  connectTimeout: 10000,
-  // Enable multiple statements (if needed)
-  multipleStatements: false
+  connectTimeout: config.DB.CONNECT_TIMEOUT,
+  multipleStatements: false,
+  // Additional production settings
+  timezone: '+00:00', // UTC
+  dateStrings: false,
+  supportBigNumbers: true,
+  bigNumberStrings: true
 });
 
-// Test database connection
-const testConnection = async () => {
-  try {
-    // Log connection attempt details (without password)
-    console.log('🔌 Attempting to connect to database...');
-    console.log(`   Host: ${process.env.DB_HOST || 'localhost'}`);
-    console.log(`   Port: ${process.env.DB_PORT || 3306}`);
-    console.log(`   User: ${process.env.DB_USER || 'NOT SET'}`);
-    console.log(`   Database: ${process.env.DB_NAME || 'NOT SET'}`);
-
-    const connection = await pool.getConnection();
-    console.log('✅ Database connected successfully');
-    connection.release();
-    return true;
-  } catch (error) {
-    console.error('❌ Database connection failed:');
-    console.error('   Error Code:', error.code);
-    console.error('   Error Message:', error.message || 'Unknown error');
-
-    // Provide helpful error messages
-    if (error.code === 'ECONNREFUSED') {
-      console.error('\n   💡 Connection Refused - Possible Solutions:');
-
-      // Check if this looks like a remote database
-      if (process.env.DB_USER && process.env.DB_USER.startsWith('u')) {
-        console.error('   📍 This appears to be a REMOTE/SHARED HOSTING database');
-        console.error('   ✅ For shared hosting (cPanel, etc.), try these:');
-        console.error('      1. Check your hosting control panel for MySQL hostname');
-        console.error('      2. Common hosts: "localhost" (even for remote), or a domain/IP');
-        console.error('      3. Look in cPanel → MySQL Databases section');
-        console.error('      4. Some hosts require IP whitelisting in "Remote MySQL"');
-        console.error('\n   🔧 Quick Fix: Update DB_HOST in .env file');
-        console.error('      - If using cPanel: usually "localhost" works');
-        console.error('      - If using remote: use the provided MySQL hostname');
-        console.error('      - Check your hosting provider\'s documentation');
+// Test database connection with retry logic
+const testConnection = async (retries = 3, delay = 2000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      // Log connection attempt details (without password)
+      if (i === 0) {
+        logger.info('🔌 Attempting to connect to database...', {
+          host: config.DB.HOST,
+          port: config.DB.PORT,
+          user: config.DB.USER,
+          database: config.DB.NAME
+        });
       } else {
-        console.error('   📍 This appears to be a LOCAL database');
-        console.error('   ✅ Solutions:');
-        console.error('      1. Make sure MySQL service is running');
-        console.error('      2. Windows: Run "net start MySQL"');
-        console.error('      3. Linux/Mac: Run "sudo service mysql start"');
-        console.error('      4. Verify MySQL is listening on port 3306');
+        logger.warn(`Retrying database connection (attempt ${i + 1}/${retries})...`);
       }
-    } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
-      console.error('   💡 Authentication Failed');
-      console.error('   ✅ Check your database username and password in .env file');
-    } else if (error.code === 'ER_BAD_DB_ERROR') {
-      console.error('   💡 Database Not Found');
-      console.error('   ✅ Database does not exist. Create it first or check DB_NAME in .env');
-    } else if (error.code === 'ENOTFOUND') {
-      console.error('   💡 Host Not Found');
-      console.error('   ✅ Check DB_HOST in .env file - verify the hostname is correct');
-    }
 
-    return false;
+      const connection = await pool.getConnection();
+      logger.info('✅ Database connected successfully');
+      connection.release();
+      return true;
+    } catch (error) {
+      logger.error('❌ Database connection failed:', {
+        attempt: i + 1,
+        code: error.code,
+        message: error.message
+      });
+
+      // Provide helpful error messages
+      if (error.code === 'ECONNREFUSED') {
+        logger.error('💡 Connection Refused - Possible Solutions:', {
+          type: config.DB.USER && config.DB.USER.startsWith('u') ? 'remote' : 'local',
+          suggestions: config.DB.USER && config.DB.USER.startsWith('u')
+            ? ['Check hosting control panel for MySQL hostname', 'Verify IP whitelisting in Remote MySQL']
+            : ['Ensure MySQL service is running', 'Verify MySQL is listening on port 3306']
+        });
+      } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
+        logger.error('💡 Authentication Failed - Check database credentials');
+      } else if (error.code === 'ER_BAD_DB_ERROR') {
+        logger.error('💡 Database Not Found - Verify DB_NAME in .env');
+      } else if (error.code === 'ENOTFOUND') {
+        logger.error('💡 Host Not Found - Verify DB_HOST in .env');
+      }
+
+      // If not the last retry, wait before retrying
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 1.5; // Exponential backoff
+      } else {
+        // Last attempt failed
+        return false;
+      }
+    }
   }
+  return false;
 };
 
-// Execute query helper function
+// Execute query helper function with better error handling
 const query = async (sql, params = []) => {
   try {
     const [results] = await pool.execute(sql, params);
     return results;
   } catch (error) {
-    console.error('Database query error:', error);
+    logger.error('Database query error:', {
+      code: error.code,
+      message: error.message,
+      sql: sql.substring(0, 200) // Log first 200 chars of SQL for debugging
+    });
+
+    // Don't expose SQL details in production
+    if (config.NODE_ENV === 'production') {
+      // Map common database errors to user-friendly messages
+      if (error.code === 'ER_DUP_ENTRY') {
+        const friendlyError = new Error('Duplicate entry detected');
+        friendlyError.code = error.code;
+        throw friendlyError;
+      }
+      if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+        const friendlyError = new Error('Referenced record does not exist');
+        friendlyError.code = error.code;
+        throw friendlyError;
+      }
+    }
+
     throw error;
   }
 };
@@ -110,10 +120,29 @@ const getConnection = async () => {
   return await pool.getConnection();
 };
 
+// Graceful shutdown - close all connections
+const closePool = async () => {
+  try {
+    await pool.end();
+    logger.info('Database connection pool closed');
+  } catch (error) {
+    logger.error('Error closing database pool:', error);
+  }
+};
+
+// Handle pool errors
+pool.on('error', (err) => {
+  logger.error('Database pool error:', err);
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+    logger.warn('Database connection lost. Pool will attempt to reconnect.');
+  }
+});
+
 module.exports = {
   pool,
   query,
   getConnection,
-  testConnection
+  testConnection,
+  closePool
 };
 

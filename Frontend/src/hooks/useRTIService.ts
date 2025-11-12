@@ -37,7 +37,7 @@ export const useRTIService = (): {
       setError(null);
 
       try {
-        const response = await servicesAPI.getBySlug(modelSlug);
+        const response = await servicesAPI.getBySlug(modelSlug) as any;
 
         if (response.success && response.data) {
           // Convert backend service to RTIModel format

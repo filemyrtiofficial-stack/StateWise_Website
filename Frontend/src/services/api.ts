@@ -31,41 +31,84 @@ export class APIError extends Error {
   }
 }
 
+// API Response type
+export interface APIResponse<T = any> {
+  success: boolean;
+  message?: string;
+  data?: T;
+  errors?: Array<{ field: string; message: string; value?: any }>;
+}
+
 const apiRequest = async <T>(
   endpoint: string,
   options: RequestInit = {}
-): Promise<T> => {
+): Promise<APIResponse<T>> => {
   const token = getStoredToken();
-  const headers = getAuthHeaders(token);
+  const headers = getAuthHeaders(token || undefined);
 
-  const response = await fetch(endpoint, {
-    ...options,
-    headers: {
-      ...headers,
-      ...options.headers
-    }
-  });
+  // Create abort controller for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    // Extract validation errors if present
-    const validationErrors = data.errors || null;
-    const errorMessage = data.message || `API Error: ${response.statusText}`;
-
-    // Log detailed error for debugging
-    console.error('API Error:', {
-      endpoint,
-      status: response.status,
-      message: errorMessage,
-      errors: validationErrors,
-      response: data
+  try {
+    const response = await fetch(endpoint, {
+      ...options,
+      headers: {
+        ...headers,
+        ...options.headers
+      },
+      signal: controller.signal
     });
 
-    throw new APIError(errorMessage, response.status, validationErrors, data);
-  }
+    clearTimeout(timeoutId);
 
-  return data;
+    // Handle non-JSON responses
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      data = { message: text || `API Error: ${response.statusText}` };
+    }
+
+    if (!response.ok) {
+      // Extract validation errors if present
+      const typedData = data as APIResponse;
+      const validationErrors = typedData.errors || undefined;
+      const errorMessage = typedData.message || `API Error: ${response.statusText}`;
+      const requestId = response.headers.get('X-Request-ID');
+
+      // Log detailed error for debugging (only in development)
+      if (import.meta.env.DEV) {
+        console.error('API Error:', {
+          endpoint,
+          status: response.status,
+          message: errorMessage,
+          errors: validationErrors,
+          requestId,
+          response: data
+        });
+      }
+
+      const error = new APIError(errorMessage, response.status, validationErrors, data);
+      if (requestId) {
+        (error as any).requestId = requestId;
+      }
+      throw error;
+    }
+
+    return data as APIResponse<T>;
+  } catch (error) {
+    // Handle network errors, timeouts, etc.
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new APIError('Network error. Please check your connection and try again.', 0);
+    }
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new APIError('Request timeout. Please try again.', 408);
+    }
+    throw error;
+  }
 };
 
 /**
