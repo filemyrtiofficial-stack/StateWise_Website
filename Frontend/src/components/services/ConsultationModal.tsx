@@ -1,0 +1,226 @@
+/**
+ * Consultation Modal Component
+ * Handles RTI consultation form submission
+ */
+
+import React from 'react';
+import { RTIModel } from '../../types/services';
+import { ConsultationFormData } from '../../types/services';
+import { PAYMENT_CONFIG } from '../../constants/services';
+
+interface ConsultationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  model: RTIModel;
+  formData: ConsultationFormData;
+  errors: Record<string, string>;
+  isSubmitting: boolean;
+  onFieldChange: (field: keyof ConsultationFormData, value: string | boolean) => void;
+  onSubmit: (e: React.FormEvent) => void;
+}
+
+export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
+  isOpen,
+  onClose,
+  model,
+  formData,
+  errors,
+  isSubmitting,
+  onFieldChange,
+  onSubmit
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div
+        className="bg-white rounded-lg shadow-2xl max-w-md w-full p-4 sm:p-5 relative max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Close modal"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Title */}
+        <h2 id="modal-title" className="text-xl font-bold text-gray-900 mb-4">
+          Book Your Consultation
+        </h2>
+
+        {/* Form */}
+        <form onSubmit={onSubmit}>
+          <div className="space-y-3 mb-4">
+            {/* Full Name */}
+            <div>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={(e) => onFieldChange('fullName', e.target.value)}
+                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.fullName ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                required
+                aria-invalid={!!errors.fullName}
+                aria-describedby={errors.fullName ? 'fullName-error' : undefined}
+              />
+              {errors.fullName && (
+                <p id="fullName-error" className="mt-1 text-xs text-red-500">
+                  {errors.fullName}
+                </p>
+              )}
+            </div>
+
+            {/* Mobile and Email in Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <input
+                  type="tel"
+                  placeholder="Mobile"
+                  value={formData.mobile}
+                  onChange={(e) => onFieldChange('mobile', e.target.value)}
+                  className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.mobile ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  required
+                  aria-invalid={!!errors.mobile}
+                />
+                {errors.mobile && (
+                  <p className="mt-1 text-xs text-red-500">{errors.mobile}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => onFieldChange('email', e.target.value)}
+                  className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  required
+                  aria-invalid={!!errors.email}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-500">{errors.email}</p>
+                )}
+              </div>
+            </div>
+
+            {/* RTI Query */}
+            <div>
+              <textarea
+                placeholder="Enter your RTI Query / Information Request here"
+                value={formData.rtiQuery}
+                onChange={(e) => onFieldChange('rtiQuery', e.target.value)}
+                rows={3}
+                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.rtiQuery ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                required
+                aria-invalid={!!errors.rtiQuery}
+              />
+              {errors.rtiQuery && (
+                <p className="mt-1 text-xs text-red-500">{errors.rtiQuery}</p>
+              )}
+            </div>
+
+            {/* Address */}
+            <div>
+              <textarea
+                placeholder="Address (Street, Building, City, State)"
+                value={formData.address}
+                onChange={(e) => onFieldChange('address', e.target.value)}
+                rows={2}
+                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                required
+                aria-invalid={!!errors.address}
+              />
+              {errors.address && (
+                <p className="mt-1 text-xs text-red-500">{errors.address}</p>
+              )}
+            </div>
+
+            {/* Pin Code */}
+            <div>
+              <input
+                type="text"
+                placeholder="Pin Code"
+                value={formData.pincode}
+                onChange={(e) => onFieldChange('pincode', e.target.value)}
+                maxLength={6}
+                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.pincode ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                required
+                aria-invalid={!!errors.pincode}
+              />
+              {errors.pincode && (
+                <p className="mt-1 text-xs text-red-500">{errors.pincode}</p>
+              )}
+            </div>
+
+            {/* Terms and Conditions */}
+            <div className="flex items-start gap-2 p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+              <input
+                type="checkbox"
+                id="acceptTerms"
+                checked={formData.acceptTerms}
+                onChange={(e) => onFieldChange('acceptTerms', e.target.checked)}
+                className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                required
+                aria-invalid={!!errors.acceptTerms}
+              />
+              <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
+                I agree to the{' '}
+                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+                  Terms
+                </a>{' '}
+                and{' '}
+                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+                  Privacy Policy
+                </a>
+                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included. <span className="text-red-500">*</span>
+              </label>
+            </div>
+            {errors.acceptTerms && (
+              <p className="text-xs text-red-500">{errors.acceptTerms}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-3 text-sm disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Processing...' : `Book Consultation Now - ₹${model.price.toLocaleString()}`}
+          </button>
+
+          {/* Payment Logos */}
+          <div className="flex items-center justify-center mt-2">
+            <img
+              src={PAYMENT_CONFIG.razorpayLogoUrl}
+              alt="Secure Payment Partners - Razorpay, VISA, Paytm, MasterCard - FileMyRTI accepts all major payment methods for RTI filing"
+              loading="lazy"
+              width="600"
+              height="100"
+              className="h-14 w-auto max-w-full payment-logos-image"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+});
+
+ConsultationModal.displayName = 'ConsultationModal';
+

@@ -7,15 +7,6 @@ export default defineConfig({
     react({
       // Optimize React runtime
       jsxRuntime: 'automatic',
-      // Remove development-only code in production
-      babel: {
-        plugins: [
-          process.env.NODE_ENV === 'production' && [
-            'babel-plugin-transform-remove-console',
-            { exclude: ['error', 'warn'] },
-          ],
-        ].filter(Boolean),
-      },
     }),
   ],
   server: {
