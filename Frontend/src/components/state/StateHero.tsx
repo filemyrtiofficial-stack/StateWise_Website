@@ -26,6 +26,23 @@ const fadeInStyle = `
   }
 `;
 
+// Add fade-in animation styles
+const fadeInStyle = `
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+`;
+
 interface StateHeroProps {
   hero: StateHeroData;
   stateName: string;
@@ -460,6 +477,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
               </div>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1 border-b-2 border-black">
                 Get a free Micro Consultation now!
               </h3>
@@ -637,12 +655,17 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     onClick={() => navigate(model.route)}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95"
 =======
+=======
+>>>>>>> Stashed changes
               {/* Statistics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {statistics.map((stat, index) => (
                   <div
                     key={index}
                     className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                   >
                     <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
