@@ -60,6 +60,23 @@ const fadeInStyle = `
   }
 `;
 
+// Add fade-in animation styles
+const fadeInStyle = `
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+`;
+
 interface StateHeroProps {
   hero: StateHeroData;
   stateName: string;
@@ -496,6 +513,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1 border-b-2 border-black">
                 Get a free Micro Consultation now!
               </h3>
@@ -677,6 +695,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
               {/* Statistics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {statistics.map((stat, index) => (
@@ -685,6 +705,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
