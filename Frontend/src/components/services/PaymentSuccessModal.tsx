@@ -130,12 +130,27 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
             Done
           </button>
           <button
-            onClick={() => {
-              window.print();
+            onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
+              const details = `Application ID: ${applicationId}\nPayment ID: ${paymentId}${serviceName ? `\nService: ${serviceName}` : ''}\n\nThank you for using FileMyRTI!`;
+              try {
+                await navigator.clipboard.writeText(details);
+                // Show temporary feedback
+                const button = e.currentTarget;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('bg-green-50', 'border-green-400', 'text-green-700');
+                setTimeout(() => {
+                  button.textContent = originalText;
+                  button.classList.remove('bg-green-50', 'border-green-400', 'text-green-700');
+                }, 2000);
+              } catch (err) {
+                // Fallback: show details in alert
+                alert(details);
+              }
             }}
             className="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
           >
-            Save Details
+            Copy Details
           </button>
         </div>
 
