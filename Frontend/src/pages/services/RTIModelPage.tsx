@@ -68,7 +68,7 @@ const ResponsiveLayoutStyles: React.FC = () => (
 );
 
 export const RTIModelPage: React.FC = () => {
-  const { model, modelSlug } = useRTIService();
+  const { model, modelSlug, isLoading, error } = useRTIService();
   const {
     formData,
     errors,
@@ -82,12 +82,61 @@ export const RTIModelPage: React.FC = () => {
 
   // Handle form submission
   const onSubmitForm = async (data: typeof formData) => {
-    // TODO: Integrate with actual API
-    console.log('Form submitted:', data);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsModalOpen(false);
-    resetForm();
+    try {
+      // Import API services
+      const { rtiApplicationsAPI, servicesAPI, convertConsultationFormToAPI } = await import('../../services/api');
+
+      // Fetch service by slug to get the correct service_id
+      let serviceId = 1; // Default fallback
+      try {
+        const serviceResponse = await servicesAPI.getBySlug(modelSlug || '') as any;
+        if (serviceResponse?.success && serviceResponse?.data?.id) {
+          serviceId = Number(serviceResponse.data.id) || 1;
+          console.log(`Found service ID: ${serviceId} for slug: ${modelSlug}`);
+        }
+      } catch (error) {
+        console.warn('Could not fetch service from backend, using default ID:', error);
+        // Try to parse model.id as fallback
+        if (model) {
+          serviceId = parseInt(model.id) || 1;
+        }
+      }
+
+      // Default state_id to 1 (Telangana) - you can make this dynamic later
+      // TODO: Add state selection in the form or get from URL/context
+      const stateId = 1;
+
+      // Validate required fields
+      if (!data.rtiQuery || data.rtiQuery.trim() === '') {
+        throw new Error('RTI query is required');
+      }
+
+      // Convert form data to API format
+      const apiData = convertConsultationFormToAPI(data, serviceId, stateId);
+
+      console.log('📤 Submitting RTI application:', apiData);
+
+      // Call public API (no authentication required)
+      const result = await rtiApplicationsAPI.createPublic(apiData);
+
+      console.log('✅ Application created successfully:', result);
+
+      // Show success message
+      let applicationId = 'N/A';
+      if (result && typeof result === 'object' && 'data' in result) {
+        const resultData = result.data as any;
+        applicationId = resultData?.id || resultData?.insertId || 'N/A';
+      }
+      alert(`✅ RTI application submitted successfully!\n\nApplication ID: ${applicationId}\n\nYour application has been saved and will be processed.`);
+
+      setIsModalOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error('❌ Failed to submit application:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to submit application. Please try again.';
+      alert(`❌ Error: ${errorMessage}\n\nPlease check all fields are filled correctly and try again.`);
+      throw error; // Re-throw to let the form handle it
+    }
   };
 
   const handleCTAClick = () => {
@@ -105,6 +154,23 @@ export const RTIModelPage: React.FC = () => {
     handleSubmit(() => onSubmitForm(formData));
   };
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <p className="mt-4 text-gray-600">Loading service...</p>
+          </div>
+        </div>
+        <Footer />
+        <LazyChatbot />
+      </>
+    );
+  }
+
   // If model not found, show 404
   if (!model || !modelSlug) {
     return (
@@ -113,7 +179,9 @@ export const RTIModelPage: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Service Not Found</h1>
-            <p className="text-gray-600">The RTI service you're looking for doesn't exist.</p>
+            <p className="text-gray-600">
+              {error || "The RTI service you're looking for doesn't exist."}
+            </p>
           </div>
         </div>
         <Footer />

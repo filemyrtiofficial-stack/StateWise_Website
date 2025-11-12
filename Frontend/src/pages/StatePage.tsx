@@ -24,7 +24,26 @@ export const StatePage: React.FC = () => {
   const subdomainSlug = getStateSlugFromSubdomain();
   const effectiveSlug = stateSlug || subdomainSlug || 'delhi'; // Default to delhi if no slug provided
 
-  const stateData = useStateData(effectiveSlug);
+  const { stateData, isLoading } = useStateData(effectiveSlug);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow flex items-center justify-center bg-gray-50">
+            <div className="text-center px-4">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+              <p className="mt-4 text-gray-600">Loading state data...</p>
+            </div>
+          </main>
+          <Footer />
+          <LazyChatbot />
+        </div>
+      </>
+    );
+  }
 
   // If state not found, show proper 404 with navigation
   if (!stateData) {

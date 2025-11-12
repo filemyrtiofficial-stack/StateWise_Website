@@ -7,6 +7,7 @@ const Home = lazy(() => import('./pages/Home').then(module => ({ default: module
 const StatePage = lazy(() => import('./pages/StatePage').then(module => ({ default: module.StatePage })));
 const AboutUs = lazy(() => import('./pages/AboutUs').then(module => ({ default: module.AboutUs })));
 const RTIModelPage = lazy(() => import('./pages/services/RTIModelPage').then(module => ({ default: module.RTIModelPage })));
+const TestConnection = lazy(() => import('./pages/TestConnection').then(module => ({ default: module.TestConnection })));
 const NotFound = lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
 
 // Loading fallback component
@@ -34,6 +35,7 @@ function App() {
             <Route path="/services/bulk" element={<RTIModelPage />} />
             <Route path="/services/custom-rti" element={<RTIModelPage />} />
             <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
+            <Route path="/test-connection" element={<TestConnection />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

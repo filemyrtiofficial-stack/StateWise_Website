@@ -19,11 +19,10 @@ const ComponentLoader = () => <div className="min-h-[200px]" />;
 
 export const Home: React.FC = () => {
   // Default to Delhi for home page - always ensure we have data
-  const stateData = useStateData('delhi');
+  const { stateData, isLoading } = useStateData('delhi');
 
-  // Fallback to Delhi data if somehow stateData is null (shouldn't happen, but safety check)
-  if (!stateData) {
-    // Redirect to state page or show loading - but this should never happen
+  // Show loading state
+  if (isLoading) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
@@ -32,6 +31,25 @@ export const Home: React.FC = () => {
             <div className="text-center px-4">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
               <p className="mt-4 text-gray-600">Loading...</p>
+            </div>
+          </main>
+          <Footer />
+          <LazyChatbot />
+        </div>
+      </>
+    );
+  }
+
+  // Fallback if stateData is null
+  if (!stateData) {
+    return (
+      <>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow flex items-center justify-center bg-gray-50">
+            <div className="text-center px-4">
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to load state data</h1>
+              <p className="text-gray-600">Please try again later.</p>
             </div>
           </main>
           <Footer />

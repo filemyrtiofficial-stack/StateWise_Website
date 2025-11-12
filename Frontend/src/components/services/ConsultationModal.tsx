@@ -64,9 +64,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
           <div className="space-y-3 mb-4">
             {/* Full Name */}
             <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Full Name <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
-                placeholder="Full Name"
+                placeholder="Enter your full name"
                 value={formData.fullName}
                 onChange={(e) => onFieldChange('fullName', e.target.value)}
                 className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.fullName ? 'border-red-500' : 'border-gray-300'
@@ -85,9 +88,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {/* Mobile and Email in Grid */}
             <div className="grid grid-cols-2 gap-3">
               <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Mobile <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="tel"
-                  placeholder="Mobile"
+                  placeholder="Enter mobile number"
                   value={formData.mobile}
                   onChange={(e) => onFieldChange('mobile', e.target.value)}
                   className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.mobile ? 'border-red-500' : 'border-gray-300'
@@ -100,9 +106,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 )}
               </div>
               <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Email <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Enter email address"
                   value={formData.email}
                   onChange={(e) => onFieldChange('email', e.target.value)}
                   className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
@@ -118,6 +127,9 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* RTI Query */}
             <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                RTI Query / Information Request <span className="text-red-500">*</span>
+              </label>
               <textarea
                 placeholder="Enter your RTI Query / Information Request here"
                 value={formData.rtiQuery}
@@ -135,8 +147,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* Address */}
             <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Address <span className="text-red-500">*</span>
+              </label>
               <textarea
-                placeholder="Address (Street, Building, City, State)"
+                placeholder="Street Address, Building, City, State"
                 value={formData.address}
                 onChange={(e) => onFieldChange('address', e.target.value)}
                 rows={2}
@@ -152,9 +167,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* Pin Code */}
             <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Pin Code <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
-                placeholder="Pin Code"
+                placeholder="Enter 6-digit pin code"
                 value={formData.pincode}
                 onChange={(e) => onFieldChange('pincode', e.target.value)}
                 maxLength={6}
