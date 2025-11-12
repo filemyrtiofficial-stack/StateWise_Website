@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StateHero as StateHeroData } from '../../data/states';
 import { PublicAuthoritiesList } from './PublicAuthoritiesList';
+import SOFIcon from '../../assets/images/SOFIcon.webp';
+import AnonyIcon from '../../assets/images/AnonyIcon.webp';
+import FirstIcon from '../../assets/images/FirstIcon.webp';
+import BulkIcon from '../../assets/images/BulkIcon.webp';
+import CustomIcon from '../../assets/images/CustomIcon.webp';
+import Icon15min from '../../assets/images/15minIcon.webp';
 
 interface StateHeroProps {
   hero: StateHeroData;
@@ -170,7 +176,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '1',
       name: 'Seamless Online Filing',
-      icon: '⚡',
+      icon: SOFIcon,
       iconText: 'Seamless Online Filing',
       description: 'File RTI applications online easily with expert drafting, submission, and timely dispatch.',
       route: '/services/seamless-online-filing',
@@ -179,7 +185,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '2',
       name: 'Anonymous RTI Filing',
-      icon: '🎭',
+      icon: AnonyIcon,
       iconText: 'ANONYMOUS RTI Filing',
       description: 'Protect your identity with our discreet service for filing RTI applications on your behalf.',
       route: '/services/anonymous',
@@ -188,7 +194,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '3',
       name: 'Online First Appeal Filing',
-      icon: '📋',
+      icon: FirstIcon,
       iconText: 'First Appeal',
       description: 'File your First Appeal online with expert drafting, review, and quick submission.',
       route: '/services/1st-appeal',
@@ -197,7 +203,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '4',
       name: 'Efficient Bulk RTI Filing',
-      icon: '📦',
+      icon: BulkIcon,
       iconText: 'Efficient Bulk RTI Filing',
       description: 'Manage and submit multiple RTI applications efficiently with our professional bulk service.',
       route: '/services/bulk',
@@ -206,7 +212,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '5',
       name: 'Custom RTI',
-      icon: '✏️',
+      icon: CustomIcon,
       iconText: 'Custom RTI',
       description: 'Can\'t find the right RTI? Create a personalized application designed for your exact information need.',
       route: '/services/custom-rti',
@@ -215,7 +221,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     {
       id: '6',
       name: '15 min RTI',
-      icon: '⏱️',
+      icon: Icon15min,
       iconText: '15-MIN TALK TO EXPERT',
       description: 'Get personalized advice from legal experts to navigate complex RTI applications effectively.',
       route: '/services/15-minute-consultation',
@@ -479,7 +485,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
       </div>
 
       {/* List of Public Authorities and RTI Models Section */}
-      <div className="container-responsive max-w-7xl mx-auto mt-12 sm:mt-16">
+      <div className="container-responsive max-w-7xl mx-auto mt-6 sm:mt-8">
         {/* Section Header */}
         <div className="mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-left">
@@ -498,7 +504,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
           {/* Right Column - RTI Models Grid */}
           <div className="flex flex-col h-full">
-            <div className="mb-5 sm:mb-6">
+            <div className="mb-5 sm:mb-6 -mt-14 sm:-mt-18">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-left">
                 RTI Models
               </h3>
@@ -512,32 +518,31 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
               {rtiModels.map((model) => (
                 <div
                   key={model.id}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-2 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
                 >
                   {/* Icon Section */}
-                  <div className="mb-3 flex flex-col items-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mb-2 border-2 border-blue-200 group-hover:border-blue-400 transition-colors">
-                      <span className="text-3xl sm:text-4xl">{model.icon}</span>
-                    </div>
-                    <p className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-wide text-center leading-tight px-0.5" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {model.iconText}
-                    </p>
+                  <div className="mb-1.5 sm:mb-3 flex flex-col items-center -mx-2 sm:-mx-4 -mt-2 sm:-mt-4">
+                    <img 
+                      src={model.icon} 
+                      alt={model.name}
+                      className="w-full h-auto object-contain"
+                    />
                   </div>
 
                   {/* Title */}
-                  <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
+                  <h4 className="text-sm sm:text-sm font-bold text-gray-900 mb-1 sm:mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
                     {model.name}
                   </h4>
 
                   {/* Description */}
-                  <p className="text-[10px] sm:text-xs text-gray-600 mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  <p className="text-xs sm:text-xs text-gray-600 mb-1.5 sm:mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {model.description}
                   </p>
 
                   {/* CTA Button */}
                   <button
                     onClick={() => navigate(model.route)}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-[10px] sm:text-xs shadow-sm hover:shadow-md active:scale-95"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95"
                   >
                     {model.buttonText}
                   </button>
