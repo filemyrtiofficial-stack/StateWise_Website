@@ -46,10 +46,14 @@ export const validateFormData = (data: {
 
   if (!data.rtiQuery.trim()) {
     errors.rtiQuery = 'RTI query is required';
+  } else if (data.rtiQuery.trim().length < 10) {
+    errors.rtiQuery = 'RTI query must be at least 10 characters';
   }
 
   if (!data.address.trim()) {
     errors.address = 'Address is required';
+  } else if (data.address.trim().length < 10) {
+    errors.address = 'Address must be at least 10 characters';
   }
 
   if (!data.pincode.trim()) {

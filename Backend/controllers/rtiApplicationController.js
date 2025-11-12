@@ -4,6 +4,9 @@
  */
 
 const RTIApplication = require('../models/RTIApplication');
+const PaymentRecovery = require('../models/PaymentRecovery');
+const Service = require('../models/Service');
+const State = require('../models/State');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 
@@ -16,6 +19,24 @@ const createApplicationPublic = async (req, res, next) => {
     logger.info('Public RTI application submission received:', {
       body: req.body,
       ip: req.ip
+    });
+
+    // Log validation details for debugging
+    logger.info('Request body details:', {
+      service_id: req.body.service_id,
+      state_id: req.body.state_id,
+      service_id_type: typeof req.body.service_id,
+      state_id_type: typeof req.body.state_id,
+      has_payment_id: !!req.body.payment_id,
+      has_order_id: !!req.body.order_id,
+      payment_id: req.body.payment_id,
+      order_id: req.body.order_id,
+      full_name: req.body.full_name ? `${req.body.full_name.substring(0, 20)}...` : 'MISSING',
+      email: req.body.email || 'MISSING',
+      mobile: req.body.mobile || 'MISSING',
+      rti_query_length: req.body.rti_query ? req.body.rti_query.length : 0,
+      address_length: req.body.address ? req.body.address.length : 0,
+      pincode: req.body.pincode || 'MISSING'
     });
 
     // For public submissions, user_id can be null or we create a guest user
@@ -33,20 +54,105 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'RTI query is required', 400);
     }
 
-    logger.info('Creating RTI application with data:', applicationData);
+    // Validate all required fields are present and valid
+    const missingFields = [];
+    if (!applicationData.service_id) missingFields.push('service_id');
+    if (!applicationData.state_id) missingFields.push('state_id');
+    if (!applicationData.full_name || applicationData.full_name.trim() === '') missingFields.push('full_name');
+    if (!applicationData.email || applicationData.email.trim() === '') missingFields.push('email');
+    if (!applicationData.mobile || applicationData.mobile.trim() === '') missingFields.push('mobile');
+    if (!applicationData.rti_query || applicationData.rti_query.trim() === '') missingFields.push('rti_query');
+    if (!applicationData.address || applicationData.address.trim() === '') missingFields.push('address');
+    if (!applicationData.pincode || applicationData.pincode.trim() === '') missingFields.push('pincode');
+
+    if (missingFields.length > 0) {
+      logger.error('❌ Missing required fields:', { missingFields, body: req.body });
+      return sendError(res, `Missing required fields: ${missingFields.join(', ')}`, 400);
+    }
+
+    // Validate field lengths
+    if (applicationData.full_name.length < 2 || applicationData.full_name.length > 100) {
+      return sendError(res, 'Full name must be between 2 and 100 characters', 400);
+    }
+
+    if (applicationData.rti_query.length < 10 || applicationData.rti_query.length > 5000) {
+      return sendError(res, 'RTI query must be between 10 and 5000 characters', 400);
+    }
+
+    if (applicationData.address.length < 10 || applicationData.address.length > 500) {
+      return sendError(res, 'Address must be between 10 and 500 characters', 400);
+    }
+
+    // Validate that service_id exists in the database
+    const service = await Service.findById(applicationData.service_id);
+    if (!service) {
+      logger.error('❌ Service not found:', { service_id: applicationData.service_id });
+      return sendError(res, `Service with ID ${applicationData.service_id} does not exist. Please ensure the service exists in the database.`, 400);
+    }
+
+    // Validate that state_id exists in the database
+    const state = await State.findById(applicationData.state_id);
+    if (!state) {
+      logger.error('❌ State not found:', { state_id: applicationData.state_id });
+      return sendError(res, `State with ID ${applicationData.state_id} does not exist. Please ensure the state exists in the database.`, 400);
+    }
+
+    logger.info('Creating RTI application with data:', {
+      service_id: applicationData.service_id,
+      service_name: service.name,
+      state_id: applicationData.state_id,
+      state_name: state.name,
+      payment_id: applicationData.payment_id || 'none',
+      order_id: applicationData.order_id || 'none',
+      email: applicationData.email,
+      full_name_length: applicationData.full_name.length,
+      rti_query_length: applicationData.rti_query.length,
+      address_length: applicationData.address.length
+    });
 
     const applicationId = await RTIApplication.create(applicationData);
     const application = await RTIApplication.findById(applicationId);
 
-    logger.info(`✅ RTI application created (public): ID ${applicationId}, Email: ${applicationData.email}`);
+    logger.info(`✅ RTI application created (public): ID ${applicationId}, Email: ${applicationData.email}, Payment ID: ${applicationData.payment_id || 'none'}`);
 
     return sendSuccess(res, 'RTI application created successfully', application, 201);
   } catch (error) {
     logger.error('❌ Error creating public RTI application:', {
       error: error.message,
       code: error.code,
-      stack: error.stack
+      stack: error.stack,
+      body: req.body,
+      payment_id: req.body.payment_id,
+      order_id: req.body.order_id
     });
+
+    // If payment was made but application creation failed, store for recovery
+    if (req.body.payment_id && req.body.order_id) {
+      try {
+        await PaymentRecovery.create({
+          payment_id: req.body.payment_id,
+          order_id: req.body.order_id,
+          service_id: req.body.service_id || 1,
+          state_id: req.body.state_id || 1,
+          full_name: req.body.full_name || '',
+          mobile: req.body.mobile || '',
+          email: req.body.email || '',
+          rti_query: req.body.rti_query || '',
+          address: req.body.address || '',
+          pincode: req.body.pincode || '',
+          error_message: error.message,
+          request_body: req.body
+        });
+        logger.warn('💾 Payment recovery record created:', {
+          payment_id: req.body.payment_id,
+          order_id: req.body.order_id
+        });
+      } catch (recoveryError) {
+        logger.error('❌ Failed to create payment recovery record:', recoveryError);
+        // Continue with original error even if recovery record creation fails
+      }
+    }
+
     next(error);
   }
 };

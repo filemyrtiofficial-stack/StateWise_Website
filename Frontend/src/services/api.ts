@@ -9,6 +9,28 @@ import { ConsultationFormData } from '../types/services';
 /**
  * Generic API request handler
  */
+/**
+ * Custom error class for API errors with validation details
+ */
+export class APIError extends Error {
+  public statusCode: number;
+  public errors?: Array<{ field: string; message: string; value?: any }>;
+  public response?: any;
+
+  constructor(
+    message: string,
+    statusCode: number,
+    errors?: Array<{ field: string; message: string; value?: any }>,
+    response?: any
+  ) {
+    super(message);
+    this.name = 'APIError';
+    this.statusCode = statusCode;
+    this.errors = errors;
+    this.response = response;
+  }
+}
+
 const apiRequest = async <T>(
   endpoint: string,
   options: RequestInit = {}
@@ -27,7 +49,20 @@ const apiRequest = async <T>(
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || `API Error: ${response.statusText}`);
+    // Extract validation errors if present
+    const validationErrors = data.errors || null;
+    const errorMessage = data.message || `API Error: ${response.statusText}`;
+
+    // Log detailed error for debugging
+    console.error('API Error:', {
+      endpoint,
+      status: response.status,
+      message: errorMessage,
+      errors: validationErrors,
+      response: data
+    });
+
+    throw new APIError(errorMessage, response.status, validationErrors, data);
   }
 
   return data;
@@ -148,6 +183,8 @@ export const rtiApplicationsAPI = {
     rti_query: string;
     address: string;
     pincode: string;
+    payment_id?: string;
+    order_id?: string;
   }) => {
     return apiRequest(`${API_ENDPOINTS.RTI_APPLICATIONS.CREATE}/public`, {
       method: 'POST',
@@ -181,6 +218,49 @@ export const rtiApplicationsAPI = {
 
   getById: async (id: number) => {
     return apiRequest(API_ENDPOINTS.RTI_APPLICATIONS.BY_ID(id), {
+      method: 'GET'
+    });
+  }
+};
+
+/**
+ * Payments API
+ */
+export const paymentsAPI = {
+  // Create payment order
+  createOrder: async (orderData: {
+    amount: number;
+    currency?: string;
+    receipt?: string;
+    notes?: Record<string, string>;
+  }) => {
+    return apiRequest(API_ENDPOINTS.PAYMENTS.CREATE_ORDER, {
+      method: 'POST',
+      body: JSON.stringify({
+        amount: orderData.amount,
+        currency: orderData.currency || 'INR',
+        receipt: orderData.receipt,
+        notes: orderData.notes
+      })
+    });
+  },
+
+  // Verify payment
+  verifyPayment: async (paymentData: {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+    order_id: string;
+  }) => {
+    return apiRequest(API_ENDPOINTS.PAYMENTS.VERIFY_PAYMENT, {
+      method: 'POST',
+      body: JSON.stringify(paymentData)
+    });
+  },
+
+  // Get order status
+  getOrderStatus: async (orderId: string) => {
+    return apiRequest(API_ENDPOINTS.PAYMENTS.GET_ORDER_STATUS(orderId), {
       method: 'GET'
     });
   }

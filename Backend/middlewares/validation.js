@@ -19,6 +19,13 @@ const validate = (req, res, next) => {
       value: error.value
     }));
 
+    // Log validation errors for debugging
+    const logger = require('../utils/logger');
+    logger.warn('Validation failed:', {
+      errors: formattedErrors,
+      body: req.body
+    });
+
     return sendError(res, 'Validation failed', 400, formattedErrors);
   }
 

@@ -14,6 +14,7 @@ const stateRoutes = require('./stateRoutes');
 const rtiApplicationRoutes = require('./rtiApplicationRoutes');
 const consultationRoutes = require('./consultationRoutes');
 const callbackRoutes = require('./callbackRoutes');
+const paymentRoutes = require('./paymentRoutes');
 
 // API version prefix
 const API_PREFIX = '/api/v1';
@@ -26,6 +27,7 @@ router.use(`${API_PREFIX}/states`, stateRoutes);
 router.use(`${API_PREFIX}/rti-applications`, rtiApplicationRoutes);
 router.use(`${API_PREFIX}/consultations`, consultationRoutes);
 router.use(`${API_PREFIX}/callback-requests`, callbackRoutes);
+router.use(`${API_PREFIX}/payments`, paymentRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

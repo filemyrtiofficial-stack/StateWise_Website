@@ -9,14 +9,16 @@ const createApplicationValidator = [
   body('service_id')
     .notEmpty()
     .withMessage('Service ID is required')
-    .isInt()
-    .withMessage('Service ID must be a valid integer'),
+    .isInt({ min: 1 })
+    .withMessage('Service ID must be a valid integer')
+    .toInt(),
 
   body('state_id')
     .notEmpty()
     .withMessage('State ID is required')
-    .isInt()
-    .withMessage('State ID must be a valid integer'),
+    .isInt({ min: 1 })
+    .withMessage('State ID must be a valid integer')
+    .toInt(),
 
   body('full_name')
     .trim()
@@ -59,7 +61,20 @@ const createApplicationValidator = [
     .notEmpty()
     .withMessage('Pincode is required')
     .isPostalCode('IN')
-    .withMessage('Please provide a valid Indian pincode')
+    .withMessage('Please provide a valid Indian pincode'),
+
+  // Optional payment fields (allowed but not required)
+  body('payment_id')
+    .optional()
+    .trim()
+    .isString()
+    .withMessage('Payment ID must be a string'),
+
+  body('order_id')
+    .optional()
+    .trim()
+    .isString()
+    .withMessage('Order ID must be a string')
 ];
 
 const updateStatusValidator = [

@@ -20,6 +20,7 @@ import { ServiceFAQ } from '../../components/services/ServiceFAQ';
 import { ConsultationModal } from '../../components/services/ConsultationModal';
 import { useRTIService } from '../../hooks/useRTIService';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
+import { usePayment } from '../../hooks/usePayment';
 import { SERVICE_IMAGES, SERVICE_IMAGES_X } from '../../constants/services';
 import { generateServiceStructuredData, generateBreadcrumbStructuredData, generateFAQStructuredData, generateCanonicalUrl, generatePageTitle, generateMetaKeywords } from '../../utils/seo';
 import { FAQ } from '../../types/services';
@@ -77,47 +78,117 @@ export const RTIModelPage: React.FC = () => {
     handleSubmit,
     resetForm
   } = useConsultationForm();
+  const { paymentState, initiatePayment, resetPayment } = usePayment();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-  // Handle form submission
-  const onSubmitForm = async (data: typeof formData) => {
+  // Handle form submission after payment
+  const submitApplicationAfterPayment = async (data: typeof formData, paymentId: string, orderId: string) => {
     try {
       // Import API services
-      const { rtiApplicationsAPI, servicesAPI, convertConsultationFormToAPI } = await import('../../services/api');
+      const { rtiApplicationsAPI, servicesAPI, statesAPI, convertConsultationFormToAPI } = await import('../../services/api');
+
+      // Comprehensive frontend validation before submission
+      const validationErrors: string[] = [];
+
+      if (!data.fullName || data.fullName.trim().length < 2) {
+        validationErrors.push('Full name must be at least 2 characters');
+      }
+
+      if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        validationErrors.push('Valid email is required');
+      }
+
+      if (!data.mobile || !/^[6-9]\d{9}$/.test(data.mobile.replace(/\D/g, ''))) {
+        validationErrors.push('Valid 10-digit mobile number is required');
+      }
+
+      if (!data.rtiQuery || data.rtiQuery.trim().length < 10) {
+        validationErrors.push('RTI query must be at least 10 characters');
+      }
+
+      if (!data.address || data.address.trim().length < 10) {
+        validationErrors.push('Address must be at least 10 characters');
+      }
+
+      if (!data.pincode || !/^\d{6}$/.test(data.pincode)) {
+        validationErrors.push('Valid 6-digit pincode is required');
+      }
+
+      if (validationErrors.length > 0) {
+        throw new Error(`Validation failed:\n${validationErrors.join('\n')}`);
+      }
 
       // Fetch service by slug to get the correct service_id
-      let serviceId = 1; // Default fallback
+      let serviceId: number | null = null;
       try {
         const serviceResponse = await servicesAPI.getBySlug(modelSlug || '') as any;
         if (serviceResponse?.success && serviceResponse?.data?.id) {
-          serviceId = Number(serviceResponse.data.id) || 1;
-          console.log(`Found service ID: ${serviceId} for slug: ${modelSlug}`);
+          serviceId = Number(serviceResponse.data.id);
+          console.log(`✅ Found service ID: ${serviceId} for slug: ${modelSlug}`);
+        } else {
+          throw new Error('Service not found in response');
         }
       } catch (error) {
-        console.warn('Could not fetch service from backend, using default ID:', error);
+        console.error('❌ Could not fetch service from backend:', error);
         // Try to parse model.id as fallback
-        if (model) {
-          serviceId = parseInt(model.id) || 1;
+        if (model && model.id) {
+          serviceId = parseInt(model.id);
+          console.log(`✅ Using model ID as fallback: ${serviceId}`);
         }
       }
 
-      // Default state_id to 1 (Telangana) - you can make this dynamic later
-      // TODO: Add state selection in the form or get from URL/context
-      const stateId = 1;
+      // If we still don't have a valid serviceId, throw an error
+      if (!serviceId || !Number.isInteger(serviceId) || serviceId < 1) {
+        const errorMsg = `Unable to determine service ID. Please ensure the service exists in the database for slug: ${modelSlug}`;
+        console.error('❌', errorMsg);
+        throw new Error(errorMsg);
+      }
 
-      // Validate required fields
-      if (!data.rtiQuery || data.rtiQuery.trim() === '') {
-        throw new Error('RTI query is required');
+      // Fetch state by slug (default to Telangana if not found)
+      // Default state_id to 4 (Telangana) based on current database
+      let stateId = 4; // Telangana
+      try {
+        const statesResponse = await statesAPI.getAll() as any;
+        if (statesResponse?.success && Array.isArray(statesResponse?.data)) {
+          const telanganaState = statesResponse.data.find((s: any) => s.slug === 'telangana');
+          if (telanganaState?.id) {
+            stateId = Number(telanganaState.id);
+            console.log(`✅ Found state ID: ${stateId} for Telangana`);
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Could not fetch states from backend, using default ID 4 (Telangana):', error);
       }
 
       // Convert form data to API format
       const apiData = convertConsultationFormToAPI(data, serviceId, stateId);
 
-      console.log('📤 Submitting RTI application:', apiData);
+      // Add payment information to the application
+      const applicationData = {
+        ...apiData,
+        payment_id: paymentId,
+        order_id: orderId
+      };
+
+      // Log the complete payload for debugging
+      console.log('📤 Submitting RTI application with payment:', {
+        ...applicationData,
+        // Don't log sensitive data in production
+        service_id: applicationData.service_id,
+        state_id: applicationData.state_id,
+        payment_id: applicationData.payment_id,
+        order_id: applicationData.order_id,
+        field_counts: {
+          full_name_length: applicationData.full_name?.length || 0,
+          rti_query_length: applicationData.rti_query?.length || 0,
+          address_length: applicationData.address?.length || 0
+        }
+      });
 
       // Call public API (no authentication required)
-      const result = await rtiApplicationsAPI.createPublic(apiData);
+      const result = await rtiApplicationsAPI.createPublic(applicationData);
 
       console.log('✅ Application created successfully:', result);
 
@@ -127,15 +198,73 @@ export const RTIModelPage: React.FC = () => {
         const resultData = result.data as any;
         applicationId = resultData?.id || resultData?.insertId || 'N/A';
       }
-      alert(`✅ RTI application submitted successfully!\n\nApplication ID: ${applicationId}\n\nYour application has been saved and will be processed.`);
+      alert(`✅ Payment successful and RTI application submitted!\n\nApplication ID: ${applicationId}\nPayment ID: ${paymentId}\n\nYour application has been saved and will be processed.`);
 
       setIsModalOpen(false);
       resetForm();
+      resetPayment();
+      setIsProcessingPayment(false);
     } catch (error) {
       console.error('❌ Failed to submit application:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to submit application. Please try again.';
-      alert(`❌ Error: ${errorMessage}\n\nPlease check all fields are filled correctly and try again.`);
-      throw error; // Re-throw to let the form handle it
+
+      // Extract detailed error information
+      let errorMessage = 'Failed to submit application. Please try again.';
+      let validationDetails = '';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+
+        // Check if it's an APIError with validation details
+        if ('errors' in error && Array.isArray((error as any).errors)) {
+          const apiError = error as any;
+          validationDetails = '\n\nValidation Errors:\n' +
+            apiError.errors.map((err: any) => `• ${err.field}: ${err.message}`).join('\n');
+        }
+      }
+
+      // Create detailed error message
+      const fullErrorMessage = `❌ Error: ${errorMessage}${validationDetails}\n\nPayment was successful (Payment ID: ${paymentId}, Order ID: ${orderId}) but application submission failed.\n\nPlease contact support with the Payment ID above, or try submitting again.`;
+
+      alert(fullErrorMessage);
+
+      // Don't throw error - allow user to retry
+      setIsProcessingPayment(false);
+    }
+  };
+
+  // Handle form submission - initiate payment first
+  const onSubmitForm = async (data: typeof formData) => {
+    if (!model) {
+      alert('Service information not available. Please refresh the page.');
+      return;
+    }
+
+    try {
+      setIsProcessingPayment(true);
+
+      // Initiate payment
+      await initiatePayment(
+        model,
+        {
+          name: data.fullName,
+          email: data.email,
+          mobile: data.mobile
+        },
+        async (paymentId: string, orderId: string) => {
+          // Payment successful, now submit the application
+          await submitApplicationAfterPayment(data, paymentId, orderId);
+        },
+        (errorMessage: string) => {
+          // Payment failed
+          alert(`❌ Payment failed: ${errorMessage}\n\nPlease try again.`);
+          setIsProcessingPayment(false);
+        }
+      );
+    } catch (error) {
+      console.error('❌ Payment initialization failed:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to initialize payment. Please try again.';
+      alert(`❌ Error: ${errorMessage}`);
+      setIsProcessingPayment(false);
     }
   };
 
@@ -146,12 +275,17 @@ export const RTIModelPage: React.FC = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
     resetForm();
+    resetPayment();
+    setIsProcessingPayment(false);
   };
 
   // Handle form submit event
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSubmit(() => onSubmitForm(formData));
+    // Only proceed if not already processing payment
+    if (!isProcessingPayment && paymentState.status !== 'processing' && paymentState.status !== 'verifying') {
+      handleSubmit(() => onSubmitForm(formData));
+    }
   };
 
   // Show loading state
@@ -360,7 +494,9 @@ export const RTIModelPage: React.FC = () => {
           model={model}
           formData={formData}
           errors={errors}
-          isSubmitting={isSubmitting}
+          isSubmitting={isSubmitting || isProcessingPayment || paymentState.status === 'processing' || paymentState.status === 'verifying' || paymentState.status === 'creating_order'}
+          paymentStatus={paymentState.status}
+          paymentError={paymentState.error}
           onFieldChange={updateField}
           onSubmit={handleFormSubmit}
         />

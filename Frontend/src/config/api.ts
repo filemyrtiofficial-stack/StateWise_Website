@@ -52,6 +52,13 @@ export const API_ENDPOINTS = {
     UPDATE_STATUS: (id: number) => `${API_BASE_URL}/callback-requests/${id}/status`
   },
 
+  // Payments
+  PAYMENTS: {
+    CREATE_ORDER: `${API_BASE_URL}/payments/create-order`,
+    VERIFY_PAYMENT: `${API_BASE_URL}/payments/verify`,
+    GET_ORDER_STATUS: (orderId: string) => `${API_BASE_URL}/payments/order/${orderId}`
+  },
+
   // Health Check
   HEALTH: 'http://localhost:5000/health'
 };

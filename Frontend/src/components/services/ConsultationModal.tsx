@@ -7,6 +7,7 @@ import React from 'react';
 import { RTIModel } from '../../types/services';
 import { ConsultationFormData } from '../../types/services';
 import { PAYMENT_CONFIG } from '../../constants/services';
+import { PaymentStatus } from '../../hooks/usePayment';
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ interface ConsultationModalProps {
   formData: ConsultationFormData;
   errors: Record<string, string>;
   isSubmitting: boolean;
+  paymentStatus?: PaymentStatus;
+  paymentError?: string | null;
   onFieldChange: (field: keyof ConsultationFormData, value: string | boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
 }
@@ -26,6 +29,8 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
   formData,
   errors,
   isSubmitting,
+  paymentStatus = 'idle',
+  paymentError = null,
   onFieldChange,
   onSubmit
 }) => {
@@ -140,9 +145,16 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 required
                 aria-invalid={!!errors.rtiQuery}
               />
-              {errors.rtiQuery && (
-                <p className="mt-1 text-xs text-red-500">{errors.rtiQuery}</p>
-              )}
+              <div className="flex justify-between items-center mt-1">
+                {errors.rtiQuery ? (
+                  <p className="text-xs text-red-500">{errors.rtiQuery}</p>
+                ) : (
+                  <p className="text-xs text-gray-500">Minimum 10 characters required</p>
+                )}
+                <p className="text-xs text-gray-400">
+                  {formData.rtiQuery.length}/5000
+                </p>
+              </div>
             </div>
 
             {/* Address */}
@@ -160,9 +172,16 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 required
                 aria-invalid={!!errors.address}
               />
-              {errors.address && (
-                <p className="mt-1 text-xs text-red-500">{errors.address}</p>
-              )}
+              <div className="flex justify-between items-center mt-1">
+                {errors.address ? (
+                  <p className="text-xs text-red-500">{errors.address}</p>
+                ) : (
+                  <p className="text-xs text-gray-500">Minimum 10 characters required</p>
+                )}
+                <p className="text-xs text-gray-400">
+                  {formData.address.length}/500
+                </p>
+              </div>
             </div>
 
             {/* Pin Code */}
@@ -214,13 +233,26 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             )}
           </div>
 
+          {/* Payment Error Display */}
+          {paymentError && (
+            <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-xs text-red-600">{paymentError}</p>
+            </div>
+          )}
+
           {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-3 text-sm disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Processing...' : `Book Consultation Now - ₹${model.price.toLocaleString()}`}
+            {paymentStatus === 'creating_order' && 'Creating payment order...'}
+            {paymentStatus === 'processing' && 'Processing payment...'}
+            {paymentStatus === 'verifying' && 'Verifying payment...'}
+            {paymentStatus === 'idle' && isSubmitting && 'Processing...'}
+            {paymentStatus === 'idle' && !isSubmitting && `Pay & Book Consultation - ₹${model.price.toLocaleString()}`}
+            {paymentStatus === 'success' && 'Payment Successful!'}
+            {paymentStatus === 'failed' && 'Payment Failed - Try Again'}
           </button>
 
           {/* Payment Logos */}

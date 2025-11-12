@@ -102,7 +102,13 @@ CORS_ORIGIN=http://localhost:3000
 
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
+
+# Razorpay Payment Configuration
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 ```
+
+> **Note**: For payment integration setup, see [PAYMENT_SETUP.md](./PAYMENT_SETUP.md)
 
 ## 🗄️ Database Setup
 

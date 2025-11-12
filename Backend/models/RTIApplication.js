@@ -20,17 +20,19 @@ class RTIApplication {
       rti_query,
       address,
       pincode,
+      payment_id = null,
+      order_id = null,
       status = 'pending'
     } = applicationData;
 
     const sql = `
       INSERT INTO rti_applications 
-      (user_id, service_id, state_id, full_name, mobile, email, rti_query, address, pincode, status, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+      (user_id, service_id, state_id, full_name, mobile, email, rti_query, address, pincode, payment_id, order_id, status, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
     `;
 
     const result = await query(sql, [
-      user_id, service_id, state_id, full_name, mobile, email, rti_query, address, pincode, status
+      user_id, service_id, state_id, full_name, mobile, email, rti_query, address, pincode, payment_id, order_id, status
     ]);
 
     return result.insertId;
