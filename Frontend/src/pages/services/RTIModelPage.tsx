@@ -18,6 +18,7 @@ import { HowItWorks } from '../../components/services/HowItWorks';
 import { Testimonials } from '../../components/services/Testimonials';
 import { ServiceFAQ } from '../../components/services/ServiceFAQ';
 import { ConsultationModal } from '../../components/services/ConsultationModal';
+import { PaymentSuccessModal } from '../../components/services/PaymentSuccessModal';
 import { useRTIService } from '../../hooks/useRTIService';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
 import { usePayment } from '../../hooks/usePayment';
@@ -82,6 +83,11 @@ export const RTIModelPage: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [successData, setSuccessData] = useState<{
+    applicationId: string | number;
+    paymentId: string;
+  } | null>(null);
 
   // Handle form submission after payment
   const submitApplicationAfterPayment = async (data: typeof formData, paymentId: string, orderId: string) => {
@@ -192,15 +198,22 @@ export const RTIModelPage: React.FC = () => {
 
       console.log('✅ Application created successfully:', result);
 
-      // Show success message
-      let applicationId = 'N/A';
+      // Extract application ID
+      let applicationId: string | number = 'N/A';
       if (result && typeof result === 'object' && 'data' in result) {
         const resultData = result.data as any;
         applicationId = resultData?.id || resultData?.insertId || 'N/A';
       }
-      alert(`✅ Payment successful and RTI application submitted!\n\nApplication ID: ${applicationId}\nPayment ID: ${paymentId}\n\nYour application has been saved and will be processed.`);
 
+      // Store success data and show success modal
+      setSuccessData({
+        applicationId,
+        paymentId
+      });
+      
+      // Close consultation modal and show success modal
       setIsModalOpen(false);
+      setIsSuccessModalOpen(true);
       resetForm();
       resetPayment();
       setIsProcessingPayment(false);
@@ -500,6 +513,17 @@ export const RTIModelPage: React.FC = () => {
           onFieldChange={updateField}
           onSubmit={handleFormSubmit}
         />
+
+        {/* Payment Success Modal */}
+        {successData && (
+          <PaymentSuccessModal
+            isOpen={isSuccessModalOpen}
+            onClose={handleSuccessModalClose}
+            applicationId={successData.applicationId}
+            paymentId={successData.paymentId}
+            serviceName={model?.name}
+          />
+        )}
       </div>
     </>
   );
