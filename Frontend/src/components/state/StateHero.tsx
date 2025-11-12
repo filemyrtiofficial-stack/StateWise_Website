@@ -26,57 +26,6 @@ const fadeInStyle = `
   }
 `;
 
-// Add fade-in animation styles
-const fadeInStyle = `
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-`;
-
-// Add fade-in animation styles
-const fadeInStyle = `
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-`;
-
-// Add fade-in animation styles
-const fadeInStyle = `
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-`;
-
 interface StateHeroProps {
   hero: StateHeroData;
   stateName: string;
@@ -510,209 +459,12 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                 </div>
               </div>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-              <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1 border-b-2 border-black">
-                Get a free Micro Consultation now!
-              </h3>
-              <p className="text-xs sm:text-sm text-black mb-2">
-                Let the FileMyRTI Team help you in exercising your Legal Rights.
-              </p>
-
-              <form onSubmit={handleConsultationSubmit} className="space-y-2">
-                {/* Full Name */}
-                <div>
-                  <label className="block text-xs font-bold text-black mb-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={consultationForm.fullName}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your full name"
-                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                  />
-                </div>
-
-                {/* Email Address */}
-                <div>
-                  <label className="block text-xs font-bold text-black mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={consultationForm.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your email"
-                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                  />
-                </div>
-
-                {/* Mobile Number */}
-                <div>
-                  <label className="block text-xs font-bold text-black mb-1">
-                    Mobile Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="mobile"
-                    value={consultationForm.mobile}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your mobile number"
-                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                  />
-                </div>
-
-                {/* Address */}
-                <div>
-                  <label className="block text-xs font-bold text-black mb-1">
-                    Address <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    name="address"
-                    value={consultationForm.address}
-                    onChange={(e) => setConsultationForm({ ...consultationForm, address: e.target.value })}
-                    required
-                    placeholder="Street Address, Building, Apartment, City, State"
-                    rows={2}
-                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none"
-                  />
-                </div>
-
-                {/* Pin Code */}
-                <div>
-                  <label className="block text-xs font-bold text-black mb-1">
-                    Pin Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="pinCode"
-                    value={consultationForm.pinCode}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your pin code"
-                    maxLength={6}
-                    className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                  />
-                </div>
-
-                {/* Terms and Conditions */}
-                <div className="flex items-start gap-2 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
-                  <input
-                    type="checkbox"
-                    id="acceptTermsConsultation"
-                    checked={consultationForm.acceptTerms}
-                    onChange={(e) => setConsultationForm({ ...consultationForm, acceptTerms: e.target.checked })}
-                    className="mt-0.5 w-3.5 h-3.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                    required
-                  />
-                  <label htmlFor="acceptTermsConsultation" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                    I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-red-500">*</span>
-                  </label>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* List of Public Authorities and RTI Models Section */}
-      <div className="container-responsive max-w-7xl mx-auto mt-6 sm:mt-8">
-        {/* Section Header */}
-        <div className="mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-left">
-            Our Services & Public Authorities
-          </h2>
-        </div>
-
-        {/* Two Column Layout - Equal Width and Height */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-stretch">
-          {/* Left Column - List of Public Authorities */}
-          <div className="flex flex-col h-full">
-            <div className="flex-1 flex items-stretch">
-              <PublicAuthoritiesList stateName={stateName} />
-            </div>
-          </div>
-
-          {/* Right Column - RTI Models Grid */}
-          <div className="flex flex-col h-full">
-            <div className="mb-5 sm:mb-6 -mt-14 sm:-mt-18">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-left">
-                RTI Models
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 text-left">
-                Choose the service that best fits your needs
-              </p>
-            </div>
-
-            {/* RTI Models Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {rtiModels.map((model) => (
-                <div
-                  key={model.id}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-2 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
-                >
-                  {/* Icon Section */}
-                  <div className="mb-1.5 sm:mb-3 flex flex-col items-center -mx-2 sm:-mx-4 -mt-2 sm:-mt-4">
-                    <img 
-                      src={model.icon} 
-                      alt={model.name}
-                      className="w-full h-auto object-contain"
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h4 className="text-sm sm:text-sm font-bold text-gray-900 mb-1 sm:mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
-                    {model.name}
-                  </h4>
-
-                  {/* Description */}
-                  <p className="text-xs sm:text-xs text-gray-600 mb-1.5 sm:mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {model.description}
-                  </p>
-
-                  {/* CTA Button */}
-                  <button
-                    onClick={() => navigate(model.route)}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95"
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
               {/* Statistics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {statistics.map((stat, index) => (
                   <div
                     key={index}
                     className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                   >
                     <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
                       {stat.value}
@@ -875,7 +627,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         ) : (
                           'Submit'
                         )}
-                      </button>
+                    </button>
                     </form>
                   </>
                 ) : consultationStatus === 'success' ? (
@@ -971,7 +723,11 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     {/* Icon Section */}
                     <div className="mb-3 flex flex-col items-center">
                       <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mb-2 border-2 border-blue-200 group-hover:border-blue-400 transition-colors">
-                        <span className="text-3xl sm:text-4xl">{model.icon}</span>
+                        <img
+                          src={model.icon}
+                          alt={model.name}
+                          className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+                        />
                       </div>
                       <p className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-wide text-center leading-tight px-0.5" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {model.iconText}

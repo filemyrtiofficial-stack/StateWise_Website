@@ -75,13 +75,8 @@ export const ConnectionTest: React.FC = () => {
 
       {testResult && (
         <div className={`p-4 rounded-lg ${testResult.success
-<<<<<<< Updated upstream
           ? 'bg-green-50 border border-green-200'
           : 'bg-red-50 border border-red-200'
-=======
-            ? 'bg-green-50 border border-green-200'
-            : 'bg-red-50 border border-red-200'
->>>>>>> Stashed changes
           }`}>
           <div className="flex items-center gap-2 mb-2">
             {testResult.success ? (
