@@ -262,7 +262,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
       const result = await callbackRequestsAPI.createPublic({
         phone: callbackPhone,
-        state_slug: _stateSlug || null
+        state_slug: _stateSlug || undefined
       });
 
       if (result && typeof result === 'object' && 'success' in result && result.success) {
@@ -311,7 +311,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
         mobile: mobile,
         address: address,
         pincode: pinCode,
-        state_slug: _stateSlug || null,
+        state_slug: _stateSlug || undefined,
         source: 'hero_section'
       });
 
@@ -721,33 +721,28 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
                   >
                     {/* Icon Section */}
-                    <div className="mb-3 flex flex-col items-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center mb-2 border-2 border-blue-200 group-hover:border-blue-400 transition-colors">
-                        <img
-                          src={model.icon}
-                          alt={model.name}
-                          className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-                        />
-                      </div>
-                      <p className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-wide text-center leading-tight px-0.5" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                        {model.iconText}
-                      </p>
+                    <div className="mb-3 flex flex-col items-center -mx-3 sm:-mx-4 -mt-3 sm:-mt-4">
+                      <img
+                        src={model.icon}
+                        alt={model.name}
+                        className="w-full h-auto object-contain"
+                      />
                     </div>
 
                     {/* Title */}
-                    <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
+                    <h4 className="text-sm sm:text-sm font-bold text-gray-900 mb-2 text-center leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '2.5rem' }}>
                       {model.name}
                     </h4>
 
                     {/* Description */}
-                    <p className="text-[10px] sm:text-xs text-gray-600 mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    <p className="text-xs sm:text-xs text-gray-600 mb-3 flex-grow leading-relaxed text-center" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {model.description}
                     </p>
 
                     {/* CTA Button */}
                     <button
                       onClick={() => navigate(model.route)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-[10px] sm:text-xs shadow-sm hover:shadow-md active:scale-95"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95"
                     >
                       {model.buttonText}
                     </button>
