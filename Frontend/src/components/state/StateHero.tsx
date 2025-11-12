@@ -704,7 +704,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
             {/* Right Column - RTI Models Grid */}
             <div className="flex flex-col h-full">
-              <div className="mb-5 sm:mb-6">
+              <div className="mb-5 sm:mb-6 -mt-16 sm:-mt-19.5">
                 <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-left">
                   RTI Models
                 </h3>
