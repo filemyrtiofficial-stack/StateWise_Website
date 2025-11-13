@@ -22,13 +22,15 @@ const routes = require('./routes');
 const app = express();
 
 // Trust proxy (for rate limiting behind reverse proxy)
+// This ensures req.ip and req.origin are correct when behind Nginx
 app.set('trust proxy', 1);
 
-// Security middlewares
-app.use(helmet);           // Helmet security headers
-app.use(cors);             // CORS for all routes
-app.use(xss);              // XSS protection
-app.use(sanitize);         // Sanitize all input
+// Security middlewares (order matters!)
+// CORS must come before other middlewares that might interfere
+app.use(cors); // CORS first to handle preflight requests
+app.use(helmet); // Helmet after CORS
+app.use(xss);
+app.use(sanitize); // Sanitize all input
 
 // Compression middleware
 app.use(compression());
@@ -65,14 +67,7 @@ if (config.NODE_ENV === 'development') {
 // Rate limiting
 app.use('/api/', limiter);
 
-// Preflight handling for consultation route
-app.options('/api/v1/consultations/public', consultationCors);
-
-// Use consultationCors specifically on the public consultation route
-const consultationController = require('./controllers/consultationController');
-app.post('/api/v1/consultations/public', consultationCors, consultationController.createConsultation);
-
-// Use other routes
+// Routes
 app.use(routes);
 
 // 404 handler
@@ -118,6 +113,7 @@ const startServer = async () => {
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   logger.error('Unhandled Promise Rejection:', err);
+  // Close server & exit process
   process.exit(1);
 });
 
@@ -162,3 +158,4 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 startServer();
 
 module.exports = app;
+
