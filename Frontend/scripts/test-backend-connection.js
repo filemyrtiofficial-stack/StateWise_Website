@@ -4,12 +4,34 @@
  * Usage: node scripts/test-backend-connection.js
  */
 
-const API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
-const HEALTH_URL = 'http://localhost:5000/health';
+// Determine API URLs based on environment
+const getApiBaseUrl = () => {
+  if (process.env.VITE_API_BASE_URL) {
+    return process.env.VITE_API_BASE_URL;
+  }
+  const isProduction = process.env.NODE_ENV === 'production';
+  return isProduction
+    ? 'https://delhi.filemyrti.com/api/v1'
+    : 'http://localhost:5000/api/v1';
+};
+
+const getBaseUrl = () => {
+  if (process.env.VITE_API_BASE_URL) {
+    return process.env.VITE_API_BASE_URL.replace(/\/api\/v1\/?$/, '');
+  }
+  const isProduction = process.env.NODE_ENV === 'production';
+  return isProduction
+    ? 'https://delhi.filemyrti.com'
+    : 'http://localhost:5000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+const HEALTH_URL = `${getBaseUrl()}/health`;
+const BASE_URL = getBaseUrl();
 
 async function testConnection() {
   console.log('🧪 Testing Frontend-Backend Connection...\n');
-  console.log('📍 Backend URL:', 'http://localhost:5000');
+  console.log('📍 Backend URL:', BASE_URL);
   console.log('📍 API Base URL:', API_BASE_URL);
   console.log('📍 Health Check URL:', HEALTH_URL);
   console.log('');

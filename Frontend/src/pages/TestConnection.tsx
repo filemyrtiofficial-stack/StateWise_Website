@@ -7,6 +7,7 @@ import React from 'react';
 import { ConnectionTest } from '../components/common/ConnectionTest';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
+import { API_ENDPOINTS, API_BASE_URL_DISPLAY } from '../config/api';
 
 export const TestConnection: React.FC = () => {
   return (
@@ -30,8 +31,8 @@ export const TestConnection: React.FC = () => {
           <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
             <h2 className="text-lg font-semibold mb-2">API Endpoints:</h2>
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Health Check: <code className="bg-gray-100 px-2 py-1 rounded">http://localhost:5000/health</code></li>
-              <li>API Base: <code className="bg-gray-100 px-2 py-1 rounded">http://localhost:5000/api/v1</code></li>
+              <li>Health Check: <code className="bg-gray-100 px-2 py-1 rounded">{API_ENDPOINTS.HEALTH}</code></li>
+              <li>API Base: <code className="bg-gray-100 px-2 py-1 rounded">{API_BASE_URL_DISPLAY}</code></li>
             </ul>
           </div>
         </div>

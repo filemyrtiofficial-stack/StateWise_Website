@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { testBackendConnection, testCORS, ConnectionTestResult } from '../../utils/apiTest';
+import { API_ENDPOINTS } from '../../config/api';
 
 export const ConnectionTest: React.FC = () => {
   const [testResult, setTestResult] = useState<ConnectionTestResult | null>(null);
@@ -105,8 +106,8 @@ export const ConnectionTest: React.FC = () => {
       )}
 
       <div className="mt-4 text-sm text-gray-600">
-        <p><strong>Note:</strong> Make sure the backend server is running on port 5000</p>
-        <p>Backend URL: <code className="bg-gray-100 px-2 py-1 rounded">http://localhost:5000</code></p>
+        <p><strong>Note:</strong> Make sure the backend server is running</p>
+        <p>Backend URL: <code className="bg-gray-100 px-2 py-1 rounded">{API_ENDPOINTS.HEALTH.replace('/health', '')}</code></p>
       </div>
     </div>
   );

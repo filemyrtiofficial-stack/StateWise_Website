@@ -3,8 +3,29 @@
  * Tests frontend-backend connection from frontend perspective
  */
 
-const API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
-const HEALTH_URL = 'http://localhost:5000/health';
+// Determine API URLs based on environment
+const getApiBaseUrl = () => {
+  if (process.env.VITE_API_BASE_URL) {
+    return process.env.VITE_API_BASE_URL;
+  }
+  const isProduction = process.env.NODE_ENV === 'production';
+  return isProduction
+    ? 'https://delhi.filemyrti.com/api/v1'
+    : 'http://localhost:5000/api/v1';
+};
+
+const getBaseUrl = () => {
+  if (process.env.VITE_API_BASE_URL) {
+    return process.env.VITE_API_BASE_URL.replace(/\/api\/v1\/?$/, '');
+  }
+  const isProduction = process.env.NODE_ENV === 'production';
+  return isProduction
+    ? 'https://delhi.filemyrti.com'
+    : 'http://localhost:5000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+const HEALTH_URL = `${getBaseUrl()}/health`;
 
 async function testConnection(url, options = {}) {
   try {

@@ -3,7 +3,41 @@
  * Centralized API endpoint configuration
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+// Determine API base URL based on environment
+const getApiBaseUrl = () => {
+  // If VITE_API_BASE_URL is explicitly set, use it
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+
+  // Otherwise, use environment-based defaults
+  const isProduction = import.meta.env.MODE === 'production' || import.meta.env.PROD;
+  return isProduction
+    ? 'https://delhi.filemyrti.com/api/v1'
+    : 'http://localhost:5000/api/v1';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Get base URL without /api/v1 for health check
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    // Extract base URL from VITE_API_BASE_URL (remove /api/v1 if present)
+    const url = import.meta.env.VITE_API_BASE_URL.replace(/\/api\/v1\/?$/, '');
+    return url;
+  }
+
+  const isProduction = import.meta.env.MODE === 'production' || import.meta.env.PROD;
+  return isProduction
+    ? 'https://delhi.filemyrti.com'
+    : 'http://localhost:5000';
+};
+
+const BASE_URL = getBaseUrl();
+
+// Export BASE_URL for display purposes
+export const API_BASE_URL_DISPLAY = API_BASE_URL;
+export const BASE_URL_DISPLAY = BASE_URL;
 
 export const API_ENDPOINTS = {
   // Authentication
@@ -60,7 +94,7 @@ export const API_ENDPOINTS = {
   },
 
   // Health Check
-  HEALTH: 'http://localhost:5000/health'
+  HEALTH: `${BASE_URL}/health`
 };
 
 /**

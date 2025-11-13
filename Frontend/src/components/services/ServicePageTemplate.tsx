@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../common/Navbar';
 import { Footer } from '../common/Footer';
 import { LazyChatbot } from '../common/LazyChatbot';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface ServicePageProps {
   title: string;
@@ -75,9 +76,8 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
     setErrors({});
 
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-
-      const response = await fetch(`${API_BASE_URL}/rti/submit`, {
+      // Use centralized API config
+      const response = await fetch(API_ENDPOINTS.RTI_APPLICATIONS.CREATE + '/public', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
