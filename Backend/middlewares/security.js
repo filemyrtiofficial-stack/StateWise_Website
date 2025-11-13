@@ -10,16 +10,16 @@ const xss = require('xss-clean');
 const config = require('../config/env');
 
 /**
- * CORS configuration
+ * CORS configuration for all routes
  */
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
+    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
     if (!origin) {
       return callback(null, true);
     }
 
-    // Normalize origin (remove trailing slash, convert to lowercase for comparison)
+    // Normalize origin (remove trailing slash, convert to lowercase)
     const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
 
     // Build allowed origins list
@@ -29,11 +29,13 @@ const corsOptions = {
     if (config.CORS.ORIGIN) {
       const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
       envOrigins.forEach(envOrigin => {
-        allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
+        if (envOrigin) {
+          allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
+        }
       });
     }
 
-    // In production, always allow the production frontend (with and without www)
+    // In production, always allow the production frontend
     if (config.NODE_ENV === 'production') {
       allowedOrigins.push(
         'https://delhi.filemyrti.com',
@@ -51,33 +53,74 @@ const corsOptions = {
       );
     }
 
-    // Check if origin is allowed (case-insensitive, trailing slash insensitive)
+    // Check if origin is allowed
     const isAllowed = allowedOrigins.some(allowed =>
-      allowed.toLowerCase().replace(/\/$/, '') === normalizedOrigin
+      allowed === normalizedOrigin
     );
 
-    // In production, also check if origin contains the production domain (more permissive)
-    let isProductionDomain = false;
-    if (config.NODE_ENV === 'production') {
-      isProductionDomain = normalizedOrigin.includes('delhi.filemyrti.com');
-    }
+    // In production, also allow if origin contains the production domain
+    const isProductionDomain = config.NODE_ENV === 'production' &&
+      normalizedOrigin.includes('delhi.filemyrti.com');
 
-    // Log for debugging in production
-    if (config.NODE_ENV === 'production' && !isAllowed && !isProductionDomain) {
-      const logger = require('../utils/logger');
-      logger.warn(`CORS: Origin not allowed - ${origin}. Allowed origins: ${allowedOrigins.join(', ')}`);
-    }
-
-    if (isAllowed || isProductionDomain || allowedOrigins.length === 0) {
+    if (isAllowed || isProductionDomain) {
       callback(null, true);
     } else {
+      const logger = require('../utils/logger');
+      logger.warn(`CORS rejected: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
       callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
     }
   },
-  credentials: true, // Always allow credentials
+  credentials: true,
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+  exposedHeaders: ['X-Request-ID']
+};
+
+/**
+ * CORS configuration specifically for public consultation routes
+ * This ensures proper CORS handling for /api/v1/consultations/public
+ */
+const consultationCorsOptions = {
+  origin: (origin, callback) => {
+    // Always allow the production frontend
+    if (!origin || origin === 'https://delhi.filemyrti.com' || origin === 'https://www.delhi.filemyrti.com') {
+      return callback(null, true);
+    }
+
+    // In development, allow localhost
+    if (config.NODE_ENV === 'development') {
+      const devOrigins = [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:5173',
+        'http://127.0.0.1:5173'
+      ];
+      if (devOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+    }
+
+    // Allow if from environment variable
+    if (config.CORS.ORIGIN) {
+      const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
+      if (envOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+    }
+
+    // In production, allow any origin containing the domain
+    if (config.NODE_ENV === 'production' && origin && origin.includes('delhi.filemyrti.com')) {
+      return callback(null, true);
+    }
+
+    callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+  exposedHeaders: ['X-Request-ID']
 };
 
 /**
@@ -157,6 +200,7 @@ const helmetConfig = helmet({
 
 module.exports = {
   cors: cors(corsOptions),
+  consultationCors: cors(consultationCorsOptions),
   limiter,
   authLimiter,
   helmet: helmetConfig,

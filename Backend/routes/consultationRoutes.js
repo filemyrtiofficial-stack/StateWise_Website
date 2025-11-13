@@ -13,9 +13,12 @@ const {
 } = require('../controllers/consultationController');
 const { authenticate } = require('../middlewares/auth');
 const { isAdmin } = require('../middlewares/role');
+const { consultationCors } = require('../middlewares/security');
 
 // Public routes (no authentication required)
-router.post('/public', createConsultation);
+// Apply CORS middleware specifically for this route to handle preflight OPTIONS requests
+router.options('/public', consultationCors);
+router.post('/public', consultationCors, createConsultation);
 
 // Protected routes (admin only)
 router.use(authenticate);
