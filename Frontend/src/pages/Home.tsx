@@ -1,9 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useStateData } from '../hooks/useStateData';
-import { Navbar } from '../components/common/Navbar';
-import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
+
+// Lazy load Navbar and Footer for better initial load
+const Navbar = lazy(() => import('../components/common/Navbar').then(m => ({ default: m.Navbar })));
+const Footer = lazy(() => import('../components/common/Footer').then(m => ({ default: m.Footer })));
 
 // Lazy load heavy components for better performance
 const StateHero = lazy(() => import('../components/state/StateHero').then(m => ({ default: m.StateHero })));
@@ -21,38 +23,46 @@ export const Home: React.FC = () => {
   // Default to Delhi for home page - always ensure we have data
   const { stateData, isLoading } = useStateData('delhi');
 
-  // Show loading state
-  if (isLoading) {
+  // Show minimal loading state only if no static data available
+  if (isLoading && !stateData) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
-          <Navbar />
+          <Suspense fallback={<div className="h-16 bg-white" />}>
+            <Navbar />
+          </Suspense>
           <main className="flex-grow flex items-center justify-center bg-gray-50">
             <div className="text-center px-4">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
               <p className="mt-4 text-gray-600">Loading...</p>
             </div>
           </main>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
           <LazyChatbot />
         </div>
       </>
     );
   }
 
-  // Fallback if stateData is null
+  // Fallback if stateData is null (shouldn't happen with static data)
   if (!stateData) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
-          <Navbar />
+          <Suspense fallback={<div className="h-16 bg-white" />}>
+            <Navbar />
+          </Suspense>
           <main className="flex-grow flex items-center justify-center bg-gray-50">
             <div className="text-center px-4">
               <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to load state data</h1>
               <p className="text-gray-600">Please try again later.</p>
             </div>
           </main>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
           <LazyChatbot />
         </div>
       </>
@@ -150,7 +160,9 @@ export const Home: React.FC = () => {
         </script>
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <Suspense fallback={<div className="h-16 bg-white" />}>
+          <Navbar />
+        </Suspense>
         <main className="flex-grow">
           <Suspense fallback={<ComponentLoader />}>
             {renderHero()}
@@ -181,7 +193,9 @@ export const Home: React.FC = () => {
           </Suspense>
         </main>
         <footer role="contentinfo">
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </footer>
         <LazyChatbot />
       </div>

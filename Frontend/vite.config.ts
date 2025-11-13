@@ -20,8 +20,11 @@ export default defineConfig({
         manualChunks: (id) => {
           // Split node_modules into separate chunks for better caching
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-core';
+            }
+            if (id.includes('react-router')) {
+              return 'react-router';
             }
             if (id.includes('react-helmet')) {
               return 'helmet-vendor';
@@ -38,6 +41,9 @@ export default defineConfig({
           }
           if (id.includes('/components/common/')) {
             return 'common-components';
+          }
+          if (id.includes('/components/services/')) {
+            return 'service-components';
           }
           if (id.includes('/pages/services/')) {
             return 'service-pages';
@@ -63,22 +69,25 @@ export default defineConfig({
       },
     },
     // Optimize chunk size - increased limit for better splitting
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 600,
     // Enable minification (esbuild is faster than terser)
     minify: 'esbuild',
     // Remove console.log in production
     esbuild: {
       drop: ['console', 'debugger'],
       legalComments: 'none', // Remove comments
+      treeShaking: true, // Enable tree shaking
     },
     // Enable source maps for production debugging (optional)
     sourcemap: false,
     // Enable CSS code splitting
     cssCodeSplit: true,
     // Optimize assets - reduce inline limit for better caching
-    assetsInlineLimit: 2048, // Inline assets smaller than 2kb
+    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
     // Report compressed size
     reportCompressedSize: false, // Faster builds
+    // Target modern browsers for smaller bundle
+    target: 'es2015',
   },
   // Optimize dependencies
   optimizeDeps: {

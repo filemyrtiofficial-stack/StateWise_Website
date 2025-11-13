@@ -12,63 +12,63 @@ export const useStateData = (stateSlug: string): {
   isLoading: boolean;
   error: string | null;
 } => {
+  // Get static data immediately (non-blocking)
+  const staticData = useMemo(() => {
+    if (!stateSlug) return null;
+    return getStateBySlug(stateSlug) || null;
+  }, [stateSlug]);
+
   const [backendState, setBackendState] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // Start with false since we have static data
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch state from backend
+  // Fetch state from backend (non-blocking, enhance with API data)
   useEffect(() => {
     if (!stateSlug) {
-      setIsLoading(false);
       return;
     }
 
+    // Fetch in background without blocking render
     const fetchState = async () => {
-      setIsLoading(true);
-      setError(null);
-
       try {
         const response = await statesAPI.getBySlug(stateSlug) as any;
 
         if (response.success && response.data) {
           setBackendState(response.data);
-        } else {
-          throw new Error('State not found');
         }
       } catch (err) {
+        // Silently fail - we already have static data
         console.warn('Failed to fetch state from backend, using static data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load state');
-        setBackendState(null);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchState();
+    // Delay API call slightly to prioritize initial render
+    const timer = setTimeout(() => {
+      fetchState();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [stateSlug]);
 
-  // Use backend state if available, otherwise fallback to static data
+  // Use backend state if available, otherwise use static data (always available)
   const stateData = useMemo(() => {
+    if (!staticData) return null;
+
     if (backendState) {
-      // Convert backend state to StateData format
-      // Note: You may need to adjust this based on your StateData interface
-      const staticFallback = getStateBySlug(stateSlug);
-      if (staticFallback) {
-        // Merge backend data with static data structure
-        return {
-          ...staticFallback,
-          name: backendState.name || staticFallback.name,
-          slug: backendState.slug || staticFallback.slug,
-          description: backendState.description || staticFallback.description,
-          rtiPortalUrl: backendState.rti_portal_url || staticFallback.rtiPortalUrl
-        };
-      }
+      // Merge backend data with static data structure
+      return {
+        ...staticData,
+        name: backendState.name || staticData.name,
+        slug: backendState.slug || staticData.slug,
+        description: backendState.description || staticData.description,
+        rtiPortalUrl: backendState.rti_portal_url || staticData.rtiPortalUrl
+      };
     }
 
-    // Fallback to static data
-    if (!stateSlug) return null;
-    return getStateBySlug(stateSlug) || null;
-  }, [backendState, stateSlug]);
+    // Return static data immediately (non-blocking)
+    return staticData;
+  }, [backendState, staticData]);
 
   return {
     stateData,

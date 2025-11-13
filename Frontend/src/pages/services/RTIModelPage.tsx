@@ -524,6 +524,9 @@ export const RTIModelPage: React.FC = () => {
                             style={{ objectFit: 'contain' }}
                             draggable="false"
                             loading="lazy"
+                            width="800"
+                            height="600"
+                            decoding="async"
                           />
                         </div>
                       )}
