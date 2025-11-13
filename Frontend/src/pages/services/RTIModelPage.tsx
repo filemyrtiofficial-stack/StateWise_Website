@@ -97,7 +97,7 @@ export const RTIModelPage: React.FC = () => {
       // Import API services
       const { rtiApplicationsAPI, servicesAPI, statesAPI, convertConsultationFormToAPI } = await import('../../services/api');
 
-      // Comprehensive frontend validation before submission
+      // Comprehensive frontend validation before submission - only name, email, and mobile are mandatory
       const validationErrors: string[] = [];
 
       if (!data.fullName || data.fullName.trim().length < 2) {
@@ -112,17 +112,7 @@ export const RTIModelPage: React.FC = () => {
         validationErrors.push('Valid 10-digit mobile number is required');
       }
 
-      if (!data.rtiQuery || data.rtiQuery.trim().length < 10) {
-        validationErrors.push('RTI query must be at least 10 characters');
-      }
-
-      if (!data.address || data.address.trim().length < 10) {
-        validationErrors.push('Address must be at least 10 characters');
-      }
-
-      if (!data.pincode || !/^\d{6}$/.test(data.pincode)) {
-        validationErrors.push('Valid 6-digit pincode is required');
-      }
+      // All other fields (rtiQuery, address, pincode) are optional - no validation needed
 
       if (validationErrors.length > 0) {
         throw new Error(`Validation failed:\n${validationErrors.join('\n')}`);

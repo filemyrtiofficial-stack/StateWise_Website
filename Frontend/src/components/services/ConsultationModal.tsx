@@ -130,74 +130,71 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
               </div>
             </div>
 
-            {/* RTI Query */}
+            {/* RTI Query - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                RTI Query / Information Request <span className="text-red-500">*</span>
+                RTI Query / Information Request <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
-                placeholder="Enter your RTI Query / Information Request here"
-                value={formData.rtiQuery}
+                placeholder="Enter your RTI Query / Information Request here (optional)"
+                value={formData.rtiQuery || ''}
                 onChange={(e) => onFieldChange('rtiQuery', e.target.value)}
                 rows={3}
                 className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.rtiQuery ? 'border-red-500' : 'border-gray-300'
                   }`}
-                required
                 aria-invalid={!!errors.rtiQuery}
               />
               <div className="flex justify-between items-center mt-1">
                 {errors.rtiQuery ? (
                   <p className="text-xs text-red-500">{errors.rtiQuery}</p>
                 ) : (
-                  <p className="text-xs text-gray-500">Minimum 10 characters required</p>
+                  <p className="text-xs text-gray-500">Optional field</p>
                 )}
                 <p className="text-xs text-gray-400">
-                  {formData.rtiQuery.length}/5000
+                  {(formData.rtiQuery || '').length}/5000
                 </p>
               </div>
             </div>
 
-            {/* Address */}
+            {/* Address - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Address <span className="text-red-500">*</span>
+                Address <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
-                placeholder="Street Address, Building, City, State"
-                value={formData.address}
+                placeholder="Street Address, Building, City, State (optional)"
+                value={formData.address || ''}
                 onChange={(e) => onFieldChange('address', e.target.value)}
                 rows={2}
                 className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
                   }`}
-                required
                 aria-invalid={!!errors.address}
               />
               <div className="flex justify-between items-center mt-1">
                 {errors.address ? (
                   <p className="text-xs text-red-500">{errors.address}</p>
                 ) : (
-                  <p className="text-xs text-gray-500">Minimum 10 characters required</p>
+                  <p className="text-xs text-gray-500">Optional field</p>
                 )}
                 <p className="text-xs text-gray-400">
-                  {formData.address.length}/500
+                  {(formData.address || '').length}/500
                 </p>
               </div>
             </div>
 
-            {/* Pin Code */}
+            {/* Pin Code - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Pin Code <span className="text-red-500">*</span>
+                Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <input
                 type="text"
-                placeholder="Enter 6-digit pin code"
-                value={formData.pincode}
+                placeholder="Enter 6-digit pin code (optional)"
+                value={formData.pincode || ''}
                 onChange={(e) => onFieldChange('pincode', e.target.value)}
                 maxLength={6}
                 className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.pincode ? 'border-red-500' : 'border-gray-300'
                   }`}
-                required
                 aria-invalid={!!errors.pincode}
               />
               {errors.pincode && (
@@ -205,15 +202,14 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
               )}
             </div>
 
-            {/* Terms and Conditions */}
+            {/* Terms and Conditions - Optional */}
             <div className="flex items-start gap-2 p-2.5 bg-gray-50 rounded-lg border border-gray-200">
               <input
                 type="checkbox"
                 id="acceptTerms"
-                checked={formData.acceptTerms}
+                checked={formData.acceptTerms || false}
                 onChange={(e) => onFieldChange('acceptTerms', e.target.checked)}
                 className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                required
                 aria-invalid={!!errors.acceptTerms}
               />
               <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
@@ -225,7 +221,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
                   Privacy Policy
                 </a>
-                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included. <span className="text-red-500">*</span>
+                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included. <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
             </div>
             {errors.acceptTerms && (

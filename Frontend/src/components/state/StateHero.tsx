@@ -354,22 +354,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     } else if (!validatePhone(mobile)) {
       errors.mobile = 'Please enter a valid 10-digit mobile number';
     }
-
-    if (!address) {
-      errors.address = 'Address is required';
-    } else if (address.length < 10) {
-      errors.address = 'Address must be at least 10 characters';
-    }
-
-    if (!pinCode) {
-      errors.pinCode = 'Pin code is required';
-    } else if (!validatePincode(pinCode)) {
-      errors.pinCode = 'Please enter a valid 6-digit pin code';
-    }
-
-    if (!consultationForm.acceptTerms) {
-      errors.acceptTerms = 'You must accept the terms and conditions';
-    }
+    // Address, pinCode, and acceptTerms are now optional - no validation needed
 
     if (Object.keys(errors).length > 0) {
       setConsultationErrors(errors);
@@ -385,8 +370,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
         full_name: fullName,
         email: email,
         mobile: mobile,
-        address: address,
-        pincode: pinCode,
+        address: address || null, // Optional
+        pincode: pinCode || null, // Optional
         state_slug: _stateSlug || undefined,
         source: 'hero_section'
       });
@@ -682,17 +667,16 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         )}
                       </div>
 
-                      {/* Address */}
+                      {/* Address - Optional */}
                       <div>
                         <label className="block text-xs font-bold text-black mb-1">
-                          Address <span className="text-red-500">*</span>
+                          Address <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         <textarea
                           name="address"
                           value={consultationForm.address}
                           onChange={handleInputChange}
-                          required
-                          placeholder="Street Address, Building, Apartment, City, State"
+                          placeholder="Street Address, Building, Apartment, City, State (optional)"
                           rows={2}
                           className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none ${consultationErrors.address ? 'border-red-500' : 'border-gray-300'
                             }`}
@@ -702,18 +686,17 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         )}
                       </div>
 
-                      {/* Pin Code */}
+                      {/* Pin Code - Optional */}
                       <div>
                         <label className="block text-xs font-bold text-black mb-1">
-                          Pin Code <span className="text-red-500">*</span>
+                          Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         <input
                           type="text"
                           name="pinCode"
                           value={consultationForm.pinCode}
                           onChange={handleInputChange}
-                          required
-                          placeholder="Enter your pin code"
+                          placeholder="Enter your pin code (optional)"
                           maxLength={6}
                           pattern="[0-9]{6}"
                           className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
@@ -724,7 +707,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         )}
                       </div>
 
-                      {/* Terms and Conditions */}
+                      {/* Terms and Conditions - Optional */}
                       <div className={`flex items-start gap-2 p-1.5 rounded-lg border ${consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
                         }`}>
                         <input
@@ -742,10 +725,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                             }
                           }}
                           className="mt-0.5 w-3.5 h-3.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                          required
                         />
                         <label htmlFor="acceptTermsConsultation" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-red-500">*</span>
+                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                       </div>
                       {consultationErrors.acceptTerms && (

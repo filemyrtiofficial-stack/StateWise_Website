@@ -21,13 +21,14 @@ export const validateFormData = (data: {
   fullName: string;
   mobile: string;
   email: string;
-  rtiQuery: string;
-  address: string;
-  pincode: string;
-  acceptTerms: boolean;
+  rtiQuery?: string;
+  address?: string;
+  pincode?: string;
+  acceptTerms?: boolean;
 }): { isValid: boolean; errors: Record<string, string> } => {
   const errors: Record<string, string> = {};
 
+  // Only name, email, and mobile are mandatory
   if (!data.fullName.trim()) {
     errors.fullName = 'Full name is required';
   }
@@ -44,27 +45,7 @@ export const validateFormData = (data: {
     errors.email = 'Please enter a valid email address';
   }
 
-  if (!data.rtiQuery.trim()) {
-    errors.rtiQuery = 'RTI query is required';
-  } else if (data.rtiQuery.trim().length < 10) {
-    errors.rtiQuery = 'RTI query must be at least 10 characters';
-  }
-
-  if (!data.address.trim()) {
-    errors.address = 'Address is required';
-  } else if (data.address.trim().length < 10) {
-    errors.address = 'Address must be at least 10 characters';
-  }
-
-  if (!data.pincode.trim()) {
-    errors.pincode = 'Pincode is required';
-  } else if (!validatePincode(data.pincode)) {
-    errors.pincode = 'Please enter a valid 6-digit pincode';
-  }
-
-  if (!data.acceptTerms) {
-    errors.acceptTerms = 'You must accept the terms and conditions';
-  }
+  // All other fields (rtiQuery, address, pincode, acceptTerms) are optional - no validation needed
 
   return {
     isValid: Object.keys(errors).length === 0,

@@ -50,22 +50,14 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form - all fields are mandatory
+    // Validate form - only name, email, and phone are mandatory
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
     if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
     else if (!/^[6-9]\d{9}$/.test(formData.phone.replace(/\D/g, ''))) newErrors.phone = 'Invalid phone number';
-    if (!formData.pincode.trim()) newErrors.pincode = 'Pin code is required';
-    else if (!/^\d{6}$/.test(formData.pincode.trim())) newErrors.pincode = 'Pin code must be 6 digits';
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.department.trim()) newErrors.department = 'Department is required';
-    if (!formData.state.trim()) newErrors.state = 'State is required';
-    if (!formData.query.trim()) newErrors.query = 'Query is required';
-    if (!formData.urgency) newErrors.urgency = 'Urgency level is required';
-    if (!formData.preferredLanguage) newErrors.preferredLanguage = 'Preferred language is required';
-    if (!formData.acceptTerms) newErrors.acceptTerms = 'You must accept the terms and conditions';
+    // All other fields (pincode, address, department, state, query, urgency, preferredLanguage, acceptTerms) are optional
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -345,7 +337,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="pincode" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Pin Code <span className="text-red-500">*</span>
+                            Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <input
                             type="text"
@@ -354,10 +346,9 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             value={formData.pincode}
                             onChange={handleChange}
                             maxLength={6}
-                            required
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.pincode ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="110001"
+                            placeholder="110001 (optional)"
                           />
                           {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode}</p>}
                         </div>
@@ -365,18 +356,17 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="mt-4">
                         <div>
                           <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Address <span className="text-red-500">*</span>
+                            Address <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <textarea
                             id="address"
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            required
                             rows={2}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.address ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="Street Address, Building, Apartment, City, State"
+                            placeholder="Street Address, Building, Apartment, City, State (optional)"
                           />
                           {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
                         </div>
@@ -394,35 +384,33 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <label htmlFor="department" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Department / Authority <span className="text-red-500">*</span>
+                            Department / Authority <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <input
                             type="text"
                             id="department"
                             name="department"
-                            required
                             value={formData.department}
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.department ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="e.g., Telangana Police Department"
+                            placeholder="e.g., Telangana Police Department (optional)"
                           />
                           {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
                         </div>
                         <div>
                           <label htmlFor="state" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            State <span className="text-red-500">*</span>
+                            State <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <input
                             type="text"
                             id="state"
                             name="state"
-                            required
                             value={formData.state}
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.state ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="e.g., Telangana"
+                            placeholder="e.g., Telangana (optional)"
                           />
                           {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                         </div>
@@ -430,12 +418,11 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div>
                           <label htmlFor="urgency" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Urgency Level <span className="text-red-500">*</span>
+                            Urgency Level <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <select
                             id="urgency"
                             name="urgency"
-                            required
                             value={formData.urgency}
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.urgency ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
@@ -449,12 +436,11 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="preferredLanguage" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Preferred Language <span className="text-red-500">*</span>
+                            Preferred Language <span className="text-gray-500 text-xs">(Optional)</span>
                           </label>
                           <select
                             id="preferredLanguage"
                             name="preferredLanguage"
-                            required
                             value={formData.preferredLanguage}
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.preferredLanguage ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
@@ -480,18 +466,17 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       </h3>
                       <div>
                         <label htmlFor="query" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                          Describe your RTI query <span className="text-red-500">*</span>
+                          Describe your RTI query <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         <textarea
                           id="query"
                           name="query"
-                          required
                           rows={4}
                           value={formData.query}
                           onChange={handleChange}
                           className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.query ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                             }`}
-                          placeholder="Please provide detailed information about what you want to know. Be specific about the information you need from the department..."
+                          placeholder="Please provide detailed information about what you want to know. Be specific about the information you need from the department... (optional)"
                         />
                         {errors.query && <p className="text-red-500 text-xs mt-1">{errors.query}</p>}
                         <p className="text-xs text-gray-500 mt-1.5">
@@ -517,10 +502,9 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                           checked={formData.acceptTerms}
                           onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                           className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                          required
                         />
                         <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-red-500">*</span>
+                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         {errors.acceptTerms && <p className="text-red-500 text-xs mt-1">{errors.acceptTerms}</p>}
                       </div>
