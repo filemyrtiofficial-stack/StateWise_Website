@@ -23,9 +23,14 @@ const corsOptions = {
       ? (Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN])
       : [];
 
+    // In production, always allow the production frontend
+    if (config.NODE_ENV === 'production') {
+      allowedOrigins.push('https://delhi.filemyrti.com');
+    }
+
     // In development, allow localhost
     if (config.NODE_ENV === 'development') {
-      allowedOrigins.push('http://localhost:3000', 'http://127.0.0.1:3000');
+      allowedOrigins.push('http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173');
     }
 
     if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
@@ -34,9 +39,9 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: config.CORS.CREDENTIALS,
+  credentials: true, // Always allow credentials in production
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
 };
 
