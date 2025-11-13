@@ -577,9 +577,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
             {/* Right Column - Consultation Form (1/3 width) */}
             <div className="lg:col-span-1">
-              <div className="bg-white border-2 border-black rounded-lg shadow-lg p-3 sm:p-4 lg:sticky lg:top-4 min-h-[400px] flex flex-col">
+              <div className="bg-white border-2 border-black rounded-lg shadow-lg p-2 sm:p-3 lg:sticky lg:top-4 min-h-[350px] flex flex-col overflow-hidden">
                 {/* Call Us Phone Number - At the top */}
-                <div className="flex items-center gap-2 mb-2 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center gap-2 mb-1.5 p-1 bg-gray-50 rounded-lg border border-gray-200">
                   <svg className="w-4 h-4 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
@@ -594,17 +594,17 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
                 {consultationStatus === 'idle' || consultationStatus === 'submitting' ? (
                   <>
-                    <h3 className="text-lg sm:text-xl font-bold text-black mb-1 pb-1 border-b-2 border-black">
-                      Get a free Micro Consultation now!
+                    <h3 className="text-base sm:text-lg font-bold text-black mb-0.5 pb-0.5 border-b-2 border-black">
+                      Book Your Free Micro Consultation!
                     </h3>
-                    <p className="text-xs sm:text-sm text-black mb-2">
-                      Let the FileMyRTI Team help you in exercising your Legal Rights.
+                    <p className="text-xs text-black mb-1.5">
+                      The FileMyRTI team is here to help you take the first step toward asserting your legal rights.
                     </p>
 
-                    <form onSubmit={handleConsultationSubmit} className="space-y-2 flex-1">
+                    <form onSubmit={handleConsultationSubmit} className="space-y-1.5 flex-1">
                       {/* Full Name */}
                       <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-xs font-bold text-black mb-0.5">
                           Full Name <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -614,7 +614,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your full name"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
                         {consultationErrors.fullName && (
@@ -624,7 +624,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
                       {/* Email Address */}
                       <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-xs font-bold text-black mb-0.5">
                           Email Address <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -634,7 +634,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your email"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.email ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.email ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
                         {consultationErrors.email && (
@@ -644,7 +644,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
                       {/* Mobile Number */}
                       <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-xs font-bold text-black mb-0.5">
                           Mobile Number <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -655,7 +655,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           required
                           placeholder="Enter your mobile number"
                           maxLength={10}
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
                         {consultationErrors.mobile && (
@@ -665,7 +665,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
                       {/* Address - Optional */}
                       <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-xs font-bold text-black mb-0.5">
                           Address <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         <textarea
@@ -673,8 +673,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           value={consultationForm.address}
                           onChange={handleInputChange}
                           placeholder="Street Address, Building, Apartment, City, State (optional)"
-                          rows={2}
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none ${consultationErrors.address ? 'border-red-500' : 'border-gray-300'
+                          rows={1}
+                          className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs resize-none ${consultationErrors.address ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
                         {consultationErrors.address && (
@@ -684,7 +684,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
                       {/* Pin Code - Optional */}
                       <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-xs font-bold text-black mb-0.5">
                           Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
                         </label>
                         <input
@@ -695,7 +695,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           placeholder="Enter your pin code (optional)"
                           maxLength={6}
                           pattern="[0-9]{6}"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
                         {consultationErrors.pinCode && (
@@ -704,7 +704,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       </div>
 
                       {/* Terms and Conditions - Optional */}
-                      <div className={`flex items-start gap-2 p-1.5 rounded-lg border ${consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
+                      <div className={`flex items-start gap-1.5 p-1 rounded-lg border ${consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
                         }`}>
                         <input
                           type="checkbox"
@@ -739,7 +739,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       <button
                         type="submit"
                         disabled={consultationStatus === 'submitting'}
-                        className="w-full px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
                       >
                         {consultationStatus === 'submitting' ? (
                           <>

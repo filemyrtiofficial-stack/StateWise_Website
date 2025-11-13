@@ -363,7 +363,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            rows={2}
+                            rows={1}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.address ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
                             placeholder="Street Address, Building, Apartment, City, State (optional)"
@@ -471,7 +471,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         <textarea
                           id="query"
                           name="query"
-                          rows={4}
+                          rows={2}
                           value={formData.query}
                           onChange={handleChange}
                           className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.query ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'

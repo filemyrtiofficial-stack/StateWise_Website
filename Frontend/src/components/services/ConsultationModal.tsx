@@ -45,7 +45,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
       aria-labelledby="modal-title"
     >
       <div
-        className="bg-white rounded-lg shadow-2xl max-w-md w-full p-4 sm:p-5 relative max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-lg shadow-2xl max-w-md w-full p-3 sm:p-4 relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -60,16 +60,16 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
         </button>
 
         {/* Title */}
-        <h2 id="modal-title" className="text-xl font-bold text-gray-900 mb-4">
+        <h2 id="modal-title" className="text-lg font-bold text-gray-900 mb-2">
           Book Your Consultation
         </h2>
 
         {/* Form */}
         <form onSubmit={onSubmit}>
-          <div className="space-y-3 mb-4">
+          <div className="space-y-2 mb-3">
             {/* Full Name */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                 Full Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -77,7 +77,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 placeholder="Enter your full name"
                 value={formData.fullName}
                 onChange={(e) => onFieldChange('fullName', e.target.value)}
-                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.fullName ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.fullName ? 'border-red-500' : 'border-gray-300'
                   }`}
                 required
                 aria-invalid={!!errors.fullName}
@@ -93,7 +93,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {/* Mobile and Email in Grid */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                   Mobile <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -101,7 +101,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                   placeholder="Enter mobile number"
                   value={formData.mobile}
                   onChange={(e) => onFieldChange('mobile', e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.mobile ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.mobile ? 'border-red-500' : 'border-gray-300'
                     }`}
                   required
                   aria-invalid={!!errors.mobile}
@@ -111,7 +111,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 )}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -119,7 +119,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                   placeholder="Enter email address"
                   value={formData.email}
                   onChange={(e) => onFieldChange('email', e.target.value)}
-                  className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                   required
                   aria-invalid={!!errors.email}
@@ -132,15 +132,15 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* RTI Query - Optional */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                 RTI Query / Information Request <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
                 placeholder="Enter your RTI Query / Information Request here (optional)"
                 value={formData.rtiQuery || ''}
                 onChange={(e) => onFieldChange('rtiQuery', e.target.value)}
-                rows={3}
-                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.rtiQuery ? 'border-red-500' : 'border-gray-300'
+                rows={2}
+                className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.rtiQuery ? 'border-red-500' : 'border-gray-300'
                   }`}
                 aria-invalid={!!errors.rtiQuery}
               />
@@ -158,15 +158,15 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* Address - Optional */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                 Address <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
                 placeholder="Street Address, Building, City, State (optional)"
                 value={formData.address || ''}
                 onChange={(e) => onFieldChange('address', e.target.value)}
-                rows={2}
-                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
+                rows={1}
+                className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
                   }`}
                 aria-invalid={!!errors.address}
               />
@@ -184,7 +184,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
 
             {/* Pin Code - Optional */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                 Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <input
@@ -193,7 +193,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 value={formData.pincode || ''}
                 onChange={(e) => onFieldChange('pincode', e.target.value)}
                 maxLength={6}
-                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.pincode ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.pincode ? 'border-red-500' : 'border-gray-300'
                   }`}
                 aria-invalid={!!errors.pincode}
               />
@@ -203,7 +203,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             </div>
 
             {/* Terms and Conditions - Optional */}
-            <div className="flex items-start gap-2 p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex items-start gap-1.5 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
               <input
                 type="checkbox"
                 id="acceptTerms"
@@ -240,7 +240,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors mb-3 text-sm disabled:cursor-not-allowed"
+            className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-1.5 px-3 rounded-lg transition-colors mb-2 text-xs disabled:cursor-not-allowed"
           >
             {paymentStatus === 'creating_order' && 'Creating payment order...'}
             {paymentStatus === 'processing' && 'Processing payment...'}
