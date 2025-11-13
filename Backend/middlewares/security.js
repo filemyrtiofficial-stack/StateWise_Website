@@ -83,38 +83,41 @@ const corsOptions = {
  */
 const consultationCorsOptions = {
   origin: (origin, callback) => {
-    // Always allow the production frontend
-    if (!origin || origin === 'https://delhi.filemyrti.com' || origin === 'https://www.delhi.filemyrti.com') {
-      return callback(null, true);
+    if (!origin) return callback(null, true); // allow curl, Postman, etc.
+
+    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
+
+    const allowedOrigins = [];
+
+    // add env origins
+    if (config.CORS.ORIGIN) {
+      const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
+      envOrigins.forEach(o => allowedOrigins.push(o.toLowerCase().replace(/\/$/, '')));
     }
 
-    // In development, allow localhost
+    // production frontend
+    if (config.NODE_ENV === 'production') {
+      allowedOrigins.push('https://delhi.filemyrti.com', 'https://www.delhi.filemyrti.com');
+    }
+
+    // development localhost
     if (config.NODE_ENV === 'development') {
-      const devOrigins = [
+      allowedOrigins.push(
         'http://localhost:3000',
         'http://127.0.0.1:3000',
         'http://localhost:5173',
         'http://127.0.0.1:5173'
-      ];
-      if (devOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+      );
     }
 
-    // Allow if from environment variable
-    if (config.CORS.ORIGIN) {
-      const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
-      if (envOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-    }
+    // Check if normalized origin matches any allowed origin
+    const isAllowed = allowedOrigins.some(o => normalizedOrigin === o);
 
-    // In production, allow any origin containing the domain
-    if (config.NODE_ENV === 'production' && origin && origin.includes('delhi.filemyrti.com')) {
-      return callback(null, true);
-    }
+    if (isAllowed) return callback(null, true);
 
-    callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
+    const logger = require('../utils/logger');
+    logger.warn(`CORS rejected: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
+    return callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
   },
   credentials: true,
   optionsSuccessStatus: 200,
