@@ -53,5 +53,26 @@ export default {
     // Disable unused features to reduce CSS size
     preflight: true,
   },
+  // Remove unused CSS more aggressively
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: [
+      "./index.html",
+      "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    safelist: [
+      'animate-spin',
+      'bg-primary-600',
+      'text-primary-600',
+      'h-16',
+      'bg-white',
+    ],
+    // Remove unused keyframes and animations
+    defaultExtractor: (content) => {
+      const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [];
+      const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]/g) || [];
+      return broadMatches.concat(innerMatches);
+    },
+  },
 }
 

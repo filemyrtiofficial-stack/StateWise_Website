@@ -55,7 +55,8 @@ export const StatePage: React.FC = () => {
   }
 
   // If state not found, show proper 404 with navigation
-  if (!deferredStateData) {
+  // Use stateData for the check, deferredStateData might be null initially
+  if (!stateData) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
@@ -83,15 +84,18 @@ export const StatePage: React.FC = () => {
     );
   }
 
+  // Use stateData for rendering (deferredStateData might be null initially)
+  const dataToUse = deferredStateData || stateData;
+
   // Render appropriate hero component based on design theme
   const renderHero = () => {
-    return <StateHero hero={deferredStateData.hero} stateName={deferredStateData.name} stateSlug={deferredStateData.slug} />;
+    return <StateHero hero={dataToUse.hero} stateName={dataToUse.name} stateSlug={dataToUse.slug} />;
   };
 
-  // SEO Metadata - use deferred value to reduce blocking
-  const pageTitle = `File RTI Online in ${deferredStateData.name} - FileMyRTI`;
-  const pageDescription = deferredStateData.hero.subtitle || `File RTI applications online in ${deferredStateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
-  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://${deferredStateData.slug}.filemyrti.com`;
+  // SEO Metadata - use current data
+  const pageTitle = `File RTI Online in ${dataToUse.name} - FileMyRTI`;
+  const pageDescription = dataToUse.hero.subtitle || `File RTI applications online in ${dataToUse.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://${dataToUse.slug}.filemyrti.com`;
   const ogImage = `https://filemyrti.com/src/assets/icons/logo.webp`;
 
   // Structured Data (JSON-LD)
@@ -107,10 +111,10 @@ export const StatePage: React.FC = () => {
     },
     "areaServed": {
       "@type": "State",
-      "name": deferredStateData.name
+      "name": dataToUse.name
     },
     "description": pageDescription,
-    "name": `RTI Filing Service in ${deferredStateData.name}`
+    "name": `RTI Filing Service in ${dataToUse.name}`
   };
 
   const breadcrumbStructuredData = {
@@ -126,16 +130,16 @@ export const StatePage: React.FC = () => {
       {
         "@type": "ListItem",
         "position": 2,
-        "name": `RTI in ${deferredStateData.name}`,
+        "name": `RTI in ${dataToUse.name}`,
         "item": canonicalUrl
       }
     ]
   };
 
-  const faqStructuredData = deferredStateData.faqs && deferredStateData.faqs.length > 0 ? {
+  const faqStructuredData = dataToUse.faqs && dataToUse.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": deferredStateData.faqs.map((faq: any) => ({
+    "mainEntity": dataToUse.faqs.map((faq: any) => ({
       "@type": "Question",
       "name": faq.question || faq.q,
       "acceptedAnswer": {
@@ -150,7 +154,7 @@ export const StatePage: React.FC = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`RTI, ${deferredStateData.name}, Right to Information, File RTI Online, ${deferredStateData.name} RTI, RTI Act 2005, ${deferredStateData.name} government information, RTI filing ${deferredStateData.name}, RTI application ${deferredStateData.name}, ${deferredStateData.name} RTI commission`} />
+        <meta name="keywords" content={`RTI, ${dataToUse.name}, Right to Information, File RTI Online, ${dataToUse.name} RTI, RTI Act 2005, ${dataToUse.name} government information, RTI filing ${dataToUse.name}, RTI application ${dataToUse.name}, ${dataToUse.name} RTI commission`} />
         <meta name="author" content="FileMyRTI" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
@@ -192,32 +196,34 @@ export const StatePage: React.FC = () => {
           </Suspense>
         </header>
         <main className="flex-grow" role="main" aria-label="Main content">
-          <Suspense fallback={<ComponentLoader />}>
+          {/* Hero section - critical for LCP, load first */}
+          <Suspense fallback={<div className="min-h-[400px] bg-gray-50" data-loading />}>
             {renderHero()}
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
-            <StateDepartments stateName={deferredStateData.name} />
+          {/* Below-the-fold content - lazy load with minimal placeholders */}
+          <Suspense fallback={<div className="min-h-[300px]" />}>
+            <StateDepartments stateName={dataToUse.name} />
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
-            <StateProcess process={deferredStateData.process} />
+          <Suspense fallback={<div className="min-h-[300px]" />}>
+            <StateProcess process={dataToUse.process} />
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
+          <Suspense fallback={<div className="min-h-[300px]" />}>
             <AboutFileMyRTI />
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
+          <Suspense fallback={<div className="min-h-[300px]" />}>
             <RTIByDepartment />
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
-            <StateFAQ faqs={deferredStateData.faqs} />
+          <Suspense fallback={<div className="min-h-[300px]" />}>
+            <StateFAQ faqs={dataToUse.faqs} />
           </Suspense>
 
-          <Suspense fallback={<ComponentLoader />}>
-            <StateCTA ctaText={deferredStateData.hero.cta} stateName={deferredStateData.name} />
+          <Suspense fallback={<div className="min-h-[200px]" />}>
+            <StateCTA ctaText={dataToUse.hero.cta} stateName={dataToUse.name} />
           </Suspense>
         </main>
         <footer role="contentinfo">

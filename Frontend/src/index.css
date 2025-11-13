@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font display optimization */
-@font-face {
-  font-family: system-ui;
-  font-display: swap;
-}
+/* Font display optimization - use system fonts for instant rendering */
+/* No external fonts loaded - using system fonts for best performance */
 
 @layer base {
   html {

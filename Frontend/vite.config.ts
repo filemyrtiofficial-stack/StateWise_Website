@@ -16,50 +16,68 @@ export default defineConfig({
   build: {
     // Enable code splitting
     rollupOptions: {
+      // Reduce bundle size with aggressive tree shaking
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
       output: {
         manualChunks: (id) => {
           // Split node_modules into separate chunks for better caching
           if (id.includes('node_modules')) {
-            if (id.includes('react') && !id.includes('react-dom')) {
-              return 'react';
+            // Core React libraries - most critical
+            if (id.includes('react') && !id.includes('react-dom') && !id.includes('react-router')) {
+              return 'react-core';
             }
             if (id.includes('react-dom')) {
               return 'react-dom';
             }
+            // Router - separate chunk
             if (id.includes('react-router')) {
               return 'react-router';
             }
+            // Helmet - separate chunk
             if (id.includes('react-helmet')) {
               return 'helmet-vendor';
             }
-            // Split large libraries
+            // Icons - separate chunk (usually not critical)
             if (id.includes('@heroicons') || id.includes('lucide')) {
               return 'icons-vendor';
             }
+            // Other vendor code
             return 'vendor';
           }
           // Split large components into separate chunks for better progressive loading
+          // Hero component - critical for LCP
           if (id.includes('/components/state/StateHero')) {
             return 'state-hero';
           }
+          // Other state components
           if (id.includes('/components/state/')) {
             return 'state-components';
           }
+          // Navbar - critical for initial render
           if (id.includes('/components/common/Navbar')) {
             return 'navbar';
           }
+          // Footer - less critical, can load later
           if (id.includes('/components/common/Footer')) {
             return 'footer';
           }
+          // Other common components
           if (id.includes('/components/common/')) {
             return 'common-components';
           }
+          // Service components
           if (id.includes('/components/services/')) {
             return 'service-components';
           }
+          // Service pages
           if (id.includes('/pages/services/')) {
             return 'service-pages';
           }
+          // Other pages
           if (id.includes('/pages/')) {
             return 'pages';
           }
@@ -83,8 +101,8 @@ export default defineConfig({
         },
       },
     },
-    // Optimize chunk size - increased limit for better splitting
-    chunkSizeWarningLimit: 500,
+    // Optimize chunk size - smaller chunks for better loading
+    chunkSizeWarningLimit: 300,
     // Enable minification (esbuild is faster than terser)
     minify: 'esbuild',
     // Remove console.log in production
@@ -95,13 +113,14 @@ export default defineConfig({
       minifyIdentifiers: true,
       minifySyntax: true,
       minifyWhitespace: true,
+      target: 'es2015', // Target modern browsers
     },
     // Enable source maps for production debugging (optional)
     sourcemap: false,
     // Enable CSS code splitting
     cssCodeSplit: true,
     // Optimize assets - reduce inline limit for better caching
-    assetsInlineLimit: 2048, // Inline assets smaller than 2kb
+    assetsInlineLimit: 1024, // Inline assets smaller than 1kb only
     // Report compressed size
     reportCompressedSize: false, // Faster builds
     // Target modern browsers for smaller bundle
@@ -109,6 +128,9 @@ export default defineConfig({
     // Optimize CSS
     css: {
       devSourcemap: false,
+      postcss: {
+        // Optimize CSS output
+      },
     },
   },
   // Optimize dependencies
@@ -116,10 +138,6 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom', 'react-helmet-async'],
     // Exclude from optimization
     exclude: [],
-  },
-  // CSS optimization
-  css: {
-    devSourcemap: false,
   },
 })
 
