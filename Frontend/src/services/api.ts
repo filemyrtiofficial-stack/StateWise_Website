@@ -184,8 +184,8 @@ export const consultationsAPI = {
     full_name: string;
     email: string;
     mobile: string;
-    address: string;
-    pincode: string;
+    address?: string | null;
+    pincode?: string | null;
     state_slug?: string;
     source?: string;
   }) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, memo, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StateHero as StateHeroData } from '../../data/states';
+import { AppointmentModal } from './AppointmentModal';
 // Lazy load non-critical components to improve LCP
 const PublicAuthoritiesList = lazy(() => import('./PublicAuthoritiesList').then(m => ({ default: m.PublicAuthoritiesList })));
 import SOFIcon from '../../assets/images/SOFIcon.webp';
@@ -194,6 +195,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
   const [consultationErrorMessage, setConsultationErrorMessage] = useState<string>('');
   const [callbackStatus, setCallbackStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [callbackError, setCallbackError] = useState<string>('');
+  const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
 
   const rtiModels = [
     {
@@ -551,13 +553,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     </div>
                   )}
                   <button
-                    onClick={() => {
-                      // Handle Book Appointment
-                      // TODO: Add navigation or modal for appointment booking
-                      if (import.meta.env.DEV) {
-                        console.log('Book Appointment clicked');
-                      }
-                    }}
+                    onClick={() => setIsAppointmentModalOpen(true)}
                     className="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -910,6 +906,13 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           </div>
         </div>
       </section>
+
+      {/* Appointment Modal */}
+      <AppointmentModal
+        isOpen={isAppointmentModalOpen}
+        onClose={() => setIsAppointmentModalOpen(false)}
+        stateSlug={_stateSlug}
+      />
     </>
   );
 };
