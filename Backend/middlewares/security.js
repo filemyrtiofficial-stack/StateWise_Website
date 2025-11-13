@@ -1,6 +1,6 @@
 /**
  * Security Middlewares
- * Applies security best practices
+ * Production-ready CORS, Helmet, rate limiting, and XSS protection
  */
 
 const helmet = require('helmet');
@@ -8,42 +8,38 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const xss = require('xss-clean');
 const config = require('../config/env');
+const logger = require('../utils/logger');
 
 /**
- * CORS configuration for all routes
+ * Normalize origin helper
+ */
+const normalizeOrigin = (origin) => origin.toLowerCase().replace(/\/$/, '');
+
+/**
+ * General CORS configuration
  */
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
-    if (!origin) {
-      return callback(null, true);
-    }
+    if (!origin) return callback(null, true); // Allow curl/Postman
 
-    // Normalize origin (remove trailing slash, convert to lowercase)
-    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
+    const normalized = normalizeOrigin(origin);
 
-    // Build allowed origins list
     const allowedOrigins = [];
 
-    // Add origins from environment variable
+    // Add environment origins
     if (config.CORS.ORIGIN) {
       const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
-      envOrigins.forEach(envOrigin => {
-        if (envOrigin) {
-          allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
-        }
+      envOrigins.forEach(o => {
+        if (o) allowedOrigins.push(normalizeOrigin(o));
       });
     }
 
-    // In production, always allow the production frontend
+    // Production frontend
     if (config.NODE_ENV === 'production') {
-      allowedOrigins.push(
-        'https://delhi.filemyrti.com',
-        'https://www.delhi.filemyrti.com'
-      );
+      allowedOrigins.push('https://delhi.filemyrti.com', 'https://www.delhi.filemyrti.com');
     }
 
-    // In development, allow localhost
+    // Development localhost
     if (config.NODE_ENV === 'development') {
       allowedOrigins.push(
         'http://localhost:3000',
@@ -53,22 +49,13 @@ const corsOptions = {
       );
     }
 
-    // Check if origin is allowed
-    const isAllowed = allowedOrigins.some(allowed =>
-      allowed === normalizedOrigin
-    );
-
-    // In production, also allow if origin contains the production domain
-    const isProductionDomain = config.NODE_ENV === 'production' &&
-      normalizedOrigin.includes('delhi.filemyrti.com');
-
-    if (isAllowed || isProductionDomain) {
-      callback(null, true);
-    } else {
-      const logger = require('../utils/logger');
-      logger.warn(`CORS rejected: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
-      callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
+    // Allow exact match or subdomain of production
+    if (allowedOrigins.includes(normalized) || normalized.endsWith('.delhi.filemyrti.com')) {
+      return callback(null, true);
     }
+
+    logger.warn(`CORS rejected: Origin "${origin}" not allowed`);
+    return callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
   },
   credentials: true,
   optionsSuccessStatus: 200,
@@ -78,66 +65,24 @@ const corsOptions = {
 };
 
 /**
- * CORS configuration specifically for public consultation routes
- * This ensures proper CORS handling for /api/v1/consultations/public
+ * CORS specifically for /consultations/public
+ * Handles preflight and production origin
  */
 const consultationCorsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
-    if (!origin) {
+    if (!origin) return callback(null, true);
+
+    const normalized = normalizeOrigin(origin);
+    const allowedOrigins = [
+      'https://delhi.filemyrti.com',
+      'https://www.delhi.filemyrti.com'
+    ];
+
+    if (allowedOrigins.includes(normalized) || normalized.endsWith('.delhi.filemyrti.com')) {
       return callback(null, true);
     }
 
-    // Normalize origin (remove trailing slash, convert to lowercase)
-    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
-
-    // Build allowed origins list
-    const allowedOrigins = [];
-
-    // Add origins from environment variable
-    if (config.CORS.ORIGIN) {
-      const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
-      envOrigins.forEach(envOrigin => {
-        if (envOrigin) {
-          allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
-        }
-      });
-    }
-
-    // In production, always allow the production frontend (with and without www)
-    if (config.NODE_ENV === 'production') {
-      allowedOrigins.push(
-        'https://delhi.filemyrti.com',
-        'https://www.delhi.filemyrti.com'
-      );
-    }
-
-    // In development, allow localhost
-    if (config.NODE_ENV === 'development') {
-      allowedOrigins.push(
-        'http://localhost:3000',
-        'http://127.0.0.1:3000',
-        'http://localhost:5173',
-        'http://127.0.0.1:5173'
-      );
-    }
-
-    // Check if normalized origin matches any allowed origin
-    const isAllowed = allowedOrigins.some(allowed =>
-      allowed === normalizedOrigin
-    );
-
-    // In production, also allow if origin contains the production domain (fallback)
-    const isProductionDomain = config.NODE_ENV === 'production' &&
-      normalizedOrigin.includes('delhi.filemyrti.com');
-
-    if (isAllowed || isProductionDomain) {
-      return callback(null, true);
-    }
-
-    // Log rejection for debugging
-    const logger = require('../utils/logger');
-    logger.warn(`CORS rejected for consultations: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
+    logger.warn(`CORS rejected for consultations: Origin "${origin}"`);
     return callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
   },
   credentials: true,
@@ -160,10 +105,7 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => {
-    // Skip rate limiting for health checks
-    return req.path === '/health';
-  },
+  skip: (req) => req.path === '/health',
   handler: (req, res) => {
     res.status(429).json({
       success: false,
@@ -195,7 +137,7 @@ const authLimiter = rateLimit({
 });
 
 /**
- * Helmet configuration with production-ready settings
+ * Helmet configuration
  */
 const helmetConfig = helmet({
   contentSecurityPolicy: config.NODE_ENV === 'production' ? {
@@ -209,7 +151,7 @@ const helmetConfig = helmet({
       objectSrc: ["'none'"],
       upgradeInsecureRequests: []
     }
-  } : false, // Disable CSP in development for easier debugging
+  } : false,
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: { policy: "cross-origin" },
   hsts: {
@@ -230,4 +172,3 @@ module.exports = {
   helmet: helmetConfig,
   xss: xss()
 };
-

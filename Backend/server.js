@@ -11,7 +11,7 @@ const compression = require('compression');
 const config = require('./config/env');
 const { testConnection, closePool } = require('./config/database');
 const { errorHandler, notFound } = require('./middlewares/errorHandler');
-const { cors, limiter, helmet, xss } = require('./middlewares/security');
+const { cors, limiter, helmet, xss, consultationCors } = require('./middlewares/security');
 const { sanitize } = require('./middlewares/sanitize');
 const logger = require('./utils/logger');
 
@@ -25,10 +25,10 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Security middlewares
-app.use(helmet);
-app.use(cors);
-app.use(xss);
-app.use(sanitize); // Sanitize all input
+app.use(helmet);           // Helmet security headers
+app.use(cors);             // CORS for all routes
+app.use(xss);              // XSS protection
+app.use(sanitize);         // Sanitize all input
 
 // Compression middleware
 app.use(compression());
@@ -65,7 +65,14 @@ if (config.NODE_ENV === 'development') {
 // Rate limiting
 app.use('/api/', limiter);
 
-// Routes
+// Preflight handling for consultation route
+app.options('/api/v1/consultations/public', consultationCors);
+
+// Use consultationCors specifically on the public consultation route
+const consultationController = require('./controllers/consultationController');
+app.post('/api/v1/consultations/public', consultationCors, consultationController.createConsultation);
+
+// Use other routes
 app.use(routes);
 
 // 404 handler
@@ -111,7 +118,6 @@ const startServer = async () => {
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   logger.error('Unhandled Promise Rejection:', err);
-  // Close server & exit process
   process.exit(1);
 });
 
@@ -156,4 +162,3 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 startServer();
 
 module.exports = app;
-
