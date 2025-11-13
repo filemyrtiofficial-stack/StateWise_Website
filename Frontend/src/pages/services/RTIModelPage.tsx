@@ -22,7 +22,8 @@ import { PaymentSuccessModal } from '../../components/services/PaymentSuccessMod
 import { useRTIService } from '../../hooks/useRTIService';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
 import { usePayment } from '../../hooks/usePayment';
-import { SERVICE_IMAGES, SERVICE_IMAGES_X } from '../../constants/services';
+import { useVideoLazyLoad } from '../../hooks/useVideoLazyLoad';
+import { SERVICE_IMAGES, SERVICE_IMAGES_X, YOUTUBE_VIDEO_CONFIG } from '../../constants/services';
 import { generateServiceStructuredData, generateBreadcrumbStructuredData, generateFAQStructuredData, generateCanonicalUrl, generatePageTitle, generateMetaKeywords } from '../../utils/seo';
 import { FAQ } from '../../types/services';
 
@@ -80,6 +81,7 @@ export const RTIModelPage: React.FC = () => {
     resetForm
   } = useConsultationForm();
   const { paymentState, initiatePayment, resetPayment } = usePayment();
+  const { shouldLoadVideo, videoRef } = useVideoLazyLoad();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -400,7 +402,7 @@ export const RTIModelPage: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
-        {/* Sidebar */}
+        {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}
         <ServiceSidebar model={model} onCTAClick={handleCTAClick} />
 
         {/* Navbar - Responsive */}
@@ -440,6 +442,63 @@ export const RTIModelPage: React.FC = () => {
               ]}
             />
 
+            {/* Service Hero - Appears first on small devices */}
+            <div className="md:hidden container-responsive max-w-7xl mx-auto px-4 md:px-6 pt-4">
+              <ServiceHero model={model} onCTAClick={handleCTAClick} />
+            </div>
+
+            {/* Mobile Sidebar - Appears as second section on small devices */}
+            <div className="md:hidden container-responsive max-w-7xl mx-auto px-4 md:px-6 pt-4">
+              <div className="bg-gradient-to-br from-primary-600 to-primary-800 text-white rounded-lg p-4 mb-6 transition-all duration-300">
+                {/* What Will You Get - Mobile */}
+                <div className="mb-4">
+                  <h4 className="text-base font-bold text-white mb-3">What Will You Get:</h4>
+                  <ul className="space-y-2">
+                    {model.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <svg className="w-4 h-4 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-xs text-white leading-relaxed">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Video Section - Mobile */}
+                <div ref={videoRef} className="mb-4 bg-white rounded-lg shadow-lg overflow-hidden">
+                  <div className="relative w-full bg-black rounded-lg" style={{ paddingBottom: '56.25%' }}>
+                    {shouldLoadVideo ? (
+                      <iframe
+                        className="absolute top-0 left-0 w-full h-full rounded-lg"
+                        src={YOUTUBE_VIDEO_CONFIG.embedUrl}
+                        title="RTI Service Video"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
+                        <div className="text-white text-sm">Loading video...</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* CTA Button - Mobile */}
+                <button
+                  onClick={handleCTAClick}
+                  className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  {model.buttonText}
+                </button>
+              </div>
+            </div>
+
             {/* Main Content */}
             <article className="container-responsive max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8" itemScope itemType="https://schema.org/Service">
               <section className="pb-6 md:pb-12">
@@ -447,8 +506,10 @@ export const RTIModelPage: React.FC = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
                     {/* Main Content */}
                     <div className="lg:col-span-4">
-                      {/* Service Hero */}
-                      <ServiceHero model={model} onCTAClick={handleCTAClick} />
+                      {/* Service Hero - Hidden on mobile (shown above) */}
+                      <div className="hidden md:block">
+                        <ServiceHero model={model} onCTAClick={handleCTAClick} />
+                      </div>
 
                       {/* Service Features */}
                       <ServiceFeatures />

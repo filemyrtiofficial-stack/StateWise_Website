@@ -39,19 +39,19 @@ export const ServiceHero: React.FC<ServiceHeroProps> = React.memo(({ model, onCT
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div>
+      <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
+        <div className="flex-shrink-0">
           <span className="text-sm text-gray-500 line-through">₹ {model.originalPrice.toLocaleString()}.00</span>
           <span className="ml-3 text-2xl font-bold text-primary-600">₹ {model.price.toLocaleString()}.00</span>
         </div>
         <button
           onClick={onCTAClick}
-          className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
+          className="w-full md:w-auto bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white px-6 py-3.5 md:py-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95 md:active:scale-100"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
           </svg>
-          {model.buttonText}
+          <span className="whitespace-nowrap">{model.buttonText}</span>
         </button>
       </div>
     </div>

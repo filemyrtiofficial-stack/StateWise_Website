@@ -22,13 +22,11 @@ const routes = require('./routes');
 const app = express();
 
 // Trust proxy (for rate limiting behind reverse proxy)
-// This ensures req.ip and req.origin are correct when behind Nginx
 app.set('trust proxy', 1);
 
-// Security middlewares (order matters!)
-// CORS must come before other middlewares that might interfere
-app.use(cors); // CORS first to handle preflight requests
-app.use(helmet); // Helmet after CORS
+// Security middlewares
+app.use(helmet);
+app.use(cors);
 app.use(xss);
 app.use(sanitize); // Sanitize all input
 

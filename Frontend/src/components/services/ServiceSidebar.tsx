@@ -110,8 +110,8 @@ export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model
         </div>
       </div>
 
-      {/* Mobile Sidebar - Appears below first section */}
-      <div className="md:hidden bg-gradient-to-br from-primary-600 to-primary-800 text-white rounded-lg p-4 mb-6 transition-all duration-300">
+      {/* Mobile Sidebar - Hidden (now rendered in main content area for proper ordering) */}
+      <div className="hidden bg-gradient-to-br from-primary-600 to-primary-800 text-white rounded-lg p-4 mb-6 transition-all duration-300">
         {/* What Will You Get - Mobile */}
         <div className="mb-4">
           <h4 className="text-base font-bold text-white mb-3">What Will You Get:</h4>
