@@ -19,7 +19,6 @@ export const useStateData = (stateSlug: string): {
   }, [stateSlug]);
 
   const [backendState, setBackendState] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Start with false since we have static data
   const [error, setError] = useState<string | null>(null);
 
   // Fetch state from backend (non-blocking, enhance with API data)
@@ -72,7 +71,7 @@ export const useStateData = (stateSlug: string): {
 
   return {
     stateData,
-    isLoading,
+    isLoading: false, // Always false since we use static data immediately
     error
   };
 };
