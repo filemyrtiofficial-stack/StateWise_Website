@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, startTransition, useDeferredValue } from 'react';
+import React, { lazy, Suspense, useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useStateData } from '../hooks/useStateData';
 import { LazyChatbot } from '../components/common/LazyChatbot';
