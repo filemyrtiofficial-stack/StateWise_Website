@@ -23,10 +23,10 @@ export interface ConsultationFormData {
   fullName: string;
   mobile: string;
   email: string;
-  rtiQuery: string;
-  address: string;
-  pincode: string;
-  acceptTerms: boolean;
+  rtiQuery?: string;
+  address?: string;
+  pincode?: string;
+  acceptTerms?: boolean;
 }
 
 export interface FAQ {
