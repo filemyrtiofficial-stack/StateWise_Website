@@ -1,21 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Aggressive content scanning to reduce CSS size
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  // Enable JIT mode for faster builds and smaller CSS
-  mode: 'jit',
-  // Remove unused styles in production
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
-    ],
-    // Safelist any dynamic classes that might be missed
-    safelist: [],
-  },
+  // Safelist only essential dynamic classes
+  safelist: [
+    'animate-spin',
+    'bg-primary-600',
+    'text-primary-600',
+  ],
   theme: {
     extend: {
       maxWidth: {

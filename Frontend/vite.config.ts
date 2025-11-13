@@ -69,7 +69,7 @@ export default defineConfig({
       },
     },
     // Optimize chunk size - increased limit for better splitting
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 500,
     // Enable minification (esbuild is faster than terser)
     minify: 'esbuild',
     // Remove console.log in production
@@ -77,17 +77,24 @@ export default defineConfig({
       drop: ['console', 'debugger'],
       legalComments: 'none', // Remove comments
       treeShaking: true, // Enable tree shaking
+      minifyIdentifiers: true,
+      minifySyntax: true,
+      minifyWhitespace: true,
     },
     // Enable source maps for production debugging (optional)
     sourcemap: false,
     // Enable CSS code splitting
     cssCodeSplit: true,
     // Optimize assets - reduce inline limit for better caching
-    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
+    assetsInlineLimit: 2048, // Inline assets smaller than 2kb
     // Report compressed size
     reportCompressedSize: false, // Faster builds
     // Target modern browsers for smaller bundle
     target: 'es2015',
+    // Optimize CSS
+    css: {
+      devSourcemap: false,
+    },
   },
   // Optimize dependencies
   optimizeDeps: {
