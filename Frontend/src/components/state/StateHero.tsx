@@ -319,10 +319,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     return emailRegex.test(email);
   };
 
-  const validatePincode = (pincode: string): boolean => {
-    return /^\d{6}$/.test(pincode);
-  };
-
   const handleConsultationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setConsultationErrors({});

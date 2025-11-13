@@ -223,9 +223,9 @@ export const rtiApplicationsAPI = {
     full_name: string;
     mobile: string;
     email: string;
-    rti_query: string;
-    address: string;
-    pincode: string;
+    rti_query?: string | null;
+    address?: string | null;
+    pincode?: string | null;
     payment_id?: string;
     order_id?: string;
   }) => {
@@ -337,9 +337,9 @@ export const convertConsultationFormToAPI = (
     full_name: formData.fullName,
     mobile: formData.mobile,
     email: formData.email,
-    rti_query: formData.rtiQuery,
-    address: formData.address,
-    pincode: formData.pincode
+    rti_query: formData.rtiQuery || null,
+    address: formData.address || null,
+    pincode: formData.pincode || null
   };
 };
 
