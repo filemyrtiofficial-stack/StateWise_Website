@@ -195,8 +195,16 @@ export const StatePage: React.FC = () => {
           </Suspense>
         </header>
         <main className="flex-grow" role="main" aria-label="Main content">
-          {/* Hero section - critical for LCP, load first */}
-          <Suspense fallback={<div className="min-h-[400px] bg-gray-50" data-loading />}>
+          {/* Hero section - critical for LCP, prioritize loading */}
+          <Suspense fallback={
+            <div className="bg-gray-50 pt-12 pb-12" data-loading>
+              <div className="container-responsive max-w-7xl mx-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight">
+                  Empowering every voice with clarity, rights, and legal transparency.
+                </h1>
+              </div>
+            </div>
+          }>
             {renderHero()}
           </Suspense>
 

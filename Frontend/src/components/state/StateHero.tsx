@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StateHero as StateHeroData } from '../../data/states';
-import { PublicAuthoritiesList } from './PublicAuthoritiesList';
+// Lazy load non-critical components to improve LCP
+const PublicAuthoritiesList = lazy(() => import('./PublicAuthoritiesList').then(m => ({ default: m.PublicAuthoritiesList })));
 import SOFIcon from '../../assets/images/SOFIcon.webp';
 import AnonyIcon from '../../assets/images/AnonyIcon.webp';
 import FirstIcon from '../../assets/images/FirstIcon.webp';
@@ -262,7 +263,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     setCallbackError('');
 
     const phone = callbackPhone.trim();
-    
+
     if (!phone) {
       setCallbackError('Please enter your mobile number');
       return;
@@ -400,7 +401,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
         console.error('❌ Failed to submit consultation:', error);
       }
       setConsultationStatus('error');
-      
+
       // Extract error message
       let errorMessage = 'Failed to submit consultation. Please try again.';
       if (error instanceof Error) {
@@ -454,9 +455,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12">
             {/* Left Column - Main Content (2/3 width) */}
             <div className="lg:col-span-2 space-y-4 sm:space-y-5">
-              {/* Main Headline */}
+              {/* Main Headline - Critical for LCP, render immediately */}
               <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight" style={{ contentVisibility: 'auto' }}>
                   Empowering every voice with clarity, rights, and legal transparency.
                 </h1>
               </div>
@@ -487,9 +488,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           placeholder="Mobile Number"
                           required
                           disabled={callbackStatus === 'submitting'}
-                          className={`w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed ${
-                            callbackError ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed ${callbackError ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {callbackError && (
                           <p className="text-xs text-red-600 mt-1">{callbackError}</p>
@@ -591,7 +591,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                   <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
                     What People Are Saying
                   </h2>
-                  <TestimonialsCarousel />
+                  <Suspense fallback={<div className="min-h-[200px]" />}>
+                    <TestimonialsCarousel />
+                  </Suspense>
                 </div>
               </div>
             </div>
@@ -635,9 +637,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your full name"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
-                            consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {consultationErrors.fullName && (
                           <p className="text-xs text-red-600 mt-0.5">{consultationErrors.fullName}</p>
@@ -656,9 +657,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           onChange={handleInputChange}
                           required
                           placeholder="Enter your email"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
-                            consultationErrors.email ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.email ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {consultationErrors.email && (
                           <p className="text-xs text-red-600 mt-0.5">{consultationErrors.email}</p>
@@ -678,9 +678,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           required
                           placeholder="Enter your mobile number"
                           maxLength={10}
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
-                            consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {consultationErrors.mobile && (
                           <p className="text-xs text-red-600 mt-0.5">{consultationErrors.mobile}</p>
@@ -699,9 +698,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           required
                           placeholder="Street Address, Building, Apartment, City, State"
                           rows={2}
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none ${
-                            consultationErrors.address ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm resize-none ${consultationErrors.address ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {consultationErrors.address && (
                           <p className="text-xs text-red-600 mt-0.5">{consultationErrors.address}</p>
@@ -722,9 +720,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           placeholder="Enter your pin code"
                           maxLength={6}
                           pattern="[0-9]{6}"
-                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${
-                            consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
-                          }`}
+                          className={`w-full px-3 py-1.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm ${consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         />
                         {consultationErrors.pinCode && (
                           <p className="text-xs text-red-600 mt-0.5">{consultationErrors.pinCode}</p>
@@ -732,9 +729,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       </div>
 
                       {/* Terms and Conditions */}
-                      <div className={`flex items-start gap-2 p-1.5 rounded-lg border ${
-                        consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
-                      }`}>
+                      <div className={`flex items-start gap-2 p-1.5 rounded-lg border ${consultationErrors.acceptTerms ? 'bg-red-50 border-red-300' : 'bg-gray-50 border-gray-200'
+                        }`}>
                         <input
                           type="checkbox"
                           id="acceptTermsConsultation"
@@ -853,7 +849,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
             {/* Left Column - List of Public Authorities */}
             <div className="flex flex-col h-full">
               <div className="flex-1 flex items-stretch">
-                <PublicAuthoritiesList stateName={stateName} />
+                <Suspense fallback={<div className="min-h-[400px] bg-white rounded-lg" />}>
+                  <PublicAuthoritiesList stateName={stateName} />
+                </Suspense>
               </div>
             </div>
 
@@ -879,6 +877,10 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     <div className="mb-3 flex flex-col items-center -mx-3 sm:-mx-4 -mt-3 sm:-mt-4">
                       <img
                         src={model.icon}
+                        loading="lazy"
+                        decoding="async"
+                        width="48"
+                        height="48"
                         alt={model.name}
                         className="w-full h-auto object-contain"
                       />
