@@ -19,27 +19,62 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    const allowedOrigins = config.CORS.ORIGIN
-      ? (Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN])
-      : [];
+    // Normalize origin (remove trailing slash, convert to lowercase for comparison)
+    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
 
-    // In production, always allow the production frontend
+    // Build allowed origins list
+    const allowedOrigins = [];
+
+    // Add origins from environment variable
+    if (config.CORS.ORIGIN) {
+      const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
+      envOrigins.forEach(envOrigin => {
+        allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
+      });
+    }
+
+    // In production, always allow the production frontend (with and without www)
     if (config.NODE_ENV === 'production') {
-      allowedOrigins.push('https://delhi.filemyrti.com');
+      allowedOrigins.push(
+        'https://delhi.filemyrti.com',
+        'https://www.delhi.filemyrti.com'
+      );
     }
 
     // In development, allow localhost
     if (config.NODE_ENV === 'development') {
-      allowedOrigins.push('http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173');
+      allowedOrigins.push(
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:5173',
+        'http://127.0.0.1:5173'
+      );
     }
 
-    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+    // Check if origin is allowed (case-insensitive, trailing slash insensitive)
+    const isAllowed = allowedOrigins.some(allowed =>
+      allowed.toLowerCase().replace(/\/$/, '') === normalizedOrigin
+    );
+
+    // In production, also check if origin contains the production domain (more permissive)
+    let isProductionDomain = false;
+    if (config.NODE_ENV === 'production') {
+      isProductionDomain = normalizedOrigin.includes('delhi.filemyrti.com');
+    }
+
+    // Log for debugging in production
+    if (config.NODE_ENV === 'production' && !isAllowed && !isProductionDomain) {
+      const logger = require('../utils/logger');
+      logger.warn(`CORS: Origin not allowed - ${origin}. Allowed origins: ${allowedOrigins.join(', ')}`);
+    }
+
+    if (isAllowed || isProductionDomain || allowedOrigins.length === 0) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
     }
   },
-  credentials: true, // Always allow credentials in production
+  credentials: true, // Always allow credentials
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
