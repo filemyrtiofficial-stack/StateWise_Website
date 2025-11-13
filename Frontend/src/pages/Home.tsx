@@ -16,8 +16,7 @@ const StateCTA = lazy(() => import('../components/state/StateCTA').then(m => ({ 
 const AboutFileMyRTI = lazy(() => import('../components/common/AboutFileMyRTI').then(m => ({ default: m.AboutFileMyRTI })));
 const RTIByDepartment = lazy(() => import('../components/common/RTIByDepartment').then(m => ({ default: m.RTIByDepartment })));
 
-// Lightweight loading placeholder
-const ComponentLoader = () => <div className="min-h-[200px]" />;
+// ComponentLoader removed - using inline placeholders for better performance
 
 export const Home: React.FC = () => {
   // Default to Delhi for home page - always ensure we have data

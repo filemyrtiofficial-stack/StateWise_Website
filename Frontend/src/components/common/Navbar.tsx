@@ -124,7 +124,7 @@ const NavbarComponent: React.FC = () => {
                   alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service"
                   className="h-8 w-auto"
                   loading="eager"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   width="120"
                   height="32"
                   decoding="async"
