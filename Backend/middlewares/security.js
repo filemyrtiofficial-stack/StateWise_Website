@@ -83,24 +83,36 @@ const corsOptions = {
  */
 const consultationCorsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow curl, Postman, etc.
+    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
+    if (!origin) {
+      return callback(null, true);
+    }
 
+    // Normalize origin (remove trailing slash, convert to lowercase)
     const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
 
+    // Build allowed origins list
     const allowedOrigins = [];
 
-    // add env origins
+    // Add origins from environment variable
     if (config.CORS.ORIGIN) {
       const envOrigins = Array.isArray(config.CORS.ORIGIN) ? config.CORS.ORIGIN : [config.CORS.ORIGIN];
-      envOrigins.forEach(o => allowedOrigins.push(o.toLowerCase().replace(/\/$/, '')));
+      envOrigins.forEach(envOrigin => {
+        if (envOrigin) {
+          allowedOrigins.push(envOrigin.toLowerCase().replace(/\/$/, ''));
+        }
+      });
     }
 
-    // production frontend
+    // In production, always allow the production frontend (with and without www)
     if (config.NODE_ENV === 'production') {
-      allowedOrigins.push('https://delhi.filemyrti.com', 'https://www.delhi.filemyrti.com');
+      allowedOrigins.push(
+        'https://delhi.filemyrti.com',
+        'https://www.delhi.filemyrti.com'
+      );
     }
 
-    // development localhost
+    // In development, allow localhost
     if (config.NODE_ENV === 'development') {
       allowedOrigins.push(
         'http://localhost:3000',
@@ -111,12 +123,21 @@ const consultationCorsOptions = {
     }
 
     // Check if normalized origin matches any allowed origin
-    const isAllowed = allowedOrigins.some(o => normalizedOrigin === o);
+    const isAllowed = allowedOrigins.some(allowed =>
+      allowed === normalizedOrigin
+    );
 
-    if (isAllowed) return callback(null, true);
+    // In production, also allow if origin contains the production domain (fallback)
+    const isProductionDomain = config.NODE_ENV === 'production' &&
+      normalizedOrigin.includes('delhi.filemyrti.com');
 
+    if (isAllowed || isProductionDomain) {
+      return callback(null, true);
+    }
+
+    // Log rejection for debugging
     const logger = require('../utils/logger');
-    logger.warn(`CORS rejected: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
+    logger.warn(`CORS rejected for consultations: Origin "${origin}" not in allowed list: [${allowedOrigins.join(', ')}]`);
     return callback(new Error(`Not allowed by CORS. Origin: ${origin}`));
   },
   credentials: true,

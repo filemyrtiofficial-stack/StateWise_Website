@@ -22,10 +22,11 @@ class State {
   }
 
   /**
-   * Find state by slug
+   * Find state by slug (case-insensitive)
    */
   static async findBySlug(slug) {
-    const sql = 'SELECT * FROM states WHERE slug = ?';
+    // Use LOWER() for case-insensitive comparison
+    const sql = 'SELECT * FROM states WHERE LOWER(slug) = LOWER(?)';
     const results = await query(sql, [slug]);
     return results[0] || null;
   }

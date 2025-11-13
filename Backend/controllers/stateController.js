@@ -26,13 +26,25 @@ const getStateBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const state = await State.findBySlug(slug);
+    // Normalize slug (trim and lowercase for consistency)
+    const normalizedSlug = slug ? slug.trim().toLowerCase() : '';
+
+    if (!normalizedSlug) {
+      return sendError(res, 'State slug is required', 400);
+    }
+
+    logger.debug(`Looking up state with slug: ${normalizedSlug}`);
+
+    const state = await State.findBySlug(normalizedSlug);
     if (!state) {
+      logger.warn(`State not found with slug: ${normalizedSlug}`);
       return sendError(res, 'State not found', 404);
     }
 
+    logger.debug(`State found: ${state.name} (${state.slug})`);
     return sendSuccess(res, 'State retrieved successfully', state);
   } catch (error) {
+    logger.error(`Error fetching state by slug: ${error.message}`, { error, slug: req.params.slug });
     next(error);
   }
 };
