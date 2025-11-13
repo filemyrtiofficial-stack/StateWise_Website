@@ -42,12 +42,25 @@ export const useStateData = (stateSlug: string): {
       }
     };
 
-    // Delay API call slightly to prioritize initial render
-    const timer = setTimeout(() => {
-      fetchState();
-    }, 100);
-
-    return () => clearTimeout(timer);
+    // Delay API call to prioritize initial render and reduce TBT
+    // Use requestIdleCallback if available, otherwise setTimeout
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleCallbackId = (window as any).requestIdleCallback(() => {
+        fetchState();
+      }, { timeout: 1000 });
+      return () => {
+        if (idleCallbackId && 'cancelIdleCallback' in window) {
+          (window as any).cancelIdleCallback(idleCallbackId);
+        }
+      };
+    } else {
+      const timeoutId = setTimeout(() => {
+        fetchState();
+      }, 200);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
   }, [stateSlug]);
 
   // Use backend state if available, otherwise use static data (always available)

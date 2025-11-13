@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, startTransition, useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useStateData } from '../hooks/useStateData';
 import { LazyChatbot } from '../components/common/LazyChatbot';
@@ -22,6 +22,9 @@ const ComponentLoader = () => <div className="min-h-[200px]" />;
 export const Home: React.FC = () => {
   // Default to Delhi for home page - always ensure we have data
   const { stateData, isLoading } = useStateData('delhi');
+
+  // Defer non-critical state updates to reduce TBT
+  const deferredStateData = useDeferredValue(stateData);
 
   // Show minimal loading state only if no static data available
   if (isLoading && !stateData) {
@@ -47,7 +50,7 @@ export const Home: React.FC = () => {
   }
 
   // Fallback if stateData is null (shouldn't happen with static data)
-  if (!stateData) {
+  if (!deferredStateData) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
@@ -71,16 +74,16 @@ export const Home: React.FC = () => {
 
   // Render appropriate hero component based on design theme
   const renderHero = () => {
-    return <StateHero hero={stateData.hero} stateName={stateData.name} stateSlug={stateData.slug} />;
+    return <StateHero hero={deferredStateData.hero} stateName={deferredStateData.name} stateSlug={deferredStateData.slug} />;
   };
 
-  // SEO Metadata
-  const pageTitle = `File RTI Online in ${stateData.name} - FileMyRTI`;
-  const pageDescription = stateData.hero.subtitle || `File RTI applications online in ${stateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
+  // SEO Metadata - use deferred value to reduce blocking
+  const pageTitle = `File RTI Online in ${deferredStateData.name} - FileMyRTI`;
+  const pageDescription = deferredStateData.hero.subtitle || `File RTI applications online in ${deferredStateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
   const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://filemyrti.com/`;
   const ogImage = `https://filemyrti.com/src/assets/icons/logo.webp`;
 
-  // Structured Data (JSON-LD)
+  // Structured Data (JSON-LD) - defer to reduce TBT
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -95,13 +98,13 @@ export const Home: React.FC = () => {
     "sameAs": [],
     "areaServed": {
       "@type": "State",
-      "name": stateData.name
+      "name": deferredStateData.name
     },
     "serviceType": "RTI Filing Service",
     "offers": {
       "@type": "Offer",
       "description": "RTI Filing Services",
-      "areaServed": stateData.name
+      "areaServed": deferredStateData.name
     }
   };
 
@@ -118,7 +121,7 @@ export const Home: React.FC = () => {
       {
         "@type": "ListItem",
         "position": 2,
-        "name": `RTI in ${stateData.name}`,
+        "name": `RTI in ${deferredStateData.name}`,
         "item": canonicalUrl
       }
     ]
@@ -129,7 +132,7 @@ export const Home: React.FC = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI, RTI Act 2005, ${stateData.name} government information, RTI filing ${stateData.name}, RTI application ${stateData.name}`} />
+        <meta name="keywords" content={`RTI, ${deferredStateData.name}, Right to Information, File RTI Online, ${deferredStateData.name} RTI, RTI Act 2005, ${deferredStateData.name} government information, RTI filing ${deferredStateData.name}, RTI application ${deferredStateData.name}`} />
         <meta name="author" content="FileMyRTI" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
@@ -169,11 +172,11 @@ export const Home: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateDepartments stateName={stateData.name} />
+            <StateDepartments stateName={deferredStateData.name} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateProcess process={stateData.process} />
+            <StateProcess process={deferredStateData.process} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
@@ -185,11 +188,11 @@ export const Home: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateFAQ faqs={stateData.faqs} />
+            <StateFAQ faqs={deferredStateData.faqs} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
+            <StateCTA ctaText={deferredStateData.hero.cta} stateName={deferredStateData.name} />
           </Suspense>
         </main>
         <footer role="contentinfo">

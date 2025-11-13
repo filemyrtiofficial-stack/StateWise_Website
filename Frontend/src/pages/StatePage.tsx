@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useStateData, getStateSlugFromSubdomain } from '../hooks/useStateData';
 import { LazyChatbot } from '../components/common/LazyChatbot';
@@ -28,6 +28,9 @@ export const StatePage: React.FC = () => {
 
   const { stateData, isLoading } = useStateData(effectiveSlug);
 
+  // Defer non-critical state updates to reduce TBT
+  const deferredStateData = useDeferredValue(stateData);
+
   // Show minimal loading state only if no static data available
   if (isLoading && !stateData) {
     return (
@@ -52,7 +55,7 @@ export const StatePage: React.FC = () => {
   }
 
   // If state not found, show proper 404 with navigation
-  if (!stateData) {
+  if (!deferredStateData) {
     return (
       <>
         <div className="min-h-screen flex flex-col">
@@ -82,13 +85,13 @@ export const StatePage: React.FC = () => {
 
   // Render appropriate hero component based on design theme
   const renderHero = () => {
-    return <StateHero hero={stateData.hero} stateName={stateData.name} stateSlug={stateData.slug} />;
+    return <StateHero hero={deferredStateData.hero} stateName={deferredStateData.name} stateSlug={deferredStateData.slug} />;
   };
 
-  // SEO Metadata
-  const pageTitle = `File RTI Online in ${stateData.name} - FileMyRTI`;
-  const pageDescription = stateData.hero.subtitle || `File RTI applications online in ${stateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
-  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://${stateData.slug}.filemyrti.com`;
+  // SEO Metadata - use deferred value to reduce blocking
+  const pageTitle = `File RTI Online in ${deferredStateData.name} - FileMyRTI`;
+  const pageDescription = deferredStateData.hero.subtitle || `File RTI applications online in ${deferredStateData.name} with FileMyRTI. Expert drafting, online submission, and real-time tracking. Get government information through Right to Information Act 2005.`;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://${deferredStateData.slug}.filemyrti.com`;
   const ogImage = `https://filemyrti.com/src/assets/icons/logo.webp`;
 
   // Structured Data (JSON-LD)
@@ -104,10 +107,10 @@ export const StatePage: React.FC = () => {
     },
     "areaServed": {
       "@type": "State",
-      "name": stateData.name
+      "name": deferredStateData.name
     },
     "description": pageDescription,
-    "name": `RTI Filing Service in ${stateData.name}`
+    "name": `RTI Filing Service in ${deferredStateData.name}`
   };
 
   const breadcrumbStructuredData = {
@@ -123,16 +126,16 @@ export const StatePage: React.FC = () => {
       {
         "@type": "ListItem",
         "position": 2,
-        "name": `RTI in ${stateData.name}`,
+        "name": `RTI in ${deferredStateData.name}`,
         "item": canonicalUrl
       }
     ]
   };
 
-  const faqStructuredData = stateData.faqs && stateData.faqs.length > 0 ? {
+  const faqStructuredData = deferredStateData.faqs && deferredStateData.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": stateData.faqs.map((faq: any) => ({
+    "mainEntity": deferredStateData.faqs.map((faq: any) => ({
       "@type": "Question",
       "name": faq.question || faq.q,
       "acceptedAnswer": {
@@ -147,7 +150,7 @@ export const StatePage: React.FC = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`RTI, ${stateData.name}, Right to Information, File RTI Online, ${stateData.name} RTI, RTI Act 2005, ${stateData.name} government information, RTI filing ${stateData.name}, RTI application ${stateData.name}, ${stateData.name} RTI commission`} />
+        <meta name="keywords" content={`RTI, ${deferredStateData.name}, Right to Information, File RTI Online, ${deferredStateData.name} RTI, RTI Act 2005, ${deferredStateData.name} government information, RTI filing ${deferredStateData.name}, RTI application ${deferredStateData.name}, ${deferredStateData.name} RTI commission`} />
         <meta name="author" content="FileMyRTI" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
@@ -194,11 +197,11 @@ export const StatePage: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateDepartments stateName={stateData.name} />
+            <StateDepartments stateName={deferredStateData.name} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateProcess process={stateData.process} />
+            <StateProcess process={deferredStateData.process} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
@@ -210,11 +213,11 @@ export const StatePage: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateFAQ faqs={stateData.faqs} />
+            <StateFAQ faqs={deferredStateData.faqs} />
           </Suspense>
 
           <Suspense fallback={<ComponentLoader />}>
-            <StateCTA ctaText={stateData.hero.cta} stateName={stateData.name} />
+            <StateCTA ctaText={deferredStateData.hero.cta} stateName={deferredStateData.name} />
           </Suspense>
         </main>
         <footer role="contentinfo">

@@ -20,8 +20,11 @@ export default defineConfig({
         manualChunks: (id) => {
           // Split node_modules into separate chunks for better caching
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-core';
+            if (id.includes('react') && !id.includes('react-dom')) {
+              return 'react';
+            }
+            if (id.includes('react-dom')) {
+              return 'react-dom';
             }
             if (id.includes('react-router')) {
               return 'react-router';
@@ -35,9 +38,18 @@ export default defineConfig({
             }
             return 'vendor';
           }
-          // Split large components into separate chunks
+          // Split large components into separate chunks for better progressive loading
+          if (id.includes('/components/state/StateHero')) {
+            return 'state-hero';
+          }
           if (id.includes('/components/state/')) {
             return 'state-components';
+          }
+          if (id.includes('/components/common/Navbar')) {
+            return 'navbar';
+          }
+          if (id.includes('/components/common/Footer')) {
+            return 'footer';
           }
           if (id.includes('/components/common/')) {
             return 'common-components';
@@ -47,6 +59,9 @@ export default defineConfig({
           }
           if (id.includes('/pages/services/')) {
             return 'service-pages';
+          }
+          if (id.includes('/pages/')) {
+            return 'pages';
           }
         },
         // Optimize chunk file names
