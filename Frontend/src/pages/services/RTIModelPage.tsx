@@ -450,22 +450,7 @@ export const RTIModelPage: React.FC = () => {
             {/* Mobile Sidebar - Appears as second section on small devices */}
             <div className="md:hidden container-responsive max-w-7xl mx-auto px-4 md:px-6 pt-4">
               <div className="bg-gradient-to-br from-primary-600 to-primary-800 text-white rounded-lg p-4 mb-6 transition-all duration-300">
-                {/* What Will You Get - Mobile */}
-                <div className="mb-4">
-                  <h4 className="text-base font-bold text-white mb-3">What Will You Get:</h4>
-                  <ul className="space-y-2">
-                    {model.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <svg className="w-4 h-4 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-xs text-white leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Video Section - Mobile */}
+                {/* Video Section - Mobile (First) */}
                 <div ref={videoRef} className="mb-4 bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className="relative w-full bg-black rounded-lg" style={{ paddingBottom: '56.25%' }}>
                     {shouldLoadVideo ? (
@@ -484,6 +469,21 @@ export const RTIModelPage: React.FC = () => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                {/* What Will You Get - Mobile (Second) */}
+                <div className="mb-4">
+                  <h4 className="text-base font-bold text-white mb-3">What Will You Get:</h4>
+                  <ul className="space-y-2">
+                    {model.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <svg className="w-4 h-4 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-xs text-white leading-relaxed">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 {/* CTA Button - Mobile */}
