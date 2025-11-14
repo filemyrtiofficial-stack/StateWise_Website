@@ -130,7 +130,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {/* RTI Query - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-0.5">
-                RTI Query / Information Request <span className="text-gray-500 text-xs">(Optional)</span>
+                RTI Query / Information Request
               </label>
               <textarea
                 value={formData.rtiQuery || ''}
@@ -141,10 +141,8 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 aria-invalid={!!errors.rtiQuery}
               />
               <div className="flex justify-between items-center mt-1">
-                {errors.rtiQuery ? (
+                {errors.rtiQuery && (
                   <p className="text-xs text-red-500">{errors.rtiQuery}</p>
-                ) : (
-                  <p className="text-xs text-gray-500">Optional field</p>
                 )}
                 <p className="text-xs text-gray-400">
                   {(formData.rtiQuery || '').length}/5000
@@ -155,7 +153,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {/* Address - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-0.5">
-                Address <span className="text-gray-500 text-xs">(Optional)</span>
+                Address
               </label>
               <textarea
                 value={formData.address || ''}
@@ -166,10 +164,8 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 aria-invalid={!!errors.address}
               />
               <div className="flex justify-between items-center mt-1">
-                {errors.address ? (
+                {errors.address && (
                   <p className="text-xs text-red-500">{errors.address}</p>
-                ) : (
-                  <p className="text-xs text-gray-500">Optional field</p>
                 )}
                 <p className="text-xs text-gray-400">
                   {(formData.address || '').length}/500
@@ -180,7 +176,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {/* Pin Code - Optional */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-0.5">
-                Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
+                Pin Code
               </label>
               <input
                 type="text"
@@ -215,7 +211,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
                   Privacy Policy
                 </a>
-                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included. <span className="text-gray-500 text-xs">(Optional)</span>
+                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included.
               </label>
             </div>
             {errors.acceptTerms && (

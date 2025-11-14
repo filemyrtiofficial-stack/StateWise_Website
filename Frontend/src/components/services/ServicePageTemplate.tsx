@@ -334,7 +334,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="pincode" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
+                            Pin Code
                           </label>
                           <input
                             type="text"
@@ -352,7 +352,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="mt-4">
                         <div>
                           <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Address <span className="text-gray-500 text-xs">(Optional)</span>
+                            Address
                           </label>
                           <textarea
                             id="address"
@@ -379,7 +379,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <label htmlFor="department" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Department / Authority <span className="text-gray-500 text-xs">(Optional)</span>
+                            Department / Authority
                           </label>
                           <input
                             type="text"
@@ -394,7 +394,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="state" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            State <span className="text-gray-500 text-xs">(Optional)</span>
+                            State
                           </label>
                           <input
                             type="text"
@@ -411,7 +411,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div>
                           <label htmlFor="urgency" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Urgency Level <span className="text-gray-500 text-xs">(Optional)</span>
+                            Urgency Level
                           </label>
                           <select
                             id="urgency"
@@ -429,7 +429,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                         </div>
                         <div>
                           <label htmlFor="preferredLanguage" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Preferred Language <span className="text-gray-500 text-xs">(Optional)</span>
+                            Preferred Language
                           </label>
                           <select
                             id="preferredLanguage"
@@ -459,7 +459,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                       </h3>
                       <div>
                         <label htmlFor="query" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                          Describe your RTI query <span className="text-gray-500 text-xs">(Optional)</span>
+                          Describe your RTI query
                         </label>
                         <textarea
                           id="query"
@@ -496,7 +496,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                           className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                         />
                         <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-gray-500 text-xs">(Optional)</span>
+                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. RTI fee ₹10 included.
                         </label>
                         {errors.acceptTerms && <p className="text-red-500 text-xs mt-1">{errors.acceptTerms}</p>}
                       </div>

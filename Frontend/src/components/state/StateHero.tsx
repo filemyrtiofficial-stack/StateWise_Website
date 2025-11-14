@@ -663,7 +663,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       {/* Address - Optional */}
                       <div>
                         <label className="block text-xs font-bold text-black mb-0.5">
-                          Address <span className="text-gray-500 text-xs">(Optional)</span>
+                          Address
                         </label>
                         <textarea
                           name="address"
@@ -681,7 +681,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       {/* Pin Code - Optional */}
                       <div>
                         <label className="block text-xs font-bold text-black mb-0.5">
-                          Pin Code <span className="text-gray-500 text-xs">(Optional)</span>
+                          Pin Code
                         </label>
                         <input
                           type="text"
@@ -718,7 +718,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           className="mt-0.5 w-3.5 h-3.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                         />
                         <label htmlFor="acceptTermsConsultation" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-gray-500 text-xs">(Optional)</span>
+                          I agree to the <a href="/terms-and-conditions" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" target="_blank" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>.
                         </label>
                       </div>
                       {consultationErrors.acceptTerms && (
