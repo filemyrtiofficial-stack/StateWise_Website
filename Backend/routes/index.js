@@ -38,5 +38,17 @@ router.get('/health', (req, res) => {
   });
 });
 
+// Debug endpoint to check route paths
+router.get('/debug/path', (req, res) => {
+  res.status(200).json({
+    success: true,
+    originalUrl: req.originalUrl,
+    url: req.url,
+    path: req.path,
+    baseUrl: req.baseUrl,
+    message: 'Use this to verify the path received by backend'
+  });
+});
+
 module.exports = router;
 
