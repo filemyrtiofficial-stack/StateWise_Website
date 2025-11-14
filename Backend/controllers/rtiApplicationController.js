@@ -52,13 +52,6 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'Missing required fields: full_name, email, and mobile are required', 400);
     }
 
-    // RTI query is optional - allow empty or null
-    if (applicationData.rti_query === undefined || applicationData.rti_query === null) {
-      applicationData.rti_query = '';
-    } else {
-      applicationData.rti_query = applicationData.rti_query.trim();
-    }
-
     // Validate all required fields are present and valid
     const missingFields = [];
     if (!applicationData.service_id) missingFields.push('service_id');
@@ -80,9 +73,22 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'Full name must be between 2 and 100 characters', 400);
     }
 
-    // RTI query is optional - only validate length if provided
-    if (applicationData.rti_query && applicationData.rti_query.length > 0 && (applicationData.rti_query.length < 10 || applicationData.rti_query.length > 5000)) {
-      return sendError(res, 'RTI query must be between 10 and 5000 characters if provided', 400);
+    // RTI query is optional - normalize and validate only if provided
+    // Allow empty string, null, or undefined - no validation needed
+    if (!applicationData.rti_query || applicationData.rti_query === null || applicationData.rti_query === undefined) {
+      applicationData.rti_query = '';
+    } else {
+      const trimmedQuery = applicationData.rti_query.trim();
+      // Only validate length if query is provided and not empty
+      if (trimmedQuery.length > 0) {
+        if (trimmedQuery.length < 10 || trimmedQuery.length > 5000) {
+          return sendError(res, 'RTI query must be between 10 and 5000 characters if provided', 400);
+        }
+        applicationData.rti_query = trimmedQuery;
+      } else {
+        // Empty after trimming - set to empty string
+        applicationData.rti_query = '';
+      }
     }
 
     if (applicationData.address.length < 10 || applicationData.address.length > 500) {
