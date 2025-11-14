@@ -1,9 +1,22 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
+import { RTIDostModal } from './RTIDostModal';
 
 const ChatbotComponent: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleChatClick = useCallback(() => {
-    // Redirect to external chat URL
+    // Show RTI Dost modal first
+    setIsModalOpen(true);
+  }, []);
+
+  const handleDraft = useCallback(() => {
+    // Close modal and redirect to chat page
+    setIsModalOpen(false);
     window.open('https://chat.filemyrti.com/', '_blank', 'noopener,noreferrer');
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
   }, []);
 
   return (
@@ -17,6 +30,13 @@ const ChatbotComponent: React.FC = () => {
       >
         Chat with AI
       </button>
+
+      {/* RTI Dost Modal */}
+      <RTIDostModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onDraft={handleDraft}
+      />
     </>
   );
 };
