@@ -133,7 +133,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
-                placeholder="Enter your full name"
               />
             </div>
 
@@ -148,7 +147,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
-                  placeholder="your@email.com"
                 />
               </div>
 
@@ -162,7 +160,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
-                  placeholder="+91 9876543210"
                 />
               </div>
             </div>
@@ -184,7 +181,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                     }
                   }}
                   onFocus={() => setShowDepartmentDropdown(true)}
-                  placeholder="Search or select department..."
                   className={`w-full px-2.5 py-1.5 text-xs border rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all ${!formData.department ? 'border-gray-300' : 'border-green-300'
                     }`}
                   aria-required="true"
@@ -234,7 +230,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 onChange={(e) => setFormData({ ...formData, query: e.target.value })}
                 rows={2}
                 className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all resize-none"
-                placeholder="Describe what information you need..."
               />
             </div>
 
@@ -248,7 +243,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 rows={2}
                 className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all resize-none"
-                placeholder="Street Address, Building, Apartment, City, State"
               />
             </div>
 
@@ -263,7 +257,6 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
                 maxLength={6}
                 className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
-                placeholder="Pin Code"
               />
             </div>
 

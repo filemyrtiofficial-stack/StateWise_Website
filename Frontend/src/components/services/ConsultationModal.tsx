@@ -74,7 +74,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
               </label>
               <input
                 type="text"
-                placeholder="Enter your full name"
                 value={formData.fullName}
                 onChange={(e) => onFieldChange('fullName', e.target.value)}
                 className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.fullName ? 'border-red-500' : 'border-gray-300'
@@ -98,7 +97,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 </label>
                 <input
                   type="tel"
-                  placeholder="Enter mobile number"
                   value={formData.mobile}
                   onChange={(e) => onFieldChange('mobile', e.target.value)}
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.mobile ? 'border-red-500' : 'border-gray-300'
@@ -116,7 +114,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 </label>
                 <input
                   type="email"
-                  placeholder="Enter email address"
                   value={formData.email}
                   onChange={(e) => onFieldChange('email', e.target.value)}
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
@@ -136,7 +133,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 RTI Query / Information Request <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
-                placeholder="Enter your RTI Query / Information Request here (optional)"
                 value={formData.rtiQuery || ''}
                 onChange={(e) => onFieldChange('rtiQuery', e.target.value)}
                 rows={2}
@@ -162,7 +158,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 Address <span className="text-gray-500 text-xs">(Optional)</span>
               </label>
               <textarea
-                placeholder="Street Address, Building, City, State (optional)"
                 value={formData.address || ''}
                 onChange={(e) => onFieldChange('address', e.target.value)}
                 rows={1}
@@ -189,7 +184,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
               </label>
               <input
                 type="text"
-                placeholder="Enter 6-digit pin code (optional)"
                 value={formData.pincode || ''}
                 onChange={(e) => onFieldChange('pincode', e.target.value)}
                 maxLength={6}

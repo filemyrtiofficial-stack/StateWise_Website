@@ -291,7 +291,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="Enter your full name"
                           />
                           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -308,7 +307,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="your.email@example.com"
                           />
                           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                         </div>
@@ -330,7 +328,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                               maxLength={10}
                               className={`w-full pl-12 pr-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                                 }`}
-                              placeholder="9876543210"
                             />
                           </div>
                           {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -348,7 +345,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             maxLength={6}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.pincode ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="110001 (optional)"
                           />
                           {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode}</p>}
                         </div>
@@ -366,7 +362,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             rows={1}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.address ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="Street Address, Building, Apartment, City, State (optional)"
                           />
                           {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
                         </div>
@@ -394,7 +389,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.department ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="e.g., Telangana Police Department (optional)"
                           />
                           {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
                         </div>
@@ -410,7 +404,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             onChange={handleChange}
                             className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all ${errors.state ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                               }`}
-                            placeholder="e.g., Telangana (optional)"
                           />
                           {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                         </div>
@@ -476,7 +469,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                           onChange={handleChange}
                           className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none ${errors.query ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
                             }`}
-                          placeholder="Please provide detailed information about what you want to know. Be specific about the information you need from the department... (optional)"
                         />
                         {errors.query && <p className="text-red-500 text-xs mt-1">{errors.query}</p>}
                         <p className="text-xs text-gray-500 mt-1.5">

@@ -613,7 +613,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           value={consultationForm.fullName}
                           onChange={handleInputChange}
                           required
-                          placeholder="Enter your full name"
                           className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.fullName ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
@@ -633,7 +632,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           value={consultationForm.email}
                           onChange={handleInputChange}
                           required
-                          placeholder="Enter your email"
                           className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.email ? 'border-red-500' : 'border-gray-300'
                             }`}
                         />
@@ -653,7 +651,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           value={consultationForm.mobile}
                           onChange={handleInputChange}
                           required
-                          placeholder="Enter your mobile number"
                           maxLength={10}
                           className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.mobile ? 'border-red-500' : 'border-gray-300'
                             }`}
@@ -672,7 +669,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           name="address"
                           value={consultationForm.address}
                           onChange={handleInputChange}
-                          placeholder="Street Address, Building, Apartment, City, State (optional)"
                           rows={1}
                           className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs resize-none ${consultationErrors.address ? 'border-red-500' : 'border-gray-300'
                             }`}
@@ -692,7 +688,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                           name="pinCode"
                           value={consultationForm.pinCode}
                           onChange={handleInputChange}
-                          placeholder="Enter your pin code (optional)"
                           maxLength={6}
                           pattern="[0-9]{6}"
                           className={`w-full px-2 py-1 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-xs ${consultationErrors.pinCode ? 'border-red-500' : 'border-gray-300'

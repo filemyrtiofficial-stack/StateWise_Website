@@ -159,7 +159,6 @@ const FooterComponent: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={handleEmailChange}
-                placeholder="Your Email Address"
                 required
                 className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
               />

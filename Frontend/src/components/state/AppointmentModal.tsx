@@ -205,7 +205,6 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Enter your full name"
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                   required
@@ -227,7 +226,6 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="Enter your email address"
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                   required
@@ -249,7 +247,6 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="Enter your 10-digit mobile number"
                   maxLength={10}
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
@@ -271,7 +268,6 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                   name="rtiQuery"
                   value={formData.rtiQuery}
                   onChange={handleInputChange}
-                  placeholder="Enter your RTI query or information request (optional)"
                   rows={2}
                   className={`w-full px-2 py-1.5 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${errors.rtiQuery ? 'border-red-500' : 'border-gray-300'
                     }`}
