@@ -38,8 +38,8 @@ const corsOptions = {
     // In production, always allow the production frontend
     if (config.NODE_ENV === 'production') {
       allowedOrigins.push(
-        'https://delhi.filemyrti.com',
-        'https://www.delhi.filemyrti.com'
+        'https://rtionlinedelhi.filemyrti.com',
+        'https://www.rtionlinedelhi.filemyrti.com'
       );
     }
 
@@ -60,7 +60,7 @@ const corsOptions = {
 
     // In production, also allow if origin contains the production domain
     const isProductionDomain = config.NODE_ENV === 'production' &&
-      normalizedOrigin.includes('delhi.filemyrti.com');
+      normalizedOrigin.includes('rtionlinedelhi.filemyrti.com');
 
     if (isAllowed || isProductionDomain) {
       callback(null, true);
@@ -107,8 +107,8 @@ const consultationCorsOptions = {
     // In production, always allow the production frontend (with and without www)
     if (config.NODE_ENV === 'production') {
       allowedOrigins.push(
-        'https://delhi.filemyrti.com',
-        'https://www.delhi.filemyrti.com'
+        'https://rtionlinedelhi.filemyrti.com',
+        'https://www.rtionlinedelhi.filemyrti.com'
       );
     }
 
@@ -129,7 +129,7 @@ const consultationCorsOptions = {
 
     // In production, also allow if origin contains the production domain (fallback)
     const isProductionDomain = config.NODE_ENV === 'production' &&
-      normalizedOrigin.includes('delhi.filemyrti.com');
+      normalizedOrigin.includes('rtionlinedelhi.filemyrti.com');
 
     if (isAllowed || isProductionDomain) {
       return callback(null, true);

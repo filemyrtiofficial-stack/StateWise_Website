@@ -11,7 +11,7 @@ const getApiBaseUrl = () => {
   }
   const isProduction = process.env.NODE_ENV === 'production';
   return isProduction
-    ? 'https://delhi.filemyrti.com/api/v1'
+    ? 'https://rtionlinedelhi.filemyrti.com/api/v1'
     : 'http://localhost:5000/api/v1';
 };
 
@@ -21,7 +21,7 @@ const getBaseUrl = () => {
   }
   const isProduction = process.env.NODE_ENV === 'production';
   return isProduction
-    ? 'https://delhi.filemyrti.com'
+    ? 'https://rtionlinedelhi.filemyrti.com'
     : 'http://localhost:5000';
 };
 
