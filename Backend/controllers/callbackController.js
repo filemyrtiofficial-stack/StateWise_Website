@@ -6,6 +6,7 @@
 const CallbackRequest = require('../models/CallbackRequest');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
+const { sendFormSubmissionEmail } = require('../utils/email');
 
 /**
  * Create a new callback request (Public - no auth required)
@@ -35,6 +36,16 @@ const createCallbackRequest = async (req, res, next) => {
     logger.info(`✅ Callback request created: ID ${callbackId}, Phone: ${cleanPhone}`);
 
     const callbackRequest = await CallbackRequest.findById(callbackId);
+
+    // Send email notification (non-blocking)
+    sendFormSubmissionEmail('Callback Request', {
+      'Phone': cleanPhone,
+      'State Slug': state_slug || '(Not provided)',
+      'Submission ID': callbackId
+    }).catch(err => {
+      // Already logged in email service, just ensure it doesn't break anything
+      logger.error('Email notification error (non-critical):', err.message);
+    });
 
     return sendSuccess(res, 'Callback request submitted successfully', callbackRequest, 201);
   } catch (error) {

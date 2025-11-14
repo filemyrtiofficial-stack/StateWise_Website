@@ -9,6 +9,7 @@ const Service = require('../models/Service');
 const State = require('../models/State');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
+const { sendFormSubmissionEmail } = require('../utils/email');
 
 /**
  * Create new RTI application (Public - no auth required)
@@ -115,6 +116,24 @@ const createApplicationPublic = async (req, res, next) => {
 
     logger.info(`✅ RTI application created (public): ID ${applicationId}, Email: ${applicationData.email}, Payment ID: ${applicationData.payment_id || 'none'}`);
 
+    // Send email notification (non-blocking)
+    sendFormSubmissionEmail('RTI Application', {
+      'Application ID': applicationId,
+      'Full Name': applicationData.full_name.trim(),
+      'Email': applicationData.email.trim(),
+      'Mobile': applicationData.mobile.trim(),
+      'Service': service.name || `Service ID: ${applicationData.service_id}`,
+      'State': state.name || `State ID: ${applicationData.state_id}`,
+      'RTI Query': applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''),
+      'Address': applicationData.address.trim(),
+      'Pincode': applicationData.pincode.trim(),
+      'Payment ID': applicationData.payment_id || '(Not provided)',
+      'Order ID': applicationData.order_id || '(Not provided)'
+    }).catch(err => {
+      // Already logged in email service, just ensure it doesn't break anything
+      logger.error('Email notification error (non-critical):', err.message);
+    });
+
     return sendSuccess(res, 'RTI application created successfully', application, 201);
   } catch (error) {
     logger.error('❌ Error creating public RTI application:', {
@@ -167,10 +186,39 @@ const createApplication = async (req, res, next) => {
       user_id: req.user.id // Get from authenticated user
     };
 
+    // Get service and state names for email
+    let serviceName = `Service ID: ${applicationData.service_id}`;
+    let stateName = `State ID: ${applicationData.state_id}`;
+    try {
+      const service = await Service.findById(applicationData.service_id);
+      if (service) serviceName = service.name;
+      const state = await State.findById(applicationData.state_id);
+      if (state) stateName = state.name;
+    } catch (err) {
+      // Non-critical, continue
+    }
+
     const applicationId = await RTIApplication.create(applicationData);
     const application = await RTIApplication.findById(applicationId);
 
     logger.info(`RTI application created: ${applicationId} by user: ${req.user.id}`);
+
+    // Send email notification (non-blocking)
+    sendFormSubmissionEmail('RTI Application (Authenticated)', {
+      'Application ID': applicationId,
+      'User ID': req.user.id,
+      'Full Name': applicationData.full_name?.trim() || '(Not provided)',
+      'Email': applicationData.email?.trim() || '(Not provided)',
+      'Mobile': applicationData.mobile?.trim() || '(Not provided)',
+      'Service': serviceName,
+      'State': stateName,
+      'RTI Query': applicationData.rti_query ? (applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : '')) : '(Not provided)',
+      'Address': applicationData.address?.trim() || '(Not provided)',
+      'Pincode': applicationData.pincode?.trim() || '(Not provided)'
+    }).catch(err => {
+      // Already logged in email service, just ensure it doesn't break anything
+      logger.error('Email notification error (non-critical):', err.message);
+    });
 
     return sendSuccess(res, 'RTI application created successfully', application, 201);
   } catch (error) {

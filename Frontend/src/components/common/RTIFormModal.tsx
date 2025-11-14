@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { delhiDepartments } from '../../data/delhiDepartments';
 
 interface RTIFormModalProps {
   stateName: string;
@@ -16,6 +17,9 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
     pincode: '',
     acceptTerms: false,
   });
+  const [departmentSearch, setDepartmentSearch] = useState('');
+  const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
+  const departmentDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Show modal every 30 seconds
@@ -34,8 +38,43 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
     };
   }, []);
 
+  // Close department dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (departmentDropdownRef.current && !departmentDropdownRef.current.contains(event.target as Node)) {
+        setShowDepartmentDropdown(false);
+      }
+    };
+
+    if (showDepartmentDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDepartmentDropdown]);
+
+  // Filter departments based on search
+  const filteredDepartments = delhiDepartments.filter(dept =>
+    dept.toLowerCase().includes(departmentSearch.toLowerCase())
+  );
+
+  const handleDepartmentSelect = (dept: string) => {
+    setFormData({ ...formData, department: dept });
+    setDepartmentSearch(dept);
+    setShowDepartmentDropdown(false);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate department is selected
+    if (!formData.department || !delhiDepartments.includes(formData.department)) {
+      alert('Please select a valid department from the list.');
+      return;
+    }
+
     // Handle form submission
     console.log('Form submitted:', formData);
     alert('Thank you! We will contact you shortly.');
@@ -50,6 +89,8 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
       pincode: '',
       acceptTerms: false,
     });
+    setDepartmentSearch('');
+    setShowDepartmentDropdown(false);
   };
 
   if (!isOpen) return null;
@@ -126,23 +167,61 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
               </div>
             </div>
 
-            <div>
+            <div className="relative" ref={departmentDropdownRef}>
               <label className="block text-xs font-semibold text-gray-700 mb-0.5">
                 Department *
               </label>
-              <select
-                required
-                value={formData.department}
-                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all"
-              >
-                <option value="">Select Department</option>
-                <option value="police">Police Department</option>
-                <option value="municipal">Municipal Corporation</option>
-                <option value="revenue">Revenue Department</option>
-                <option value="education">Education Department</option>
-                <option value="other">Other</option>
-              </select>
+              <div className="relative">
+                <input
+                  type="text"
+                  required={!formData.department}
+                  value={departmentSearch}
+                  onChange={(e) => {
+                    setDepartmentSearch(e.target.value);
+                    setShowDepartmentDropdown(true);
+                    if (e.target.value !== formData.department) {
+                      setFormData({ ...formData, department: '' });
+                    }
+                  }}
+                  onFocus={() => setShowDepartmentDropdown(true)}
+                  placeholder="Search or select department..."
+                  className={`w-full px-2.5 py-1.5 text-xs border rounded-md focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-200 transition-all ${!formData.department ? 'border-gray-300' : 'border-green-300'
+                    }`}
+                  aria-required="true"
+                  aria-invalid={!formData.department}
+                />
+                <input
+                  type="hidden"
+                  name="department"
+                  value={formData.department}
+                  required
+                />
+                {showDepartmentDropdown && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto overscroll-contain">
+                    {filteredDepartments.length > 0 ? (
+                      <>
+                        {filteredDepartments.slice(0, 100).map((dept, index) => (
+                          <button
+                            key={`${dept}-${index}`}
+                            type="button"
+                            onClick={() => handleDepartmentSelect(dept)}
+                            className="w-full text-left px-3 py-2.5 text-xs hover:bg-primary-50 hover:text-primary-700 active:bg-primary-100 focus:bg-primary-50 focus:text-primary-700 focus:outline-none transition-colors touch-manipulation"
+                          >
+                            {dept}
+                          </button>
+                        ))}
+                        {filteredDepartments.length > 100 && (
+                          <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-200">
+                            Showing first 100 results. Refine your search for more specific results.
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="px-3 py-2 text-xs text-gray-500">No departments found. Try a different search term.</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>

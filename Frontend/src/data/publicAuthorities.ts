@@ -1,7 +1,14 @@
-// Comprehensive list of 3340 Public Authorities
-// This includes all major departments, corporations, boards, commissions, and public bodies
+// Comprehensive list of Public Authorities
+// For Delhi: Returns only Delhi-specific departments
+// For other states: Returns state-specific authorities
+
+import { delhiDepartments } from './delhiDepartments';
 
 export const generatePublicAuthorities = (stateName: string = 'Telangana'): string[] => {
+  // If stateName is Delhi, return ONLY the Delhi departments list
+  if (stateName.toLowerCase() === 'delhi') {
+    return delhiDepartments;
+  }
   const baseAuthorities = [
     // Core Government Departments
     `${stateName} Police Department`,

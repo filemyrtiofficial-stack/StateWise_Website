@@ -28,13 +28,33 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
   const publicAuthorities = useMemo(() => authorities || defaultAuthorities, [authorities, defaultAuthorities]);
 
   // Filter authorities based on search query
+  // For Delhi: Only show Delhi authorities, exclude any Hyderabad/Telangana entries
   const filteredAuthorities = useMemo(() => {
-    return searchQuery.trim()
-      ? publicAuthorities.filter(authority =>
-        authority.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-      : publicAuthorities;
-  }, [publicAuthorities, searchQuery]);
+    let filtered = publicAuthorities;
+    
+    // If stateName is Delhi, ensure NO Hyderabad or Telangana entries
+    if (stateName.toLowerCase() === 'delhi') {
+      filtered = filtered.filter(authority => {
+        const lowerAuth = authority.toLowerCase();
+        // Exclude any authority containing Hyderabad, Telangana, or other state names
+        return !lowerAuth.includes('hyderabad') && 
+               !lowerAuth.includes('telangana') &&
+               !lowerAuth.includes('rangareddy') &&
+               !lowerAuth.includes('warangal') &&
+               !lowerAuth.includes('karimnagar');
+      });
+    }
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(authority =>
+        authority.toLowerCase().includes(query)
+      );
+    }
+    
+    return filtered;
+  }, [publicAuthorities, searchQuery, stateName]);
 
   // Duplicate authorities for seamless infinite scroll
   const duplicatedAuthorities = useMemo(() => [...filteredAuthorities, ...filteredAuthorities], [filteredAuthorities]);
@@ -144,10 +164,10 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
 
   return (
     <div className="flex justify-center w-full">
-      <div className="w-full max-w-full sm:max-w-lg flex flex-col">
+      <div className="w-full max-w-full sm:max-w-lg lg:max-w-xl flex flex-col">
         <div
           className="bg-white border-2 border-orange-500 rounded-lg overflow-hidden shadow-xl relative flex flex-col"
-          style={{ height: '700px' }}
+          style={{ height: '600px', minHeight: '600px' }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -155,7 +175,8 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
           <div className="bg-orange-50 border-b-2 border-orange-500 px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-orange-600 break-words">List of Public Authorities</h3>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-600 break-words">List of Public Authorities</h3>
+                <p className="text-xs sm:text-sm text-orange-700 mt-0.5">Delhi Government Departments</p>
               </div>
               <div className="w-full sm:w-auto flex-shrink-0">
                 <div className="relative">
@@ -168,8 +189,8 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
                       }
                       setIsUserScrolling(false);
                     }}
-                    placeholder="Search authorities..."
-                    className="w-full sm:w-56 md:w-64 px-3 sm:px-4 py-1.5 sm:py-2 pr-8 sm:pr-10 border-2 border-orange-300 rounded-lg focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 text-xs sm:text-sm"
+                    placeholder="Search departments..."
+                    className="w-full sm:w-56 md:w-64 px-3 sm:px-4 py-2 sm:py-2.5 pr-9 sm:pr-10 border-2 border-orange-300 rounded-lg focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 text-xs sm:text-sm bg-white"
                   />
                   <button
                     type="button"
@@ -198,13 +219,12 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
             style={{
               scrollbarWidth: 'thin',
               scrollbarColor: '#f97316 #fef3c7',
-              height: 'calc(700px - 80px)',
               WebkitOverflowScrolling: 'touch',
             }}
             onWheel={() => setIsUserScrolling(true)}
           >
             <ol
-              className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 space-y-1.5 sm:space-y-2 md:space-y-3"
+              className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 space-y-2 sm:space-y-2.5 md:space-y-3"
               style={{
                 paddingLeft: '1.75rem',
                 listStyleType: 'decimal',
@@ -215,7 +235,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
               {duplicatedAuthorities.map((authority, index) => (
                 <li
                   key={`${authority}-${index}`}
-                  className="flex items-center justify-between gap-2 text-blue-600 font-medium text-xs sm:text-sm md:text-base leading-relaxed hover:text-blue-700 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-1.5 sm:py-2 text-blue-600 font-medium text-xs sm:text-sm md:text-base leading-relaxed hover:text-blue-700 transition-colors"
                   style={{
                     fontFamily: 'sans-serif',
                     marginLeft: '0.5rem',
@@ -225,10 +245,10 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
                     hyphens: 'auto'
                   }}
                 >
-                  <span className="flex-1 min-w-0 pr-2">{authority}</span>
+                  <span className="flex-1 min-w-0 pr-2 sm:pr-0">{authority}</span>
                   <button
                     onClick={() => handleApplyNow(authority)}
-                    className="flex-shrink-0 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-orange-500 hover:bg-orange-600 text-white text-[10px] sm:text-xs font-semibold rounded transition-colors whitespace-nowrap"
+                    className="flex-shrink-0 self-start sm:self-auto px-3 py-1.5 sm:px-2.5 sm:py-1 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white text-[10px] sm:text-xs font-semibold rounded transition-all whitespace-nowrap shadow-sm hover:shadow-md"
                     title={`Apply for RTI to ${authority}`}
                   >
                     Apply Now
@@ -239,8 +259,8 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
           </div>
 
           {/* Gradient fade on top and bottom */}
-          <div className="absolute top-16 sm:top-20 md:top-24 left-0 right-0 h-6 sm:h-8 md:h-10 bg-gradient-to-b from-white to-transparent pointer-events-none z-10"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-6 sm:h-8 md:h-10 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
+          <div className="absolute top-20 sm:top-24 md:top-28 left-0 right-0 h-8 sm:h-10 md:h-12 bg-gradient-to-b from-white to-transparent pointer-events-none z-10"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 md:h-12 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
         </div>
       </div>
     </div>

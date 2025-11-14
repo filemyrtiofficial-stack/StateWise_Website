@@ -819,14 +819,12 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           </div>
 
           {/* Two Column Layout - Equal Width and Height */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-start lg:items-stretch">
             {/* Left Column - List of Public Authorities */}
-            <div className="flex flex-col h-full">
-              <div className="flex-1 flex items-stretch">
-                <Suspense fallback={<div className="min-h-[400px] bg-white rounded-lg" />}>
-                  <PublicAuthoritiesList stateName={stateName} />
-                </Suspense>
-              </div>
+            <div className="flex flex-col w-full">
+              <Suspense fallback={<div className="min-h-[700px] bg-white rounded-lg border-2 border-orange-500" />}>
+                <PublicAuthoritiesList stateName={stateName} />
+              </Suspense>
             </div>
 
             {/* Right Column - RTI Models Grid */}

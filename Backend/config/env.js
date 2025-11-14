@@ -99,6 +99,17 @@ const config = {
   LOGGING: {
     LEVEL: process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'info' : 'debug'),
     FORMAT: process.env.LOG_FORMAT || (process.env.NODE_ENV === 'production' ? 'json' : 'text')
+  },
+
+  // Email (SMTP)
+  EMAIL: {
+    // Support both naming conventions: MAIL_* (existing) and SMTP_* (new)
+    SMTP_HOST: process.env.MAIL_HOST || process.env.SMTP_HOST,
+    SMTP_PORT: process.env.MAIL_PORT || process.env.SMTP_PORT || '587',
+    SMTP_SECURE: process.env.MAIL_PORT === '465' || process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT === '465' ? 'true' : 'false',
+    SMTP_USER: process.env.MAIL_USERNAME || process.env.SMTP_USER,
+    SMTP_PASSWORD: process.env.MAIL_PASSWORD || process.env.SMTP_PASSWORD,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL || process.env.MAIL_USERNAME || 'admin@filemyrti.com'
   }
 };
 
