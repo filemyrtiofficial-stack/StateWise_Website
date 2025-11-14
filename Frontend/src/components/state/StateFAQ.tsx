@@ -89,18 +89,6 @@ const StateFAQComponent: React.FC<StateFAQProps> = ({ faqs }) => {
             </div>
           ))}
         </div>
-
-        {/* Help Section */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary-50 border border-primary-200 rounded-full">
-            <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span className="text-sm md:text-base text-gray-700 font-medium">
-              Still have questions? <a href="/contact" className="text-primary-600 hover:text-primary-700 font-semibold underline">Contact us</a> for assistance
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   );
