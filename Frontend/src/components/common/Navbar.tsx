@@ -12,7 +12,7 @@ const NavbarComponent: React.FC = () => {
 
   // Check if we're on the homepage - show social media sidebar only on homepage
   // FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar only on homepage
-  const isHomepage = location.pathname === '/' || location.pathname === '/state/delhi';
+  const isHomepage = location.pathname === '/';
 
   const handleServicesMouseEnter = useCallback(() => setIsServicesOpen(true), []);
   const handleServicesMouseLeave = useCallback(() => setIsServicesOpen(false), []);
@@ -118,7 +118,7 @@ const NavbarComponent: React.FC = () => {
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
             <div className="flex items-center">
-              <Link to="/state/delhi" className="flex items-center">
+              <Link to="/" className="flex items-center">
                 <img
                   src={logo}
                   alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service"

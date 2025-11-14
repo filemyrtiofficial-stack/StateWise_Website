@@ -23,7 +23,7 @@ const FooterComponent: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-8 pb-8 border-b border-gray-600">
           {/* Left - Logo and Tagline */}
           <div className="flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-4">
-            <Link to="/state/delhi" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img
                 src={blackIcon}
                 alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service Logo"
@@ -109,7 +109,7 @@ const FooterComponent: React.FC = () => {
             <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/state/delhi" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/" className="text-white hover:text-gray-300 transition-colors text-sm">
                   File My RTI Now
                 </Link>
               </li>
