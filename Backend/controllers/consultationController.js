@@ -12,11 +12,33 @@ const logger = require('../utils/logger');
  */
 const createConsultation = async (req, res, next) => {
   try {
+    // Log incoming request for debugging
+    logger.info('Consultation submission received:', {
+      body: req.body,
+      ip: req.ip
+    });
+
     const { full_name, email, mobile, address, pincode, state_slug, source } = req.body;
 
-    // Validation
-    if (!full_name || !email || !mobile || !address || !pincode) {
-      return sendError(res, 'All required fields must be provided', 400);
+    // Log received fields for debugging
+    console.log('📥 Received consultation data:', {
+      full_name: full_name ? `${full_name.substring(0, 20)}...` : 'MISSING',
+      email: email || 'MISSING',
+      mobile: mobile || 'MISSING',
+      address: address ? `${address.substring(0, 30)}...` : 'NULL/EMPTY',
+      pincode: pincode || 'NULL/EMPTY',
+      state_slug: state_slug || 'NULL',
+      source: source || 'NULL'
+    });
+
+    // Validation - only full_name, email, and mobile are required
+    if (!full_name || !email || !mobile) {
+      console.log('❌ Validation failed - missing required fields:', {
+        has_full_name: !!full_name,
+        has_email: !!email,
+        has_mobile: !!mobile
+      });
+      return sendError(res, 'Name, email, and mobile number are required', 400);
     }
 
     // Email validation
@@ -32,13 +54,17 @@ const createConsultation = async (req, res, next) => {
       return sendError(res, 'Invalid mobile number format', 400);
     }
 
+    // Address and pincode are optional - use empty string if not provided
+    const addressValue = address ? address.trim() : '';
+    const pincodeValue = pincode ? pincode.trim() : '';
+
     // Create consultation
     const consultationId = await Consultation.create({
       full_name: full_name.trim(),
       email: email.trim().toLowerCase(),
       mobile: cleanMobile,
-      address: address.trim(),
-      pincode: pincode.trim(),
+      address: addressValue,
+      pincode: pincodeValue,
       state_slug: state_slug || null,
       source: source || 'hero_section'
     });

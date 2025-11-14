@@ -95,16 +95,30 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
       // Clean phone number (remove non-digits)
       const cleanMobile = formData.phone.replace(/\D/g, '');
 
-      // Submit to backend
-      const result = await consultationsAPI.createPublic({
+      // Prepare payload
+      const payload = {
         full_name: formData.name.trim(),
         email: formData.email.trim(),
         mobile: cleanMobile,
-        address: formData.rtiQuery.trim() || null, // Use RTI query as address, optional
-        pincode: null, // Optional
+        address: formData.rtiQuery.trim() || '', // Use RTI query as address, optional - send empty string instead of null
+        pincode: '', // Optional - send empty string instead of null
         state_slug: stateSlug || undefined,
         source: 'appointment_modal'
+      };
+
+      // Log payload before submission for debugging
+      console.log('📤 Submitting appointment form:', {
+        full_name: payload.full_name,
+        email: payload.email,
+        mobile: payload.mobile,
+        address: payload.address || '(empty)',
+        pincode: payload.pincode || '(empty)',
+        state_slug: payload.state_slug || '(none)',
+        source: payload.source
       });
+
+      // Submit to backend
+      const result = await consultationsAPI.createPublic(payload);
 
       if (result && typeof result === 'object' && 'success' in result && result.success) {
         setStatus('success');
