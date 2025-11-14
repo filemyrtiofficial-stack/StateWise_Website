@@ -43,11 +43,10 @@ const createApplicationValidator = [
     .normalizeEmail(),
 
   body('rti_query')
+    .optional({ checkFalsy: true })
     .trim()
-    .notEmpty()
-    .withMessage('RTI query is required')
-    .isLength({ min: 10, max: 5000 })
-    .withMessage('RTI query must be between 10 and 5000 characters'),
+    .isLength({ min: 0, max: 5000 })
+    .withMessage('RTI query must be between 0 and 5000 characters'),
 
   body('address')
     .trim()

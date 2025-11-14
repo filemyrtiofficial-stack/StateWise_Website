@@ -52,8 +52,11 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'Missing required fields: full_name, email, and mobile are required', 400);
     }
 
-    if (!applicationData.rti_query || applicationData.rti_query.trim() === '') {
-      return sendError(res, 'RTI query is required', 400);
+    // RTI query is optional - allow empty or null
+    if (applicationData.rti_query === undefined || applicationData.rti_query === null) {
+      applicationData.rti_query = '';
+    } else {
+      applicationData.rti_query = applicationData.rti_query.trim();
     }
 
     // Validate all required fields are present and valid
@@ -63,7 +66,7 @@ const createApplicationPublic = async (req, res, next) => {
     if (!applicationData.full_name || applicationData.full_name.trim() === '') missingFields.push('full_name');
     if (!applicationData.email || applicationData.email.trim() === '') missingFields.push('email');
     if (!applicationData.mobile || applicationData.mobile.trim() === '') missingFields.push('mobile');
-    if (!applicationData.rti_query || applicationData.rti_query.trim() === '') missingFields.push('rti_query');
+    // RTI query is optional - removed from required fields
     if (!applicationData.address || applicationData.address.trim() === '') missingFields.push('address');
     if (!applicationData.pincode || applicationData.pincode.trim() === '') missingFields.push('pincode');
 
@@ -77,8 +80,9 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'Full name must be between 2 and 100 characters', 400);
     }
 
-    if (applicationData.rti_query.length < 10 || applicationData.rti_query.length > 5000) {
-      return sendError(res, 'RTI query must be between 10 and 5000 characters', 400);
+    // RTI query is optional - only validate length if provided
+    if (applicationData.rti_query && applicationData.rti_query.length > 0 && (applicationData.rti_query.length < 10 || applicationData.rti_query.length > 5000)) {
+      return sendError(res, 'RTI query must be between 10 and 5000 characters if provided', 400);
     }
 
     if (applicationData.address.length < 10 || applicationData.address.length > 500) {
@@ -108,7 +112,7 @@ const createApplicationPublic = async (req, res, next) => {
       order_id: applicationData.order_id || 'none',
       email: applicationData.email,
       full_name_length: applicationData.full_name.length,
-      rti_query_length: applicationData.rti_query.length,
+      rti_query_length: applicationData.rti_query ? applicationData.rti_query.length : 0,
       address_length: applicationData.address.length
     });
 
@@ -125,7 +129,9 @@ const createApplicationPublic = async (req, res, next) => {
       'Mobile': applicationData.mobile.trim(),
       'Service': service.name || `Service ID: ${applicationData.service_id}`,
       'State': state.name || `State ID: ${applicationData.state_id}`,
-      'RTI Query': applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''),
+      'RTI Query': applicationData.rti_query && applicationData.rti_query.length > 0
+        ? (applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''))
+        : '(Not provided)',
       'Address': applicationData.address.trim(),
       'Pincode': applicationData.pincode.trim(),
       'Payment ID': applicationData.payment_id || '(Not provided)',
@@ -143,7 +149,9 @@ const createApplicationPublic = async (req, res, next) => {
       'Mobile': applicationData.mobile.trim(),
       'Service': service.name || `Service ID: ${applicationData.service_id}`,
       'State': state.name || `State ID: ${applicationData.state_id}`,
-      'RTI Query': applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''),
+      'RTI Query': applicationData.rti_query && applicationData.rti_query.length > 0
+        ? (applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''))
+        : '(Not provided)',
       'Address': applicationData.address.trim(),
       'Pincode': applicationData.pincode.trim(),
       'Payment ID': applicationData.payment_id || '(Not provided)',

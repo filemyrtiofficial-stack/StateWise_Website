@@ -337,7 +337,7 @@ export const convertConsultationFormToAPI = (
     full_name: formData.fullName,
     mobile: formData.mobile,
     email: formData.email,
-    rti_query: formData.rtiQuery || null,
+    rti_query: formData.rtiQuery || '', // Optional - send empty string if not provided
     address: formData.address || null,
     pincode: formData.pincode || null
   };
