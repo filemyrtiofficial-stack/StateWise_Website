@@ -18,6 +18,9 @@ const logger = require('./utils/logger');
 // Import routes
 const routes = require('./routes');
 
+// Import WhatsApp service
+const { initializeWhatsApp, closeWhatsApp } = require('./utils/whatsapp/whatsapp');
+
 // Initialize Express app
 const app = express();
 
@@ -91,6 +94,17 @@ const startServer = async () => {
       logger.info(`🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`);
       logger.info(`📍 API endpoints available at http://localhost:${config.PORT}/api/v1`);
       logger.info(`💚 Health check: http://localhost:${config.PORT}/health`);
+
+      // Initialize WhatsApp after server starts (non-blocking)
+      if (config.WHATSAPP?.NOTIFICATION_PHONE) {
+        logger.info('📱 Initializing WhatsApp notifications...');
+        initializeWhatsApp().catch(err => {
+          logger.error('❌ Failed to initialize WhatsApp:', err.message);
+          logger.warn('⚠️  WhatsApp notifications will not be available. Form submissions will still work.');
+        });
+      } else {
+        logger.info('ℹ️  WhatsApp notifications disabled (WHATSAPP_NOTIFICATION_PHONE not set)');
+      }
     });
 
     // Handle server errors
@@ -129,6 +143,9 @@ const gracefulShutdown = async (signal) => {
   if (server) {
     server.close(async () => {
       logger.info('HTTP server closed');
+
+      // Close WhatsApp connection
+      await closeWhatsApp();
 
       // Close database connections
       await closePool();

@@ -30,3 +30,8 @@ build/
 tmp/
 temp/
 
+# WhatsApp session files
+utils/whatsapp/session.json
+utils/whatsapp/browser_data/
+utils/whatsapp/.wwebjs_auth/
+

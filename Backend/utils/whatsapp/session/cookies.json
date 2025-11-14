@@ -1,0 +1,31 @@
+[
+  {
+    "name": "wa_web_lang_pref",
+    "value": "en_GB",
+    "domain": ".web.whatsapp.com",
+    "path": "/",
+    "expires": 1765534507,
+    "size": 21,
+    "httpOnly": false,
+    "secure": true,
+    "session": false,
+    "priority": "Medium",
+    "sameParty": false,
+    "sourceScheme": "Secure"
+  },
+  {
+    "name": "wa_ul",
+    "value": "ff56b881-9c5f-48b7-96f0-6f033556bae1",
+    "domain": ".web.whatsapp.com",
+    "path": "/",
+    "expires": 1770882551.070198,
+    "size": 41,
+    "httpOnly": true,
+    "secure": true,
+    "session": false,
+    "sameSite": "Lax",
+    "priority": "Medium",
+    "sameParty": false,
+    "sourceScheme": "Secure"
+  }
+]

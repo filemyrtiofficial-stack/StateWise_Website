@@ -10,6 +10,7 @@ const State = require('../models/State');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 const { sendFormSubmissionEmail } = require('../utils/email');
+const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp');
 
 /**
  * Create new RTI application (Public - no auth required)
@@ -134,6 +135,24 @@ const createApplicationPublic = async (req, res, next) => {
       logger.error('Email notification error (non-critical):', err.message);
     });
 
+    // Send WhatsApp notification (non-blocking)
+    sendFormSubmissionNotification('RTI Application', {
+      'Application ID': applicationId,
+      'Full Name': applicationData.full_name.trim(),
+      'Email': applicationData.email.trim(),
+      'Mobile': applicationData.mobile.trim(),
+      'Service': service.name || `Service ID: ${applicationData.service_id}`,
+      'State': state.name || `State ID: ${applicationData.state_id}`,
+      'RTI Query': applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : ''),
+      'Address': applicationData.address.trim(),
+      'Pincode': applicationData.pincode.trim(),
+      'Payment ID': applicationData.payment_id || '(Not provided)',
+      'Order ID': applicationData.order_id || '(Not provided)'
+    }).catch(err => {
+      // Already logged in WhatsApp service, just ensure it doesn't break anything
+      logger.error('WhatsApp notification error (non-critical):', err.message);
+    });
+
     return sendSuccess(res, 'RTI application created successfully', application, 201);
   } catch (error) {
     logger.error('❌ Error creating public RTI application:', {
@@ -218,6 +237,23 @@ const createApplication = async (req, res, next) => {
     }).catch(err => {
       // Already logged in email service, just ensure it doesn't break anything
       logger.error('Email notification error (non-critical):', err.message);
+    });
+
+    // Send WhatsApp notification (non-blocking)
+    sendFormSubmissionNotification('RTI Application (Authenticated)', {
+      'Application ID': applicationId,
+      'User ID': req.user.id,
+      'Full Name': applicationData.full_name?.trim() || '(Not provided)',
+      'Email': applicationData.email?.trim() || '(Not provided)',
+      'Mobile': applicationData.mobile?.trim() || '(Not provided)',
+      'Service': serviceName,
+      'State': stateName,
+      'RTI Query': applicationData.rti_query ? (applicationData.rti_query.substring(0, 500) + (applicationData.rti_query.length > 500 ? '...' : '')) : '(Not provided)',
+      'Address': applicationData.address?.trim() || '(Not provided)',
+      'Pincode': applicationData.pincode?.trim() || '(Not provided)'
+    }).catch(err => {
+      // Already logged in WhatsApp service, just ensure it doesn't break anything
+      logger.error('WhatsApp notification error (non-critical):', err.message);
     });
 
     return sendSuccess(res, 'RTI application created successfully', application, 201);

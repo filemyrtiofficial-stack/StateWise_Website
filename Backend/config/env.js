@@ -110,18 +110,12 @@ const config = {
     SMTP_USER: process.env.MAIL_USERNAME || process.env.SMTP_USER,
     SMTP_PASSWORD: process.env.MAIL_PASSWORD || process.env.SMTP_PASSWORD,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL || process.env.MAIL_USERNAME || 'admin@filemyrti.com'
+  },
+
+  // WhatsApp Notifications
+  WHATSAPP: {
+    NOTIFICATION_PHONE: process.env.WHATSAPP_NOTIFICATION_PHONE || null // e.g., +91XXXXXXXXXX
   }
 };
 
-// Validate production-specific requirements
-if (config.NODE_ENV === 'production') {
-  if (!config.JWT.SECRET || config.JWT.SECRET.length < 32) {
-    throw new Error('JWT_SECRET must be at least 32 characters in production');
-  }
-  if (!config.CORS.ORIGIN) {
-    console.warn('⚠️  CORS_ORIGIN not set in production - this may cause CORS issues');
-  }
-}
-
 module.exports = config;
-

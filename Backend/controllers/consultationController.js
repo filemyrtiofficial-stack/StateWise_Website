@@ -7,6 +7,7 @@ const Consultation = require('../models/Consultation');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 const { sendFormSubmissionEmail } = require('../utils/email');
+const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp');
 
 /**
  * Create a new consultation (Public - no auth required)
@@ -87,6 +88,21 @@ const createConsultation = async (req, res, next) => {
     }).catch(err => {
       // Already logged in email service, just ensure it doesn't break anything
       logger.error('Email notification error (non-critical):', err.message);
+    });
+
+    // Send WhatsApp notification (non-blocking)
+    sendFormSubmissionNotification('Consultation', {
+      'Full Name': full_name.trim(),
+      'Email': email.trim().toLowerCase(),
+      'Mobile': cleanMobile,
+      'Address': addressValue || '(Not provided)',
+      'Pincode': pincodeValue || '(Not provided)',
+      'State Slug': state_slug || '(Not provided)',
+      'Source': source || 'hero_section',
+      'Submission ID': consultationId
+    }).catch(err => {
+      // Already logged in WhatsApp service, just ensure it doesn't break anything
+      logger.error('WhatsApp notification error (non-critical):', err.message);
     });
 
     return sendSuccess(res, 'Consultation submitted successfully', consultation, 201);
