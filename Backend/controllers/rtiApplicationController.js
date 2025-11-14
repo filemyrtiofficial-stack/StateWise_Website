@@ -73,22 +73,18 @@ const createApplicationPublic = async (req, res, next) => {
       return sendError(res, 'Full name must be between 2 and 100 characters', 400);
     }
 
-    // RTI query is optional - normalize and validate only if provided
-    // Allow empty string, null, or undefined - no validation needed
+    // RTI query is optional - normalize and validate only maximum length
+    // Allow any length including 0, 1, or more characters (no minimum required)
     if (!applicationData.rti_query || applicationData.rti_query === null || applicationData.rti_query === undefined) {
       applicationData.rti_query = '';
     } else {
       const trimmedQuery = applicationData.rti_query.trim();
-      // Only validate length if query is provided and not empty
-      if (trimmedQuery.length > 0) {
-        if (trimmedQuery.length < 10 || trimmedQuery.length > 5000) {
-          return sendError(res, 'RTI query must be between 10 and 5000 characters if provided', 400);
-        }
-        applicationData.rti_query = trimmedQuery;
-      } else {
-        // Empty after trimming - set to empty string
-        applicationData.rti_query = '';
+      // Only validate maximum length (5000 characters) - no minimum required
+      if (trimmedQuery.length > 5000) {
+        return sendError(res, 'RTI query must not exceed 5000 characters', 400);
       }
+      // Accept any length including 0 or 1 character
+      applicationData.rti_query = trimmedQuery;
     }
 
     if (applicationData.address.length < 10 || applicationData.address.length > 500) {

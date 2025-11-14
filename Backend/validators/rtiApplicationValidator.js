@@ -46,13 +46,11 @@ const createApplicationValidator = [
     .optional({ checkFalsy: true, nullable: true })
     .trim()
     .custom((value) => {
-      // If value is provided and not empty, it must be between 10 and 5000 characters
-      if (value && value.length > 0) {
-        if (value.length < 10 || value.length > 5000) {
-          throw new Error('RTI query must be between 10 and 5000 characters if provided');
-        }
+      // If value is provided, it must not exceed 5000 characters (no minimum required since it's optional)
+      if (value && value.length > 5000) {
+        throw new Error('RTI query must not exceed 5000 characters');
       }
-      // If empty or not provided, it's valid (optional field)
+      // Any length including 0 is valid (optional field)
       return true;
     }),
 
