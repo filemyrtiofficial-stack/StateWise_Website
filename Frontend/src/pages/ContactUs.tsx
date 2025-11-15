@@ -76,9 +76,9 @@ export const ContactUs: React.FC = () => {
         full_name: fullName,
         email: formData.email.trim().toLowerCase(),
         mobile: cleanMobile,
-        address: formData.message.trim() || null,
-        pincode: null,
-        state_slug: null,
+        address: formData.message.trim() || undefined,
+        pincode: undefined,
+        state_slug: undefined,
         source: 'contact_page'
       };
 
