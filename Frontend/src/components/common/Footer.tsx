@@ -149,8 +149,8 @@ const FooterComponent: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/faqs" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
-                  FAQs
+                <Link to="/faq" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
+                  FAQ
                 </Link>
               </li>
             </ul>
