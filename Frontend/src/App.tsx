@@ -10,6 +10,7 @@ const StatePage = lazy(() => import('./pages/StatePage').then(module => ({ defau
 const AboutUs = lazy(() => import('./pages/AboutUs').then(module => ({ default: module.AboutUs })));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions').then(module => ({ default: module.TermsAndConditions })));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
+const Pricing = lazy(() => import('./pages/Pricing').then(module => ({ default: module.Pricing })));
 const RTIModelPage = lazy(() => import('./pages/services/RTIModelPage').then(module => ({ default: module.RTIModelPage })));
 const TestConnection = lazy(() => import('./pages/TestConnection').then(module => ({ default: module.TestConnection })));
 const NotFound = lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
@@ -37,6 +38,7 @@ function App() {
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/pricing" element={<Pricing />} />
               <Route path="/state/:stateSlug" element={<StatePage />} />
               <Route path="/services/seamless-online-filing" element={<RTIModelPage />} />
               <Route path="/services/anonymous" element={<RTIModelPage />} />
