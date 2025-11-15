@@ -3,6 +3,7 @@
  */
 
 import { ServiceImageMapping } from '../types/services';
+import razorpayImage from '../assets/images/razorpay.jpg';
 
 // Image mappings for service pages
 export const SERVICE_IMAGES: ServiceImageMapping = {
@@ -42,7 +43,7 @@ export const SEO_CONFIG = {
 
 // Payment Configuration
 export const PAYMENT_CONFIG = {
-  razorpayLogoUrl: 'https://i.postimg.cc/RWLRwrDN/razorpay.png',
+  razorpayLogoUrl: razorpayImage,
   rtiFee: 10
 };
 
