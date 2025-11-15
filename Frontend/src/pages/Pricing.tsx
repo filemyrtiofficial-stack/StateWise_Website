@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
@@ -46,7 +45,7 @@ export const Pricing: React.FC = () => {
     },
     {
       q: 'Do you offer any discounts for bulk RTI filings?',
-      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at +91 99111 00589 or email support@filemyrti.com for a custom quote.'
+      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at +91 99111 00589 or email admin@filemyrti.com for a custom quote.'
     },
     {
       q: 'What happens after I select a plan and make payment?',
@@ -119,23 +118,6 @@ export const Pricing: React.FC = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">
-          {/* Breadcrumb */}
-          <div className="bg-gray-50 border-b border-gray-200 py-4">
-            <div className="container-responsive max-w-7xl mx-auto px-4">
-              <nav className="text-sm" aria-label="Breadcrumb">
-                <ol className="flex items-center space-x-2 text-gray-600">
-                  <li>
-                    <Link to="/" className="hover:text-primary-600 transition-colors">
-                      Home
-                    </Link>
-                  </li>
-                  <li className="text-gray-400">/</li>
-                  <li className="text-gray-900 font-medium">Pricing</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-
           {/* Pricing Section */}
           <PricingSection />
 
