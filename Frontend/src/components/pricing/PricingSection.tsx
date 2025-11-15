@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ConsultationModal } from '../services/ConsultationModal';
 import { getRTIModelBySlug } from '../../data/rtiModels';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
 import { usePayment } from '../../hooks/usePayment';
 
 export const PricingSection: React.FC = () => {
-  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<'basic' | 'premium' | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
