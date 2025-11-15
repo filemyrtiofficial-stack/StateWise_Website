@@ -14,6 +14,7 @@ const { errorHandler, notFound } = require('./middlewares/errorHandler');
 const { cors, limiter, helmet, xss, consultationCors } = require('./middlewares/security');
 const { sanitize } = require('./middlewares/sanitize');
 const logger = require('./utils/logger');
+const { ensureAllTables } = require('./utils/ensureTables');
 
 // Import routes
 const routes = require('./routes');
@@ -88,6 +89,13 @@ const startServer = async () => {
       logger.error('Failed to connect to database. Exiting...');
       process.exit(1);
     }
+
+    // Ensure required tables exist (non-blocking)
+    logger.info('🔍 Checking database tables...');
+    ensureAllTables().catch(err => {
+      logger.warn('⚠️  Some tables may not have been created automatically:', err.message);
+      logger.warn('⚠️  Server will continue, but some features may not work until tables are created.');
+    });
 
     // Start listening
     server = app.listen(config.PORT, () => {

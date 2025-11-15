@@ -214,7 +214,7 @@ const FooterComponent: React.FC = () => {
                 value={email}
                 onChange={handleEmailChange}
                 required
-                placeholder="Enter your email"
+                placeholder="Your Email Address"
                 disabled={isSubmitting}
                 className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
@@ -229,7 +229,7 @@ const FooterComponent: React.FC = () => {
                 disabled={isSubmitting}
                 className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Subscribing...' : 'Sign up'}
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
           </div>
