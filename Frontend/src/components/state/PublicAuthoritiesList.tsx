@@ -31,20 +31,20 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
   // For Delhi: Only show Delhi authorities, exclude any Hyderabad/Telangana entries
   const filteredAuthorities = useMemo(() => {
     let filtered = publicAuthorities;
-    
+
     // If stateName is Delhi, ensure NO Hyderabad or Telangana entries
     if (stateName.toLowerCase() === 'delhi') {
       filtered = filtered.filter(authority => {
         const lowerAuth = authority.toLowerCase();
         // Exclude any authority containing Hyderabad, Telangana, or other state names
-        return !lowerAuth.includes('hyderabad') && 
-               !lowerAuth.includes('telangana') &&
-               !lowerAuth.includes('rangareddy') &&
-               !lowerAuth.includes('warangal') &&
-               !lowerAuth.includes('karimnagar');
+        return !lowerAuth.includes('hyderabad') &&
+          !lowerAuth.includes('telangana') &&
+          !lowerAuth.includes('rangareddy') &&
+          !lowerAuth.includes('warangal') &&
+          !lowerAuth.includes('karimnagar');
       });
     }
-    
+
     // Apply search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
@@ -52,7 +52,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
         authority.toLowerCase().includes(query)
       );
     }
-    
+
     return filtered;
   }, [publicAuthorities, searchQuery, stateName]);
 
@@ -167,7 +167,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
       <div className="w-full max-w-full sm:max-w-lg lg:max-w-xl flex flex-col">
         <div
           className="bg-white border-2 border-orange-500 rounded-lg overflow-hidden shadow-xl relative flex flex-col"
-          style={{ height: '600px', minHeight: '600px' }}
+          style={{ height: '580px', minHeight: '580px' }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >

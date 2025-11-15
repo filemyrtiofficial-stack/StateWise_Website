@@ -832,7 +832,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-start lg:items-stretch">
             {/* Left Column - List of Public Authorities */}
             <div className="flex flex-col w-full">
-              <Suspense fallback={<div className="min-h-[700px] bg-white rounded-lg border-2 border-orange-500" />}>
+              <Suspense fallback={<div className="min-h-[580px] bg-white rounded-lg border-2 border-orange-500" />}>
                 <PublicAuthoritiesList stateName={stateName} />
               </Suspense>
             </div>
@@ -874,8 +874,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     <button
                       onClick={() => navigate(model.route)}
                       className={`w-full text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95 ${model.buttonText === 'Apply Now' || model.buttonText === 'File Now' || model.buttonText === 'Start Anonymously' || model.buttonText === 'Appeal Now'
-                          ? 'bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
-                          : 'bg-blue-600 hover:bg-blue-700'
+                        ? 'bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+                        : 'bg-blue-600 hover:bg-blue-700'
                         }`}
                     >
                       {model.buttonText}

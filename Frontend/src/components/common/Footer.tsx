@@ -20,20 +20,20 @@ const FooterComponent: React.FC = () => {
     <footer className="bg-[#333333] text-white">
       <div className="container-responsive max-w-7xl mx-auto py-8 sm:py-12">
         {/* Top Section - Logo and Social Icons */}
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-8 pb-8 border-b border-gray-600">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-center gap-6 md:gap-8 pb-8 border-b border-gray-600">
           {/* Left - Logo and Tagline */}
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-4">
+          <div className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-2">
             <Link to="/" className="flex items-center">
               <img
                 src={blackIcon}
                 alt="FileMyRTI - File RTI Online | Right to Information Act 2005 | RTI Filing Service Logo"
-                className="h-10 sm:h-12 w-auto"
+                className="h-10 sm:h-12 w-auto brightness-0 invert"
                 loading="lazy"
                 width="120"
                 height="48"
               />
             </Link>
-            <p className="text-sm md:text-base text-white text-center md:text-left">
+            <p className="text-sm md:text-base text-gray-300 text-center md:text-left">
               India's Simplest Way to File RTI Online.
             </p>
           </div>
@@ -81,12 +81,13 @@ const FooterComponent: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 py-8 border-b border-gray-600">
           {/* Left Column - Contact Information */}
           <div className="space-y-4">
+            <h4 className="text-lg font-bold text-white mb-4">Contact Us</h4>
             <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-white mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-white mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <p className="text-white text-sm">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 Flat No. 202, Radhakrishna Residency, Kalyannagar Phase 3, Hyderabad - 500045.
               </p>
             </div>
@@ -94,57 +95,61 @@ const FooterComponent: React.FC = () => {
               <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <p className="text-white text-sm">+91 99111 00589</p>
+              <a href="tel:+919911100589" className="text-gray-300 hover:text-white transition-colors text-sm">
+                +91 99111 00589
+              </a>
             </div>
             <div className="flex items-center gap-3">
               <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <p className="text-white text-sm">Admin@filemyrti.com</p>
+              <a href="mailto:Admin@filemyrti.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                Admin@filemyrti.com
+              </a>
             </div>
           </div>
 
           {/* Middle Column - Quick Links */}
           <div className="space-y-4">
             <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
-                <Link to="/" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   File My RTI Now
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Services
                 </Link>
               </li>
               <li>
-                <Link to="/about-us" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/about-us" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Who We Are
                 </Link>
               </li>
               <li>
-                <Link to="/careers" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/careers" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link to="/blogs" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/blogs" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Blogs
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/pricing" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/faqs" className="text-white hover:text-gray-300 transition-colors text-sm">
+                <Link to="/faqs" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                   FAQs
                 </Link>
               </li>
@@ -160,11 +165,12 @@ const FooterComponent: React.FC = () => {
                 value={email}
                 onChange={handleEmailChange}
                 required
+                placeholder="Enter your email"
                 className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
               />
               <button
                 type="submit"
-                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-sm"
+                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg"
               >
                 Sign up
               </button>
@@ -174,20 +180,20 @@ const FooterComponent: React.FC = () => {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8">
-          <div className="text-white text-sm text-center md:text-left">
+          <div className="text-gray-300 text-sm text-center md:text-left">
             Your Trusted RTI Partner - © 2025 FileMYRTI A Product of Ranazonai Technologies, Built with <span className="inline-block">❤️</span> and Dedication.
           </div>
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 text-sm">
-            <Link to="/refund-policy" className="text-white hover:text-gray-300 transition-colors">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 md:gap-6 text-sm">
+            <Link to="/refund-policy" className="text-gray-300 hover:text-white transition-colors">
               Refund Policy
             </Link>
-            <Link to="/terms-and-conditions" className="text-white hover:text-gray-300 transition-colors">
+            <Link to="/terms-and-conditions" className="text-gray-300 hover:text-white transition-colors">
               Terms & Conditions
             </Link>
-            <Link to="/privacy-policy" className="text-white hover:text-gray-300 transition-colors">
+            <Link to="/privacy-policy" className="text-gray-300 hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition-colors">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">
               Open RTI Guides on GitHub
             </a>
           </div>
