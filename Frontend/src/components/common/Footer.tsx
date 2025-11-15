@@ -181,8 +181,11 @@ const FooterComponent: React.FC = () => {
             <Link to="/refund-policy" className="text-white hover:text-gray-300 transition-colors">
               Refund Policy
             </Link>
-            <Link to="/terms" className="text-white hover:text-gray-300 transition-colors">
+            <Link to="/terms-and-conditions" className="text-white hover:text-gray-300 transition-colors">
               Terms & Conditions
+            </Link>
+            <Link to="/privacy-policy" className="text-white hover:text-gray-300 transition-colors">
+              Privacy Policy
             </Link>
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition-colors">
               Open RTI Guides on GitHub

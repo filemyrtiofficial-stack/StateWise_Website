@@ -204,11 +204,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
               />
               <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
                 I agree to the{' '}
-                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+                <a href="/terms-and-conditions" className="text-primary-600 hover:text-primary-700 underline">
                   Terms
                 </a>{' '}
                 and{' '}
-                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+                <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline">
                   Privacy Policy
                 </a>
                 . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included.
