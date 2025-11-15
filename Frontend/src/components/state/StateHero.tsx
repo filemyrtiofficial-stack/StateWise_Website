@@ -806,11 +806,26 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
         {/* List of Public Authorities and RTI Models Section */}
         <div className="container-responsive max-w-7xl mx-auto mt-12 sm:mt-16">
-          {/* Section Header */}
+          {/* Section Header - Unified */}
           <div className="mb-8 sm:mb-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-left">
-              Our Services & Public Authorities
-            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-start">
+              {/* Left Column Header */}
+              <div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                  Our Services & Public Authorities
+                </h2>
+              </div>
+
+              {/* Right Column Header */}
+              <div>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                  RTI Models
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Choose the service that best fits your needs
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Two Column Layout - Equal Width and Height */}
@@ -824,14 +839,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
             {/* Right Column - RTI Models Grid */}
             <div className="flex flex-col h-full">
-              <div className="mb-5 sm:mb-6 -mt-16 sm:-mt-19.5">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-left">
-                  RTI Models
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 text-left">
-                  Choose the service that best fits your needs
-                </p>
-              </div>
 
               {/* RTI Models Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -866,7 +873,10 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     {/* CTA Button */}
                     <button
                       onClick={() => navigate(model.route)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95"
+                      className={`w-full text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95 ${model.buttonText === 'Apply Now' || model.buttonText === 'File Now' || model.buttonText === 'Start Anonymously' || model.buttonText === 'Appeal Now'
+                          ? 'bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+                          : 'bg-blue-600 hover:bg-blue-700'
+                        }`}
                     >
                       {model.buttonText}
                     </button>
