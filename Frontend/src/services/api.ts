@@ -213,6 +213,30 @@ export const callbackRequestsAPI = {
 };
 
 /**
+ * Newsletter API
+ */
+export const newsletterAPI = {
+  // Subscribe to newsletter (Public - no auth required)
+  subscribe: async (data: {
+    email: string;
+  }) => {
+    return apiRequest(API_ENDPOINTS.NEWSLETTER.SUBSCRIBE, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+  // Unsubscribe from newsletter (Public - no auth required)
+  unsubscribe: async (data: {
+    email: string;
+  }) => {
+    return apiRequest(API_ENDPOINTS.NEWSLETTER.UNSUBSCRIBE, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+};
+
+/**
  * RTI Applications API
  */
 export const rtiApplicationsAPI = {

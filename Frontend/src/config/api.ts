@@ -93,6 +93,12 @@ export const API_ENDPOINTS = {
     GET_ORDER_STATUS: (orderId: string) => `${API_BASE_URL}/payments/order/${orderId}`
   },
 
+  // Newsletter
+  NEWSLETTER: {
+    SUBSCRIBE: `${API_BASE_URL}/newsletter/subscribe`,
+    UNSUBSCRIBE: `${API_BASE_URL}/newsletter/unsubscribe`
+  },
+
   // Health Check
   HEALTH: `${BASE_URL}/health`
 };

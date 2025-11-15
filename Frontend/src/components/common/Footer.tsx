@@ -1,20 +1,69 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import blackIcon from '../../assets/icons/blackicons.png';
+import { newsletterAPI } from '../../services/api';
 
 const FooterComponent: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleEmailSubmit = useCallback((e: React.FormEvent) => {
+  const handleEmailSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle email subscription
-    console.log('Email submitted:', email);
-    setEmail('');
+
+    if (!email.trim()) {
+      setSubmitStatus('error');
+      setSubmitMessage('Please enter your email address');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setSubmitStatus('error');
+      setSubmitMessage('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setSubmitMessage('');
+
+    try {
+      const result = await newsletterAPI.subscribe({ email: email.trim() });
+
+      if (result.success) {
+        setSubmitStatus('success');
+        setSubmitMessage(result.message || 'Successfully subscribed to newsletter!');
+        setEmail('');
+
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+          setSubmitMessage('');
+        }, 5000);
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(result.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error: any) {
+      console.error('Error subscribing to newsletter:', error);
+      setSubmitStatus('error');
+      setSubmitMessage(error.message || 'Failed to subscribe. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [email]);
 
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-  }, []);
+    // Clear error when user starts typing
+    if (submitStatus === 'error') {
+      setSubmitStatus('idle');
+      setSubmitMessage('');
+    }
+  }, [submitStatus]);
 
   return (
     <footer className="bg-[#333333] text-white">
@@ -166,13 +215,21 @@ const FooterComponent: React.FC = () => {
                 onChange={handleEmailChange}
                 required
                 placeholder="Enter your email"
-                className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                disabled={isSubmitting}
+                className="w-full px-4 py-2.5 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
+              {submitStatus === 'success' && (
+                <p className="text-green-400 text-xs">{submitMessage}</p>
+              )}
+              {submitStatus === 'error' && (
+                <p className="text-red-400 text-xs">{submitMessage}</p>
+              )}
               <button
                 type="submit"
-                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg"
+                disabled={isSubmitting}
+                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg disabled:cursor-not-allowed"
               >
-                Sign up
+                {isSubmitting ? 'Subscribing...' : 'Sign up'}
               </button>
             </form>
           </div>
