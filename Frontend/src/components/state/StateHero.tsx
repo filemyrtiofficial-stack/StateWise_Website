@@ -314,12 +314,6 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     }
   };
 
-  const resetCallbackForm = () => {
-    setCallbackStatus('idle');
-    setCallbackPhone('');
-    setCallbackError('');
-  };
-
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
