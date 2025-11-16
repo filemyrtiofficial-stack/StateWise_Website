@@ -195,6 +195,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
   const [consultationErrorMessage, setConsultationErrorMessage] = useState<string>('');
   const [callbackStatus, setCallbackStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [callbackError, setCallbackError] = useState<string>('');
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
 
   const rtiModels = [
@@ -287,9 +288,14 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
       });
 
       if (result && typeof result === 'object' && 'success' in result && result.success) {
-        setCallbackStatus('success');
+        setCallbackStatus('idle');
         setCallbackPhone('');
         setCallbackError('');
+        setShowSuccessPopup(true);
+        // Auto-hide popup after 5 seconds
+        setTimeout(() => {
+          setShowSuccessPopup(false);
+        }, 5000);
       } else {
         throw new Error('Failed to submit callback request');
       }
@@ -446,93 +452,60 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
               </div>
 
               {/* Talk to the Expert Section */}
-              <div>
+              <div className="relative">
                 <div className="flex items-center gap-2 mb-2">
                   <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-black">Talk to the Expert</h2>
                   <div className="h-0.5 w-12 bg-orange-500"></div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
-                  {callbackStatus === 'idle' || callbackStatus === 'submitting' ? (
-                    <form onSubmit={handleCallbackSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md flex-1">
-                      <div className="flex-1 relative">
-                        <div className="absolute left-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
-                          <span className="text-xs">🇮🇳</span>
-                          <svg className="w-2 h-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
-                        <input
-                          type="tel"
-                          value={callbackPhone}
-                          onChange={(e) => {
-                            setCallbackPhone(e.target.value);
-                            if (callbackError) setCallbackError('');
-                          }}
-                          placeholder="Mobile Number"
-                          required
-                          disabled={callbackStatus === 'submitting'}
-                          className={`w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed ${callbackError ? 'border-red-500' : 'border-gray-300'
-                            }`}
-                        />
-                        {callbackError && (
-                          <p className="text-xs text-red-600 mt-1">{callbackError}</p>
-                        )}
+                  <form onSubmit={handleCallbackSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md flex-1">
+                    <div className="flex-1 relative">
+                      <div className="absolute left-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+                        <span className="text-xs">🇮🇳</span>
+                        <svg className="w-2 h-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                       </div>
-                      <button
-                        type="submit"
+                      <input
+                        type="tel"
+                        value={callbackPhone}
+                        onChange={(e) => {
+                          setCallbackPhone(e.target.value);
+                          if (callbackError) setCallbackError('');
+                        }}
+                        placeholder="Mobile Number"
+                        required
                         disabled={callbackStatus === 'submitting'}
-                        className="px-3 py-2.5 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {callbackStatus === 'submitting' ? (
-                          <>
-                            <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Submitting...
-                          </>
-                        ) : (
-                          <>
-                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                            Get Callback
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  ) : callbackStatus === 'success' ? (
-                    <div className="flex-1 max-w-md animate-fadeIn">
-                      <div className="bg-green-50 border border-green-200 rounded-md p-4 text-center">
-                        <div className="flex items-center justify-center mb-2">
-                          <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        className={`w-full pl-8 pr-2 py-2.5 sm:py-3 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-xs disabled:opacity-50 disabled:cursor-not-allowed ${callbackError ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {callbackError && (
+                        <p className="text-xs text-red-600 mt-1">{callbackError}</p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={callbackStatus === 'submitting'}
+                      className="px-3 py-2.5 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {callbackStatus === 'submitting' ? (
+                        <>
+                          <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                        </div>
-                        <p className="text-sm font-semibold text-green-800 mb-2">Thank you! We'll connect with you shortly.</p>
-                        <button
-                          onClick={resetCallbackForm}
-                          className="text-xs text-green-700 hover:text-green-900 underline"
-                        >
-                          Submit Another Request
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex-1 max-w-md animate-fadeIn">
-                      <div className="bg-red-50 border border-red-200 rounded-md p-4 text-center">
-                        <p className="text-sm font-semibold text-red-800 mb-2">
-                          {callbackError || 'Something went wrong. Please try again.'}
-                        </p>
-                        <button
-                          onClick={resetCallbackForm}
-                          className="text-xs text-red-700 hover:text-red-900 underline"
-                        >
-                          Try Again
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                          Get Callback
+                        </>
+                      )}
+                    </button>
+                  </form>
                   <button
                     onClick={() => setIsAppointmentModalOpen(true)}
                     className="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
@@ -543,6 +516,42 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     Book Appointment
                   </button>
                 </div>
+
+                {/* Success Popup */}
+                {showSuccessPopup && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 animate-fadeIn">
+                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 animate-fadeIn relative">
+                      <button
+                        onClick={() => setShowSuccessPopup(false)}
+                        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Close"
+                      >
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                      <div className="text-center">
+                        <div className="flex items-center justify-center mb-4">
+                          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">Thank You!</h3>
+                        <p className="text-gray-600 mb-4">
+                          We've received your request. Our expert will connect with you shortly.
+                        </p>
+                        <button
+                          onClick={() => setShowSuccessPopup(false)}
+                          className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold transition-colors"
+                        >
+                          OK
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Statistics Grid */}
