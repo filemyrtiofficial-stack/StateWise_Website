@@ -163,11 +163,10 @@ export const RTIModelPage: React.FC = () => {
       // Convert form data to API format
       const apiData = convertConsultationFormToAPI(data, serviceId, stateId);
 
-      // No payment information for free services
+      // No payment information for free services - omit payment_id and order_id
       const applicationData = {
-        ...apiData,
-        payment_id: null,
-        order_id: null
+        ...apiData
+        // payment_id and order_id are optional and omitted for free services
       };
 
       // Log the complete payload for debugging
