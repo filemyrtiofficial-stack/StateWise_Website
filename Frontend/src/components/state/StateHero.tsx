@@ -423,10 +423,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
   const statistics = [
     { value: '93%', label: 'Success Rate' },
     { value: '130+', label: 'Business Benefited' },
-    { value: '7,161+', label: 'Consultation Delivered' },
-    { value: '12,599+', label: 'RTI Filed' },
-    { value: '32,000+', label: 'Happy User' },
-    { value: '₹10', label: 'Official Fee' },
+    { value: '3,000+', label: 'Consultation Delivered' },
+    { value: '50,000+', label: 'RTI Filed' },
+    { value: '40,000+', label: 'Happy User' },
   ];
 
   return (

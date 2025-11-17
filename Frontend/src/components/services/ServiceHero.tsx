@@ -41,8 +41,14 @@ export const ServiceHero: React.FC<ServiceHeroProps> = React.memo(({ model, onCT
 
       <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
         <div className="flex-shrink-0">
-          <span className="text-sm text-gray-500 line-through">₹ {model.originalPrice.toLocaleString()}.00</span>
-          <span className="ml-3 text-2xl font-bold text-primary-600">₹ {model.price.toLocaleString()}.00</span>
+          {model.price === 0 || model.price === null || model.price === undefined ? (
+            <span className="text-2xl font-bold text-primary-600">Request Quote</span>
+          ) : (
+            <>
+              <span className="text-sm text-gray-500 line-through">₹ {model.originalPrice.toLocaleString()}.00</span>
+              <span className="ml-3 text-2xl font-bold text-primary-600">₹ {model.price.toLocaleString()}.00</span>
+            </>
+          )}
         </div>
         <button
           onClick={onCTAClick}

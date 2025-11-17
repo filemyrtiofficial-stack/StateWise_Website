@@ -91,6 +91,150 @@ export const RTIModelPage: React.FC = () => {
     paymentId: string;
   } | null>(null);
 
+  // Handle form submission without payment (for free services like bulk RTI)
+  const submitApplicationWithoutPayment = async (data: typeof formData) => {
+    try {
+      // Import API services
+      const { rtiApplicationsAPI, servicesAPI, statesAPI, convertConsultationFormToAPI } = await import('../../services/api');
+
+      // Comprehensive frontend validation before submission - only name, email, and mobile are mandatory
+      const validationErrors: string[] = [];
+
+      if (!data.fullName || data.fullName.trim().length < 2) {
+        validationErrors.push('Full name must be at least 2 characters');
+      }
+
+      if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        validationErrors.push('Valid email is required');
+      }
+
+      if (!data.mobile || !/^[6-9]\d{9}$/.test(data.mobile.replace(/\D/g, ''))) {
+        validationErrors.push('Valid 10-digit mobile number is required');
+      }
+
+      // All other fields (rtiQuery, address, pincode) are optional - no validation needed
+
+      if (validationErrors.length > 0) {
+        throw new Error(`Validation failed:\n${validationErrors.join('\n')}`);
+      }
+
+      // Fetch service by slug to get the correct service_id
+      let serviceId: number | null = null;
+      try {
+        const serviceResponse = await servicesAPI.getBySlug(modelSlug || '') as any;
+        if (serviceResponse?.success && serviceResponse?.data?.id) {
+          serviceId = Number(serviceResponse.data.id);
+          console.log(`✅ Found service ID: ${serviceId} for slug: ${modelSlug}`);
+        } else {
+          throw new Error('Service not found in response');
+        }
+      } catch (error) {
+        console.error('❌ Could not fetch service from backend:', error);
+        // Try to parse model.id as fallback
+        if (model && model.id) {
+          serviceId = parseInt(model.id);
+          console.log(`✅ Using model ID as fallback: ${serviceId}`);
+        }
+      }
+
+      // If we still don't have a valid serviceId, throw an error
+      if (!serviceId || !Number.isInteger(serviceId) || serviceId < 1) {
+        const errorMsg = `Unable to determine service ID. Please ensure the service exists in the database for slug: ${modelSlug}`;
+        console.error('❌', errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      // Fetch state by slug (default to Telangana if not found)
+      // Default state_id to 4 (Telangana) based on current database
+      let stateId = 4; // Telangana
+      try {
+        const statesResponse = await statesAPI.getAll() as any;
+        if (statesResponse?.success && Array.isArray(statesResponse?.data)) {
+          const telanganaState = statesResponse.data.find((s: any) => s.slug === 'telangana');
+          if (telanganaState?.id) {
+            stateId = Number(telanganaState.id);
+            console.log(`✅ Found state ID: ${stateId} for Telangana`);
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Could not fetch states from backend, using default ID 4 (Telangana):', error);
+      }
+
+      // Convert form data to API format
+      const apiData = convertConsultationFormToAPI(data, serviceId, stateId);
+
+      // No payment information for free services
+      const applicationData = {
+        ...apiData,
+        payment_id: null,
+        order_id: null
+      };
+
+      // Log the complete payload for debugging
+      console.log('📤 Submitting RTI application (lead only, no payment):', {
+        ...applicationData,
+        // Don't log sensitive data in production
+        service_id: applicationData.service_id,
+        state_id: applicationData.state_id,
+        field_counts: {
+          full_name_length: applicationData.full_name?.length || 0,
+          rti_query_length: applicationData.rti_query?.length || 0,
+          address_length: applicationData.address?.length || 0
+        }
+      });
+
+      // Call public API (no authentication required)
+      const result = await rtiApplicationsAPI.createPublic(applicationData);
+
+      console.log('✅ Application created successfully (lead only):', result);
+
+      // Extract application ID
+      let applicationId: string | number = 'N/A';
+      if (result && typeof result === 'object' && 'data' in result) {
+        const resultData = result.data as any;
+        applicationId = resultData?.id || resultData?.insertId || 'N/A';
+      }
+
+      // Store success data and show success modal
+      setSuccessData({
+        applicationId,
+        paymentId: 'LEAD_ONLY'
+      });
+
+      // Close consultation modal and show success modal
+      setIsModalOpen(false);
+      setIsSuccessModalOpen(true);
+      resetForm();
+      resetPayment();
+      setIsProcessingPayment(false);
+    } catch (error) {
+      console.error('❌ Failed to submit application:', error);
+
+      // Extract detailed error information
+      let errorMessage = 'Failed to submit application. Please try again.';
+      let validationDetails = '';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+
+        // Check if it's an APIError with validation details
+        if ('errors' in error && Array.isArray((error as any).errors)) {
+          const apiError = error as any;
+          validationDetails = '\n\nValidation Errors:\n' +
+            apiError.errors.map((err: any) => `• ${err.field}: ${err.message}`).join('\n');
+        }
+      }
+
+      // Create detailed error message
+      const fullErrorMessage = `❌ Error: ${errorMessage}${validationDetails}\n\nPlease try submitting again or contact support.`;
+
+      alert(fullErrorMessage);
+
+      // Don't throw error - allow user to retry
+      setIsProcessingPayment(false);
+    }
+  };
+
   // Handle form submission after payment
   const submitApplicationAfterPayment = async (data: typeof formData, paymentId: string, orderId: string) => {
     try {
@@ -237,7 +381,7 @@ export const RTIModelPage: React.FC = () => {
     }
   };
 
-  // Handle form submission - initiate payment first
+  // Handle form submission - initiate payment first (or skip payment for free services)
   const onSubmitForm = async (data: typeof formData) => {
     if (!model) {
       alert('Service information not available. Please refresh the page.');
@@ -247,7 +391,15 @@ export const RTIModelPage: React.FC = () => {
     try {
       setIsProcessingPayment(true);
 
-      // Initiate payment
+      // Check if service is free (price = 0) - skip payment for lead generation
+      if (model.price === 0 || model.price === null || model.price === undefined) {
+        // Free service - submit directly without payment
+        console.log('💰 Free service detected, skipping payment and submitting as lead');
+        await submitApplicationWithoutPayment(data);
+        return;
+      }
+
+      // Paid service - initiate payment
       await initiatePayment(
         model,
         {

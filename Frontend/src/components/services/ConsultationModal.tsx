@@ -236,22 +236,28 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {paymentStatus === 'processing' && 'Processing payment...'}
             {paymentStatus === 'verifying' && 'Verifying payment...'}
             {paymentStatus === 'idle' && isSubmitting && 'Processing...'}
-            {paymentStatus === 'idle' && !isSubmitting && `Pay & Book Consultation - ₹${model.price.toLocaleString()}`}
+            {paymentStatus === 'idle' && !isSubmitting && (
+              (model.price === 0 || model.price === null || model.price === undefined)
+                ? 'Submit Request'
+                : `Pay & Book Consultation - ₹${model.price.toLocaleString()}`
+            )}
             {paymentStatus === 'success' && 'Payment Successful!'}
             {paymentStatus === 'failed' && 'Payment Failed - Try Again'}
           </button>
 
-          {/* Payment Logos */}
-          <div className="flex items-center justify-center mt-2">
-            <img
-              src={PAYMENT_CONFIG.razorpayLogoUrl}
-              alt="Secure Payment Partners - Razorpay, VISA, Paytm, MasterCard - FileMyRTI accepts all major payment methods for RTI filing"
-              loading="lazy"
-              width="600"
-              height="100"
-              className="h-14 w-auto max-w-full payment-logos-image"
-            />
-          </div>
+          {/* Payment Logos - Only show for paid services */}
+          {(model.price !== 0 && model.price !== null && model.price !== undefined) && (
+            <div className="flex items-center justify-center mt-2">
+              <img
+                src={PAYMENT_CONFIG.razorpayLogoUrl}
+                alt="Secure Payment Partners - Razorpay, VISA, Paytm, MasterCard - FileMyRTI accepts all major payment methods for RTI filing"
+                loading="lazy"
+                width="600"
+                height="100"
+                className="h-14 w-auto max-w-full payment-logos-image"
+              />
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -42,7 +42,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Secure submission',
       'Privacy guaranteed'
     ],
-    price: 3999,
+    price: 699,
     originalPrice: 5999,
     buttonText: 'Start Anonymously'
   },
@@ -62,7 +62,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Legal guidance',
       'Timely filing'
     ],
-    price: 2499,
+    price: 699,
     originalPrice: 3999,
     buttonText: 'Appeal Now'
   },
@@ -82,7 +82,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Centralized tracking',
       'Expert support'
     ],
-    price: 9999,
+    price: 0,
     originalPrice: 14999,
     buttonText: 'Request Quote'
   },
@@ -122,7 +122,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Process explanation',
       'Best practices sharing'
     ],
-    price: 299,
+    price: 199,
     originalPrice: 499,
     buttonText: 'Pay Now'
   }
