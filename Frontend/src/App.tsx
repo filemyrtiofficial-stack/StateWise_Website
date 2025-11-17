@@ -14,6 +14,7 @@ const RefundPolicy = lazy(() => import('./pages/RefundPolicy').then(module => ({
 const Pricing = lazy(() => import('./pages/Pricing').then(module => ({ default: module.Pricing })));
 const ContactUs = lazy(() => import('./pages/ContactUs').then(module => ({ default: module.ContactUs })));
 const Careers = lazy(() => import('./pages/Careers').then(module => ({ default: module.Careers })));
+const Services = lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
 const FAQPage = lazy(() => import('./pages/FAQ').then(module => ({ default: module.FAQPage })));
 const Blog = lazy(() => import('./pages/Blog').then(module => ({ default: module.Blog })));
 const RTIModelPage = lazy(() => import('./pages/services/RTIModelPage').then(module => ({ default: module.RTIModelPage })));
@@ -49,6 +50,7 @@ function App() {
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/careers" element={<Careers />} />
+              <Route path="/services" element={<Services />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/faqs" element={<FAQPage />} />
               <Route path="/blogs" element={<Blog />} />
