@@ -40,7 +40,7 @@ const corsOptions = {
       allowedOrigins.push(
         'https://rtionlinedelhi.filemyrti.com',
         'https://www.rtionlinedelhi.filemyrti.com',
-        'https://wwwrtionlinetelangana.filemyrti.com',
+        'https://www.rtionlinetelangana.filemyrti.com',
         'https://rtionlinetelangana.filemyrti.com',
         'https://www.rtionlinetelangana.filemyrti.com',
         'https://rtionlinebihar.filemyrti.com',
