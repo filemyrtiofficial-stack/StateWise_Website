@@ -10,6 +10,7 @@ const StatePage = lazy(() => import('./pages/StatePage').then(module => ({ defau
 const AboutUs = lazy(() => import('./pages/AboutUs').then(module => ({ default: module.AboutUs })));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions').then(module => ({ default: module.TermsAndConditions })));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy').then(module => ({ default: module.RefundPolicy })));
 const Pricing = lazy(() => import('./pages/Pricing').then(module => ({ default: module.Pricing })));
 const ContactUs = lazy(() => import('./pages/ContactUs').then(module => ({ default: module.ContactUs })));
 const Careers = lazy(() => import('./pages/Careers').then(module => ({ default: module.Careers })));
@@ -43,6 +44,8 @@ function App() {
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/refund" element={<RefundPolicy />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/careers" element={<Careers />} />

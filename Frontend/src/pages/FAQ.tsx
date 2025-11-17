@@ -171,7 +171,7 @@ export const FAQPage: React.FC = () => {
   const refundsFAQs: FAQ[] = [
     {
       q: 'What is your refund policy?',
-      a: 'We maintain a clear and fair refund policy based on the status of your application. If we fail to file your application due to our error, you may be eligible for a full refund. If you cancel before we start processing, you may be eligible for a partial refund. Please visit our Refund Policy page for detailed information.'
+      a: 'Our refund policy is based on the request stage: Not eligible for filing (100% refund), Cancelled before drafting (95% refund), Drafted or info pending (Rs. 100 admin fee), Already filed (Not eligible). Refunds are processed within 2–3 business days. Please visit our Refund Policy page for detailed information.'
     },
     {
       q: 'Can I cancel my RTI application after payment?',
@@ -183,7 +183,7 @@ export const FAQPage: React.FC = () => {
     },
     {
       q: 'How long does it take to process a refund?',
-      a: 'If you\'re eligible for a refund, we process it within 5-7 business days. The refund will be credited to your original payment method. You\'ll receive an email confirmation once the refund is processed.'
+      a: 'Once your refund is confirmed by our team, we process it within 2–3 business days. Depending on your bank or payment provider, it may take up to 7 working days for the amount to reflect in your account. If you\'ve received a confirmation email from us, your refund is already in motion.'
     }
   ];
 
