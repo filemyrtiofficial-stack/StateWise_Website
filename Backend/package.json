@@ -15,7 +15,8 @@
     "create-sample-data": "node scripts/create-sample-data.js",
     "add-consultation-tables": "node scripts/add-consultation-tables.js",
     "create-newsletter-table": "node scripts/create-newsletter-table.js",
-    "kill-port": "node scripts/kill-port.js"
+    "kill-port": "node scripts/kill-port.js",
+    "update-prices": "node scripts/update-service-prices.js"
   },
   "keywords": [
     "rti",
