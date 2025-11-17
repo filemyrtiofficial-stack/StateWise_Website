@@ -15,6 +15,7 @@ const ContactUs = lazy(() => import('./pages/ContactUs').then(module => ({ defau
 const FAQPage = lazy(() => import('./pages/FAQ').then(module => ({ default: module.FAQPage })));
 const Blog = lazy(() => import('./pages/Blog').then(module => ({ default: module.Blog })));
 const RTIModelPage = lazy(() => import('./pages/services/RTIModelPage').then(module => ({ default: module.RTIModelPage })));
+const TrackMyRTI = lazy(() => import('./pages/TrackMyRTI').then(module => ({ default: module.TrackMyRTI })));
 const TestConnection = lazy(() => import('./pages/TestConnection').then(module => ({ default: module.TestConnection })));
 const NotFound = lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
 
@@ -54,6 +55,9 @@ function App() {
               <Route path="/services/bulk" element={<RTIModelPage />} />
               <Route path="/services/custom-rti" element={<RTIModelPage />} />
               <Route path="/services/15-minute-consultation" element={<RTIModelPage />} />
+              <Route path="/track" element={<TrackMyRTI />} />
+              <Route path="/trackmyrti" element={<TrackMyRTI />} />
+              <Route path="/track-my-rti" element={<TrackMyRTI />} />
               <Route path="/test-connection" element={<TestConnection />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
