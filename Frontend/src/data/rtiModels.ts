@@ -22,7 +22,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Authority verification',
       'Status updates'
     ],
-    price: 2999,
+    price: 699,
     originalPrice: 4999,
     buttonText: 'File Now'
   },

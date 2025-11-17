@@ -27,7 +27,7 @@ async function createSampleData() {
           slug: 'seamless-online-filing',
           description: 'File RTI applications online easily with expert drafting, submission, and timely dispatch.',
           full_description: 'Filing RTI applications online has never been easier. Our seamless online filing service handles everything for you - from expert drafting to submission and timely dispatch.',
-          price: 2999.00,
+          price: 699.00,
           original_price: 4999.00,
           button_text: 'File Now',
           icon: '⚡',
