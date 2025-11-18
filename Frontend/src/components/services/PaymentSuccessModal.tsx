@@ -62,7 +62,7 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
           id="success-modal-title"
           className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-2"
         >
-          Thank You! 🎉
+          Thank You!
         </h2>
 
         {/* Subtitle */}

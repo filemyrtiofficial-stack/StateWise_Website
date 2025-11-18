@@ -333,13 +333,13 @@ export const Careers: React.FC = () => {
               {/* Document Icons Pattern */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <svg className="w-full h-full opacity-20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M40 60 L160 60 L160 140 L40 140 Z" stroke="white" strokeWidth="2" fill="none" opacity="0.3"/>
-                  <path d="M50 70 L150 70 L150 130 L50 130 Z" stroke="white" strokeWidth="1" fill="none" opacity="0.2"/>
-                  <path d="M60 80 L140 80 L140 120 L60 120 Z" stroke="white" strokeWidth="1" fill="none" opacity="0.2"/>
+                  <path d="M40 60 L160 60 L160 140 L40 140 Z" stroke="white" strokeWidth="2" fill="none" opacity="0.3" />
+                  <path d="M50 70 L150 70 L150 130 L50 130 Z" stroke="white" strokeWidth="1" fill="none" opacity="0.2" />
+                  <path d="M60 80 L140 80 L140 120 L60 120 Z" stroke="white" strokeWidth="1" fill="none" opacity="0.2" />
                 </svg>
               </div>
             </div>
-            
+
             <div className="container-responsive max-w-7xl mx-auto px-4 relative z-10">
               <div className="text-center">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-5 leading-tight">
