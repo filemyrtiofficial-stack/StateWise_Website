@@ -16,9 +16,9 @@ interface PaymentSuccessModalProps {
 export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   isOpen,
   onClose,
-  applicationId,
-  paymentId,
-  serviceName
+  applicationId: _applicationId,
+  paymentId: _paymentId,
+  serviceName: _serviceName
 }) => {
   if (!isOpen) return null;
 
