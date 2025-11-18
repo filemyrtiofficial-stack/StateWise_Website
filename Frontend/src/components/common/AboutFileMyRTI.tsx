@@ -47,37 +47,80 @@ const AboutFileMyRTIComponent: React.FC = () => {
             FileMyRTI is a legaltech startup empowering the masses through affordable result-driven legal solutions. We're helping people in exercising their Right to Information, Consumer Rights and fixing legal issues.
           </p>
 
-          {/* Video Section */}
-          <div className="flex justify-center">
-            <div className="bg-white border-2 border-black rounded-lg shadow-lg px-6  py-4 sm:py-6 inline-block w-full" style={{ maxWidth: '680px' }}>
-              <div className="flex flex-col items-center gap-2 sm:gap-3">
+          {/* Video Section - Horizontal Layout */}
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8">
+            {/* Video Part - 68% width */}
+            <div className="w-full lg:w-[68%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6">
+              <div ref={videoRef} className="w-full">
+                <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border-2 border-gray-300">
+                  {shouldLoadVideo ? (
+                    <video
+                      className="w-full h-full object-cover"
+                      controls
+                      preload="metadata"
+                      poster="/images/video-poster.jpg"
+                      playsInline
+                    >
+                      <source src="/videos/filemyrti-intro.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                      <div className="text-gray-400">Loading video...</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Content Part - 32% width */}
+            <div className="w-full lg:w-[32%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6 flex flex-col justify-center">
+              <div className="flex flex-col items-center lg:items-start gap-4 sm:gap-5">
                 <div className="flex items-center gap-2">
                   <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-600">FileMy</span>
                   <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-600">RTI</span>
                 </div>
-                <p className="text-sm sm:text-base text-black italic">
+                <p className="text-base sm:text-lg md:text-xl text-black italic text-center lg:text-left font-semibold">
                   Empowering the masses...
                 </p>
-                {/* Video Player - Lazy Loaded */}
-                <div ref={videoRef} className="mt-4 w-full">
-                  <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border-2 border-gray-300">
-                    {shouldLoadVideo ? (
-                      <video
-                        className="w-full h-full object-cover"
-                        controls
-                        preload="metadata"
-                        poster="/images/video-poster.jpg"
-                        playsInline
-                      >
-                        <source src="/videos/filemyrti-intro.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                        <div className="text-gray-400">Loading video...</div>
-                      </div>
-                    )}
-                  </div>
+                <div className="space-y-3 text-center lg:text-left">
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    FileMyRTI is a legaltech startup empowering the masses through affordable result-driven legal solutions. We're helping people in exercising their Right to Information, Consumer Rights and fixing legal issues.
+                  </p>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    Our mission is to make legal services accessible to everyone, regardless of their background or financial situation. We believe that every citizen has the right to information and justice.
+                  </p>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    With our expert team and streamlined processes, we ensure that your RTI applications are filed correctly and efficiently, maximizing your chances of getting the information you need.
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <ul className="space-y-2 text-sm sm:text-base text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Expert legal guidance</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Affordable pricing</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Quick turnaround time</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>100% transparent process</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
