@@ -67,65 +67,16 @@ export const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
 
         {/* Subtitle */}
         <p className="text-center text-gray-600 mb-6">
-          Your payment was successful and your RTI application has been submitted.
+          We will connect you within 24 hours.
         </p>
 
-        {/* Details Card */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 mb-6 border border-blue-100">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600">Application ID:</span>
-              <span className="text-sm font-bold text-gray-900 font-mono">
-                #{applicationId}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600">Payment ID:</span>
-              <span className="text-sm font-bold text-gray-900 font-mono truncate ml-2">
-                {paymentId.substring(0, 20)}...
-              </span>
-            </div>
-            {serviceName && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Service:</span>
-                <span className="text-sm font-semibold text-gray-900">
-                  {serviceName}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        {/* Action Button */}
+        <div className="flex justify-center">
           <button
             onClick={onClose}
-            className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="w-full bg-primary-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             Done
-          </button>
-          <button
-            onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
-              const details = `Application ID: ${applicationId}\nPayment ID: ${paymentId}${serviceName ? `\nService: ${serviceName}` : ''}\n\nThank you for using FileMyRTI!`;
-              try {
-                await navigator.clipboard.writeText(details);
-                // Show temporary feedback
-                const button = e.currentTarget;
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                button.classList.add('bg-green-50', 'border-green-400', 'text-green-700');
-                setTimeout(() => {
-                  button.textContent = originalText;
-                  button.classList.remove('bg-green-50', 'border-green-400', 'text-green-700');
-                }, 2000);
-              } catch (err) {
-                // Fallback: show details in alert
-                alert(details);
-              }
-            }}
-            className="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-          >
-            Copy Details
           </button>
         </div>
 
