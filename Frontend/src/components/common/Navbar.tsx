@@ -175,9 +175,6 @@ const NavbarComponent: React.FC = () => {
                 )}
               </div>
 
-              <Link to="/track" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
-                Track My RTIs
-              </Link>
               <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
                 Pricing
               </Link>
@@ -236,9 +233,6 @@ const NavbarComponent: React.FC = () => {
                   </div>
                 </div>
 
-                <Link to="/track" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
-                  Track My RTIs
-                </Link>
                 <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
                   Pricing
                 </Link>
