@@ -43,16 +43,13 @@ const AboutFileMyRTIComponent: React.FC = () => {
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500"></span>
             </span>
           </div>
-          <p className="text-sm sm:text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-            FileMyRTI is a legaltech startup empowering the masses through affordable result-driven legal solutions. We're helping people in exercising their Right to Information, Consumer Rights and fixing legal issues.
-          </p>
 
           {/* Video Section - Horizontal Layout */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8 items-stretch">
             {/* Video Part - 68% width */}
-            <div className="w-full lg:w-[68%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6">
-              <div ref={videoRef} className="w-full">
-                <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border-2 border-gray-300">
+            <div className="w-full lg:w-[68%] rounded-lg p-4 sm:p-6 flex">
+              <div ref={videoRef} className="w-full flex">
+                <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-black">
                   {shouldLoadVideo ? (
                     <video
                       className="w-full h-full object-cover"
@@ -65,7 +62,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
                       Your browser does not support the video tag.
                     </video>
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                    <div className="w-full h-full flex items-center justify-center">
                       <div className="text-gray-400">Loading video...</div>
                     </div>
                   )}
@@ -74,7 +71,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
             </div>
 
             {/* Content Part - 32% width */}
-            <div className="w-full lg:w-[32%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6 flex flex-col justify-center">
+            <div className="w-full lg:w-[32%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6 flex flex-col">
               <div className="flex flex-col items-center lg:items-start gap-4 sm:gap-5">
                 <div className="flex items-center gap-2">
                   <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-600">FileMy</span>
@@ -84,9 +81,6 @@ const AboutFileMyRTIComponent: React.FC = () => {
                   Empowering the masses...
                 </p>
                 <div className="space-y-3 text-center lg:text-left">
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    FileMyRTI is a legaltech startup empowering the masses through affordable result-driven legal solutions. We're helping people in exercising their Right to Information, Consumer Rights and fixing legal issues.
-                  </p>
                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                     Our mission is to make legal services accessible to everyone, regardless of their background or financial situation. We believe that every citizen has the right to information and justice.
                   </p>
