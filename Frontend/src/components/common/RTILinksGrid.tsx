@@ -48,7 +48,7 @@ export const RTILinksGrid: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-white">
+    <section className="py-12 md:py-16 lg:py-20 bg-white">
       <div className="container-responsive max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {rtiLinks.map((column, columnIndex) => (

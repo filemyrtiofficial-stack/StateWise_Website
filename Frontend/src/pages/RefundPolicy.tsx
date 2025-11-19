@@ -74,7 +74,7 @@ export const RefundPolicy: React.FC = () => {
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow bg-gradient-to-b from-gray-50 to-white">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 sm:py-16">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4">

@@ -18,7 +18,7 @@ export const StateProcess: React.FC<StateProcessProps> = ({ process }) => {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-12 md:py-16 lg:py-20 bg-white">
       <div className="container-responsive max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">

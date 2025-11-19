@@ -160,7 +160,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
         <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-purple-600 text-white py-16 md:py-24">
+          <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-purple-600 text-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto">
               <div className="text-center max-w-4xl mx-auto">
                 <div className="text-6xl mb-6">{icon}</div>
@@ -172,7 +172,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
           </section>
 
           {/* Features Section */}
-          <section className="py-16 bg-white">
+          <section className="py-12 md:py-16 lg:py-20 bg-white">
             <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 Key Features
@@ -206,7 +206,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
           </section>
 
           {/* Benefits Section */}
-          <section className="py-16 bg-gray-50">
+          <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
             <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 Why Choose This Service?
@@ -225,7 +225,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
           </section>
 
           {/* Process Section */}
-          <section className="py-16 bg-white">
+          <section className="py-12 md:py-16 lg:py-20 bg-white">
             <div className="container-responsive max-w-7xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
                 How It Works
@@ -252,7 +252,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
           </section>
 
           {/* Contact Form Section */}
-          <section className="py-16 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+          <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
             <div className="container-responsive max-w-5xl mx-auto    ">
               <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
                 {/* Form Header */}

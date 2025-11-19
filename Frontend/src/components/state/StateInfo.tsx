@@ -16,7 +16,7 @@ export const StateInfo: React.FC<StateInfoProps> = ({
   stateName,
 }) => {
   return (
-    <section className="py-16 bg-primary-50">
+    <section className="py-12 md:py-16 lg:py-20 bg-primary-50">
       <div className="container-responsive max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>

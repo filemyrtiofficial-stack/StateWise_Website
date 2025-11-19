@@ -118,7 +118,7 @@ export const Pricing: React.FC = () => {
           <PricingSection />
 
           {/* FAQ Section */}
-          <div className="bg-white py-12 sm:py-16 lg:py-20">
+          <div className="bg-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <ServiceFAQ faqs={pricingFAQs} />
             </div>

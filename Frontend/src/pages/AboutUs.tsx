@@ -90,7 +90,7 @@ export const AboutUs: React.FC = () => {
         <Navbar />
         <main className="flex-grow" role="main" aria-label="Main content" id="main-content">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16" aria-label="About FileMyRTI">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20" aria-label="About FileMyRTI">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">About FileMyRTI</h1>
@@ -102,7 +102,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* Mission & Vision Section */}
-          <section className="py-16" aria-label="Mission and Vision">
+          <section className="py-12 md:py-16 lg:py-20" aria-label="Mission and Vision">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                 {/* Mission */}
@@ -140,7 +140,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* Why Choose Us Section */}
-          <section className="py-16 bg-white" aria-label="Why Choose FileMyRTI">
+          <section className="py-12 md:py-16 lg:py-20 bg-white" aria-label="Why Choose FileMyRTI">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose FileMyRTI?</h2>
@@ -193,7 +193,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* Our Values Section */}
-          <section className="py-16 bg-gray-50" aria-label="Our Core Values">
+          <section className="py-12 md:py-16 lg:py-20 bg-gray-50" aria-label="Our Core Values">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Core Values</h2>
@@ -221,7 +221,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* What We Do Section */}
-          <section className="py-16 bg-white" aria-label="What We Do">
+          <section className="py-12 md:py-16 lg:py-20 bg-white" aria-label="What We Do">
             <div className="container-responsive max-w-7xl mx-auto    ">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
@@ -272,7 +272,7 @@ export const AboutUs: React.FC = () => {
           </section>
 
           {/* CTA Section */}
-          <section className="py-16 bg-gradient-to-br from-primary-600 to-primary-800 text-white" aria-label="Call to Action">
+          <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white" aria-label="Call to Action">
             <div className="container-responsive max-w-7xl mx-auto     text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to File Your RTI?</h2>
               <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">

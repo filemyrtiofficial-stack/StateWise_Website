@@ -31,7 +31,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
+    <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
       <div className="container-responsive max-w-7xl mx-auto">
         <div className="text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4">

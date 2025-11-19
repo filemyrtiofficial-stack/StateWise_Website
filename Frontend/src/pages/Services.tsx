@@ -152,7 +152,7 @@ export const Services: React.FC = () => {
         <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 sm:py-16">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4 text-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
                 Our Services
@@ -164,7 +164,7 @@ export const Services: React.FC = () => {
           </section>
 
           {/* Services Grid Section */}
-          <section className="py-12 sm:py-16">
+          <section className="py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {services.map((service) => (
@@ -199,8 +199,8 @@ export const Services: React.FC = () => {
                     <Link
                       to={service.route}
                       className={`w-full text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 text-center shadow-sm hover:shadow-md active:scale-95 ${service.buttonText === 'File Now' || service.buttonText === 'Start Anonymously' || service.buttonText === 'Appeal Now'
-                          ? 'bg-gradient-to-b from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800'
-                          : 'bg-primary-600 hover:bg-primary-700'
+                        ? 'bg-gradient-to-b from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800'
+                        : 'bg-primary-600 hover:bg-primary-700'
                         }`}
                     >
                       {service.buttonText}
@@ -212,7 +212,7 @@ export const Services: React.FC = () => {
           </section>
 
           {/* Why Choose Our Services Section */}
-          <section className="py-12 sm:py-16 bg-white">
+          <section className="py-12 md:py-16 lg:py-20 bg-white">
             <div className="container-responsive max-w-7xl mx-auto px-4">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-8 sm:mb-12">
                 Why Choose Our Services?

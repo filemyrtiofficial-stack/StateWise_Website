@@ -346,7 +346,7 @@ export const Careers: React.FC = () => {
         <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 sm:py-16">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4 text-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
                 Join Our Team
@@ -358,7 +358,7 @@ export const Careers: React.FC = () => {
           </section>
 
           {/* Why Join Us Section */}
-          <section className="py-12 sm:py-16">
+          <section className="py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-8 sm:mb-12">
                 Why Join FileMyRTI?
@@ -378,7 +378,7 @@ export const Careers: React.FC = () => {
           </section>
 
           {/* Career Opportunities Banner - Above Open Positions */}
-          <section className="relative bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 text-white py-8 sm:py-10 md:py-12 overflow-hidden">
+          <section className="relative bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 text-white py-12 md:py-16 lg:py-20 overflow-hidden">
             {/* Background Pattern Overlay */}
             <div className="absolute inset-0 opacity-10">
               {/* Grid Pattern */}
@@ -418,7 +418,7 @@ export const Careers: React.FC = () => {
           </section>
 
           {/* Job Openings Section */}
-          <section className="py-12 sm:py-16 bg-white">
+          <section className="py-12 md:py-16 lg:py-20 bg-white">
             <div className="container-responsive max-w-7xl mx-auto px-4">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-8 sm:mb-12">
                 Open Positions
@@ -500,7 +500,7 @@ export const Careers: React.FC = () => {
           </section>
 
           {/* Application Form Section */}
-          <section id="application-form" className="py-12 sm:py-16 bg-gray-50">
+          <section id="application-form" className="py-12 md:py-16 lg:py-20 bg-gray-50">
             <div className="container-responsive max-w-4xl mx-auto px-4">
               <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-6 sm:mb-8">

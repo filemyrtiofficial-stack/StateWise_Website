@@ -17,7 +17,7 @@ const StateFAQComponent: React.FC<StateFAQProps> = ({ faqs }) => {
   }, []);
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="container-responsive max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">

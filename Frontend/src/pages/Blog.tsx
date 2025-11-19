@@ -312,7 +312,7 @@ export const Blog: React.FC = () => {
           </section>
 
           {/* Blog Content */}
-          <section className="py-8 sm:py-12">
+          <section className="py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto">
               {/* Featured Posts */}
               {selectedCategory === 'all' && featuredPosts.length > 0 && (

@@ -313,7 +313,7 @@ export const FAQPage: React.FC = () => {
         <Navbar />
         <main id="main-content" className="flex-grow bg-gray-50" role="main" aria-label="Main content">
           {/* Hero Section */}
-          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-8 sm:py-12">
+          <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4 text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
                 Frequently Asked Questions
@@ -325,7 +325,7 @@ export const FAQPage: React.FC = () => {
           </section>
 
           {/* FAQ Categories */}
-          <section className="py-8 sm:py-12">
+          <section className="py-12 md:py-16 lg:py-20">
             <div className="container-responsive max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Category Tabs */}
               <div className="mb-8">

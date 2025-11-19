@@ -80,7 +80,7 @@ export const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-6 sm:py-8 lg:py-10 bg-gray-50">
+    <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
       <div className="container-responsive max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section */}
         <div className="text-center mb-4 sm:mb-6">
