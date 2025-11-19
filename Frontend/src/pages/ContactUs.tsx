@@ -113,8 +113,10 @@ export const ContactUs: React.FC = () => {
         const fieldErrors: Record<string, string> = {};
         error.errors.forEach((err: { field: string; message: string }) => {
           // Map backend field names to frontend field names
-          if (err.field === 'full_name') {
+          if (err.field === 'firstName') {
             fieldErrors.firstName = err.message;
+          } else if (err.field === 'lastName') {
+            fieldErrors.lastName = err.message;
           } else if (err.field === 'mobile') {
             fieldErrors.mobile = err.message;
           } else if (err.field === 'email') {

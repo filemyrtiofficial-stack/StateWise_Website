@@ -220,6 +220,25 @@ export const Careers: React.FC = () => {
     } catch (error: any) {
       console.error('Error submitting application:', error);
       setSubmitStatus('error');
+
+      // Show specific error message if available
+      if (error.errors && error.errors.length > 0) {
+        const fieldErrors: Record<string, string> = {};
+        error.errors.forEach((err: { field: string; message: string }) => {
+          // Map backend field names to frontend field names
+          if (err.field === 'name') {
+            fieldErrors.name = err.message;
+          } else if (err.field === 'phone') {
+            fieldErrors.phone = err.message;
+          } else if (err.field === 'email') {
+            fieldErrors.email = err.message;
+          } else if (err.field === 'position') {
+            fieldErrors.position = err.message;
+          }
+        });
+        // Note: We don't have a setErrors state, but we could add it if needed
+        // For now, the error status will show a general error message
+      }
     } finally {
       setIsSubmitting(false);
     }
