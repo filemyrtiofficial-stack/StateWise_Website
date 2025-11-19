@@ -311,7 +311,7 @@ export const FAQPage: React.FC = () => {
 
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-grow bg-gray-50">
+        <main id="main-content" className="flex-grow bg-gray-50" role="main" aria-label="Main content">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-8 sm:py-12">
             <div className="container-responsive max-w-7xl mx-auto px-4 text-center">

@@ -20,6 +20,10 @@ const NavbarComponent: React.FC = () => {
 
   return (
     <>
+      {/* Skip to main content link for accessibility */}
+      <a href="#main-content" className="skip-to-main">
+        Skip to main content
+      </a>
       {/* Social Media Bar - Only shown on homepage, hidden on small screens, visible on large screens */}
       {/* FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar conditionally rendered only on homepage, hidden on mobile */}
       {isHomepage && (

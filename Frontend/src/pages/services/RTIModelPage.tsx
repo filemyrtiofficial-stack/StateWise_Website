@@ -580,6 +580,7 @@ export const RTIModelPage: React.FC = () => {
 
         {/* Main Content - Responsive */}
         <main
+          id="main-content"
           className="flex-grow w-full"
           style={{
             marginLeft: 0,
@@ -648,6 +649,7 @@ export const RTIModelPage: React.FC = () => {
                 <button
                   onClick={handleCTAClick}
                   className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                  aria-label={`${model.buttonText} for ${model.name}`}
                 >
                   {model.buttonText}
                 </button>
@@ -674,7 +676,7 @@ export const RTIModelPage: React.FC = () => {
                         <div className="mb-8">
                           <img
                             src={serviceImage}
-                            alt={model.name}
+                            alt={`${model.name} service illustration showing features and benefits`}
                             className="w-full h-auto rounded-lg shadow-md"
                             style={{ objectFit: 'contain' }}
                             draggable="false"

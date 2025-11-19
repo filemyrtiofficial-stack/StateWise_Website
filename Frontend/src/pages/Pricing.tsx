@@ -113,7 +113,7 @@ export const Pricing: React.FC = () => {
 
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow" role="main" aria-label="Main content">
           {/* Pricing Section */}
           <PricingSection />
 

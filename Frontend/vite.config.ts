@@ -25,8 +25,13 @@ export default defineConfig({
         manualChunks: undefined, // disable empty chunk splitting
       },
     },
-    minify: true,
+    minify: 'esbuild',
     sourcemap: false,
     treeshake: true,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1000,
+  },
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
   },
 })

@@ -26,14 +26,14 @@ export const CTAButton: React.FC<CTAButtonProps> = ({
 
   if (href) {
     return (
-      <a href={href} className={classes}>
+      <a href={href} className={classes} aria-label={text}>
         {text}
       </a>
     );
   }
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} aria-label={text}>
       {text}
     </button>
   );

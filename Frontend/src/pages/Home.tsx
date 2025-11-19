@@ -169,7 +169,7 @@ export const Home: React.FC = () => {
         <Suspense fallback={<div className="h-16 bg-white" />}>
           <Navbar />
         </Suspense>
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow" role="main" aria-label="Main content">
           {/* Hero section - critical for LCP, prioritize loading */}
           <Suspense fallback={
             <div className="bg-gray-50 pt-12 pb-12" data-loading>
