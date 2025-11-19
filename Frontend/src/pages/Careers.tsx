@@ -29,6 +29,8 @@ export const Careers: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [validationError, setValidationError] = useState<string>('');
+  const [resumeFileName, setResumeFileName] = useState<string>('');
+  const [resumeError, setResumeError] = useState<string>('');
 
   const jobOpenings: JobOpening[] = [
     {
@@ -179,8 +181,41 @@ export const Careers: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setApplicationForm(prev => ({ ...prev, resume: e.target.files![0] }));
+    setResumeError('');
+    const fileInput = e.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+
+      // Validate file type
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowedExtensions = ['.pdf', '.doc', '.docx'];
+      const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
+
+      if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
+        setResumeError('Please upload a PDF, DOC, or DOCX file.');
+        fileInput.value = ''; // Clear the input
+        setApplicationForm(prev => ({ ...prev, resume: null }));
+        setResumeFileName('');
+        return;
+      }
+
+      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        setResumeError('File size must be less than 5MB.');
+        fileInput.value = ''; // Clear the input
+        setApplicationForm(prev => ({ ...prev, resume: null }));
+        setResumeFileName('');
+        return;
+      }
+
+      // File is valid
+      setApplicationForm(prev => ({ ...prev, resume: file }));
+      setResumeFileName(file.name);
+    } else {
+      setApplicationForm(prev => ({ ...prev, resume: null }));
+      setResumeFileName('');
     }
   };
 
@@ -250,6 +285,14 @@ export const Careers: React.FC = () => {
           resume: null,
           coverLetter: ''
         });
+        setResumeFileName('');
+        setResumeError('');
+
+        // Reset file input
+        const fileInput = document.getElementById('resume') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
 
         // Reset success message after 8 seconds
         setTimeout(() => {
@@ -579,15 +622,35 @@ export const Careers: React.FC = () => {
                     <label htmlFor="resume" className="block text-sm font-medium text-gray-700 mb-2">
                       Resume/CV <span className="text-gray-500 text-xs">(Optional)</span>
                     </label>
-                    <input
-                      type="file"
-                      id="resume"
-                      name="resume"
-                      onChange={handleFileChange}
-                      accept=".pdf,.doc,.docx"
-                      className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX (Max 5MB). You can also send it later via email.</p>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        id="resume"
+                        name="resume"
+                        onChange={handleFileChange}
+                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer"
+                      />
+                    </div>
+                    {resumeFileName && (
+                      <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Selected: {resumeFileName}
+                      </p>
+                    )}
+                    {resumeError && (
+                      <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                        {resumeError}
+                      </p>
+                    )}
+                    {!resumeFileName && !resumeError && (
+                      <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX (Max 5MB). You can also send it later via email.</p>
+                    )}
                   </div>
 
                   <div>
