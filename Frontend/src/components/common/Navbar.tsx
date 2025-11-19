@@ -254,10 +254,10 @@ const NavbarComponent: React.FC = () => {
             />
           )}
 
-          {/* Mobile Menu Panel - Slides in from left */}
+          {/* Mobile Menu Panel - Slides in from right */}
           <div
             ref={mobileMenuRef}
-            className={`lg:hidden fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[100] transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+            className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[100] transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
               }`}
           >
             {/* Mobile Menu Header */}
