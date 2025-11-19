@@ -464,7 +464,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
               <div className="relative">
                 <div className="flex items-center gap-2 mb-2">
                   <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-black">Talk to the Expert</h2>
-                  <div className="h-0.5 w-12 bg-orange-500"></div>
+                  <div className="h-0.5 w-12 bg-primary-600"></div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <form onSubmit={handleCallbackSubmit} className="flex flex-col sm:flex-row gap-1.5 max-w-md flex-1">
@@ -850,7 +850,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-start lg:items-stretch">
             {/* Left Column - List of Public Authorities */}
             <div className="flex flex-col w-full">
-              <Suspense fallback={<div className="min-h-[580px] bg-white rounded-lg border-2 border-orange-500" />}>
+              <Suspense fallback={<div className="min-h-[580px] bg-white rounded-lg border-2 border-primary-600" />}>
                 <PublicAuthoritiesList stateName={stateName} />
               </Suspense>
             </div>

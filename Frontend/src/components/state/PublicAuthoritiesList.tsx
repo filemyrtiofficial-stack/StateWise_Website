@@ -166,17 +166,17 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
     <div className="flex justify-center w-full">
       <div className="w-full max-w-full sm:max-w-lg lg:max-w-xl flex flex-col">
         <div
-          className="bg-white border-2 border-orange-500 rounded-lg overflow-hidden shadow-xl relative flex flex-col"
+          className="bg-white border-2 border-primary-600 rounded-lg overflow-hidden shadow-xl relative flex flex-col"
           style={{ height: '580px', minHeight: '580px' }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           {/* Title with Search */}
-          <div className="bg-orange-50 border-b-2 border-orange-500 px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
+          <div className="bg-primary-50 border-b-2 border-primary-600 px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
-                <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-600 break-words">List of Public Authorities</h3>
-                <p className="text-xs sm:text-sm text-orange-700 mt-0.5">Delhi Government Departments</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-primary-600 break-words">List of Public Authorities</h3>
+                <p className="text-xs sm:text-sm text-primary-700 mt-0.5">Delhi Government Departments</p>
               </div>
               <div className="w-full sm:w-auto flex-shrink-0">
                 <div className="relative">
@@ -190,11 +190,11 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
                       setIsUserScrolling(false);
                     }}
                     placeholder="Search departments..."
-                    className="w-full sm:w-56 md:w-64 px-3 sm:px-4 py-2 sm:py-2.5 pr-9 sm:pr-10 border-2 border-orange-300 rounded-lg focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 text-xs sm:text-sm bg-white"
+                    className="w-full sm:w-56 md:w-64 px-3 sm:px-4 py-2 sm:py-2.5 pr-9 sm:pr-10 border-2 border-primary-300 rounded-lg focus:border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200 text-xs sm:text-sm bg-white"
                   />
                   <button
                     type="button"
-                    className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1 text-orange-500 hover:text-orange-600 transition-colors"
+                    className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1 text-primary-600 hover:text-primary-700 transition-colors"
                     title="Search"
                     aria-label="Search"
                   >

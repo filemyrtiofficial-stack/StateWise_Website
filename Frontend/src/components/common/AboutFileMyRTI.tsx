@@ -40,7 +40,7 @@ const AboutFileMyRTIComponent: React.FC = () => {
           <div className="inline-block mb-4 sm:mb-5">
             <span className="relative text-2xl sm:text-3xl font-bold text-black">
               FileMyRTI
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600"></span>
             </span>
           </div>
 
