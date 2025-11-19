@@ -34,6 +34,10 @@ export const YOUTUBE_VIDEO_CONFIG = {
 
 // Service-specific video mapping
 export const SERVICE_VIDEO_CONFIG: Record<string, { videoId: string; startTime?: number }> = {
+  'seamless-online-filing': {
+    videoId: '0SSzx1LM_IY',
+    startTime: 0
+  },
   '15-minute-consultation': {
     videoId: 'EPnOzGGTStw',
     startTime: 0
