@@ -7,6 +7,7 @@ const NewsletterSubscription = require('../models/NewsletterSubscription');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 const { sendFormSubmissionEmail } = require('../utils/email');
+const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp');
 
 /**
  * Subscribe to newsletter (Public - no auth required)
@@ -40,12 +41,22 @@ const subscribe = async (req, res, next) => {
         const reactivated = await NewsletterSubscription.findById(existingSubscription.id);
         logger.info(`✅ Newsletter subscription reactivated: ${cleanEmail}`);
 
-        // Send email notification (non-blocking)
-        sendFormSubmissionEmail('Newsletter Subscription (Reactivated)', {
+        // Prepare form data for notifications
+        const reactivatedFormData = {
           'Email': cleanEmail,
-          'Subscription ID': existingSubscription.id
-        }).catch(err => {
+          'Subscription ID': existingSubscription.id,
+          'Status': 'Reactivated',
+          'Subscription Time': reactivated.subscribed_at
+        };
+
+        // Send email notification (non-blocking)
+        sendFormSubmissionEmail('Newsletter Subscription (Reactivated)', reactivatedFormData).catch(err => {
           logger.error('Email notification error (non-critical):', err.message);
+        });
+
+        // Send WhatsApp notification (non-blocking)
+        sendFormSubmissionNotification('Newsletter Subscription (Reactivated)', reactivatedFormData).catch(err => {
+          logger.error('WhatsApp notification error (non-critical):', err.message);
         });
 
         return sendSuccess(res, 'You have been resubscribed to our newsletter', reactivated);
@@ -61,13 +72,22 @@ const subscribe = async (req, res, next) => {
 
     const subscription = await NewsletterSubscription.findById(subscriptionId);
 
-    // Send email notification (non-blocking)
-    sendFormSubmissionEmail('Newsletter Subscription', {
+    // Prepare form data for notifications
+    const formData = {
       'Email': cleanEmail,
       'Subscription ID': subscriptionId,
-      'Subscribed At': subscription.subscribed_at
-    }).catch(err => {
+      'Subscribed At': subscription.subscribed_at,
+      'Submission Time': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    };
+
+    // Send email notification (non-blocking)
+    sendFormSubmissionEmail('Newsletter Subscription', formData).catch(err => {
       logger.error('Email notification error (non-critical):', err.message);
+    });
+
+    // Send WhatsApp notification (non-blocking)
+    sendFormSubmissionNotification('Newsletter Subscription', formData).catch(err => {
+      logger.error('WhatsApp notification error (non-critical):', err.message);
     });
 
     return sendSuccess(res, 'Successfully subscribed to newsletter', subscription, 201);
