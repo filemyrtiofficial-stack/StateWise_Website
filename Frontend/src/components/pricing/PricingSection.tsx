@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ConsultationModal } from '../services/ConsultationModal';
-import { getRTIModelBySlug } from '../../data/rtiModels';
+import { rtiModels, getRTIModelBySlug } from '../../data/rtiModels';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
 import { usePayment } from '../../hooks/usePayment';
 
 export const PricingSection: React.FC = () => {
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'premium' | null>(null);
+  const navigate = useNavigate();
+  const [selectedModelSlug, setSelectedModelSlug] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -19,30 +21,31 @@ export const PricingSection: React.FC = () => {
 
   const { paymentState, initiatePayment, resetPayment } = usePayment();
 
-  const handlePlanClick = (plan: 'basic' | 'premium') => {
-    setSelectedPlan(plan);
-    setIsModalOpen(true);
-  };
+  const handleModelClick = (modelSlug: string) => {
+    const model = getRTIModelBySlug(modelSlug);
+    if (!model) return;
 
-  const handleApplyNow = () => {
-    if (selectedPlan) {
-      handlePlanClick(selectedPlan);
-    } else {
-      // Default to basic plan if no plan selected
-      handlePlanClick('basic');
+    // For bulk and custom RTI, navigate to service page
+    if (modelSlug === 'bulk' || modelSlug === 'custom-rti') {
+      navigate(`/services/${modelSlug}`);
+      return;
     }
+
+    // For other models, open consultation modal
+    setSelectedModelSlug(modelSlug);
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedPlan(null);
+    setSelectedModelSlug(null);
     resetForm();
     resetPayment();
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rtiModel) return;
+    if (!selectedModelSlug || !rtiModel) return;
 
     await handleSubmit(async (data) => {
       try {
@@ -55,7 +58,7 @@ export const PricingSection: React.FC = () => {
           },
           async (paymentId: string, orderId: string) => {
             // Payment successful - you can handle the submission here
-            console.log('Payment successful:', { paymentId, orderId, plan: selectedPlan });
+            console.log('Payment successful:', { paymentId, orderId, model: selectedModelSlug });
             handleModalClose();
           },
           (errorMessage: string) => {
@@ -73,8 +76,18 @@ export const PricingSection: React.FC = () => {
     });
   };
 
-  // Get the RTI model for seamless online filing
-  const rtiModel = getRTIModelBySlug('seamless-online-filing');
+  // Get the selected RTI model
+  const rtiModel = selectedModelSlug ? getRTIModelBySlug(selectedModelSlug) : null;
+
+  // Get all 6 RTI models in order
+  const allModels = [
+    rtiModels['seamless-online-filing'],
+    rtiModels['anonymous'],
+    rtiModels['1st-appeal'],
+    rtiModels['bulk'],
+    rtiModels['custom-rti'],
+    rtiModels['15-minute-consultation']
+  ];
 
   return (
     <section className="py-6 sm:py-8 lg:py-10 bg-gray-50">
@@ -88,9 +101,9 @@ export const PricingSection: React.FC = () => {
 
         {/* Main Content - Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 mb-4">
-          {/* Left Column - Pricing Table */}
+          {/* Left Column - Pricing Plans */}
           <div className="bg-white rounded-xl shadow-lg p-5 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 text-center">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
               Pricing Plans
             </h3>
 
@@ -100,137 +113,84 @@ export const PricingSection: React.FC = () => {
                 <thead>
                   <tr className="border-b-2 border-gray-200">
                     <th className="text-left py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Features</th>
-                    <th className="text-center py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Basic</th>
-                    <th className="text-center py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Premium</th>
+                    <th className="text-center py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Price</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">Shipping Charges</td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹149</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹149</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">Processing Charges</td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹100</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹100</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">RTI Drafting Charges</td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹150</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹150</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">Phone from RTI Expert</td>
-                    <td className="py-2 px-3 text-center">
-                      <svg className="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </td>
-                    <td className="py-2 px-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <span className="text-xs sm:text-sm text-gray-900 font-medium">₹200</span>
-                        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </td>
-                  </tr>
+                  {allModels.map((model) => {
+                    const modelSlug = Object.keys(rtiModels).find(key => rtiModels[key].id === model.id) || '';
+                    const displayPrice = model.price === 0 ? 'Request Quote' : `₹${model.price}`;
+                    const hasDiscount = model.originalPrice > model.price && model.price > 0;
+
+                    return (
+                      <tr
+                        key={model.id}
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                        onClick={() => handleModelClick(modelSlug)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleModelClick(modelSlug);
+                          }
+                        }}
+                        aria-label={`Select ${model.name} plan for ${displayPrice}`}
+                      >
+                        <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">
+                          {model.name}
+                        </td>
+                        <td className="py-2 px-3 text-center">
+                          {model.price === 0 ? (
+                            <span className="text-xs sm:text-sm text-primary-600 font-medium">
+                              {displayPrice}
+                            </span>
+                          ) : (
+                            <div className="flex items-center justify-center gap-1.5">
+                              <div className="flex flex-col items-center">
+                                <span className="text-xs sm:text-sm text-gray-900 font-medium">
+                                  {displayPrice}
+                                </span>
+                                {hasDiscount && (
+                                  <span className="text-xs text-gray-500 line-through">
+                                    ₹{model.originalPrice}
+                                  </span>
+                                )}
+                              </div>
+                              <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
 
-            {/* Price Summary */}
-            <div className="space-y-2.5 mb-4">
-              <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Price</span>
-                <div className="flex gap-4 sm:gap-6">
-                  <button
-                    onClick={() => handlePlanClick('basic')}
-                    className="text-xs sm:text-sm font-semibold text-gray-900 w-16 sm:w-20 text-center hover:text-primary-600 transition-colors cursor-pointer"
-                  >
-                    ₹399
-                  </button>
-                  <button
-                    onClick={() => handlePlanClick('premium')}
-                    className="text-xs sm:text-sm font-semibold text-gray-900 w-16 sm:w-20 text-center hover:text-primary-600 transition-colors cursor-pointer"
-                  >
-                    ₹599
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
+            {/* Price Summary with GST */}
+            <div className="space-y-2.5 mb-4 mt-4 pt-4 border-t border-gray-200">
+              <div className="flex justify-between items-center py-1.5">
                 <span className="text-xs sm:text-sm font-medium text-gray-700">GST 18%</span>
-                <div className="flex gap-4 sm:gap-6">
-                  <span className="text-xs sm:text-sm font-semibold text-gray-900 w-16 sm:w-20 text-center">₹72</span>
-                  <span className="text-xs sm:text-sm font-semibold text-gray-900 w-16 sm:w-20 text-center">₹108</span>
-                </div>
+                <span className="text-xs sm:text-sm text-gray-600">Included in price</span>
               </div>
-              <div className="flex justify-between items-center py-2 bg-gray-50 rounded-lg px-3">
-                <span className="text-sm sm:text-base font-bold text-gray-900">Total</span>
-                <div className="flex gap-4 sm:gap-6">
-                  <button
-                    onClick={() => handlePlanClick('basic')}
-                    className="text-sm sm:text-base font-bold text-gray-900 w-16 sm:w-20 text-center hover:text-primary-600 transition-colors cursor-pointer"
-                  >
-                    ₹471
-                  </button>
-                  <button
-                    onClick={() => handlePlanClick('premium')}
-                    className="text-sm sm:text-base font-bold text-gray-900 w-16 sm:w-20 text-center hover:text-primary-600 transition-colors cursor-pointer"
-                  >
-                    ₹707
-                  </button>
-                </div>
+              <div className="bg-gray-50 rounded-lg px-3 py-2">
+                <p className="text-xs text-gray-600 text-center">
+                  All prices include 18% GST. Final amount shown is inclusive of all taxes.
+                </p>
               </div>
             </div>
 
             {/* Apply Now Button */}
             <button
-              onClick={handleApplyNow}
+              onClick={() => {
+                // Default to first available model (seamless-online-filing)
+                handleModelClick('seamless-online-filing');
+              }}
               className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-sm"
+              aria-label="Apply Now"
             >
               Apply Now
             </button>
