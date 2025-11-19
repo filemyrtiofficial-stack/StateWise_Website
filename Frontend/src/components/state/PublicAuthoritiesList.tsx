@@ -166,8 +166,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
     <div className="flex justify-center w-full">
       <div className="w-full max-w-full sm:max-w-lg lg:max-w-xl flex flex-col">
         <div
-          className="bg-white border-2 border-primary-600 rounded-lg overflow-hidden shadow-xl relative flex flex-col"
-          style={{ height: '580px', minHeight: '580px' }}
+          className="bg-white border-2 border-primary-600 rounded-lg overflow-hidden shadow-xl relative flex flex-col h-[550px] sm:h-[600px] md:h-[650px] min-h-[550px] sm:min-h-[600px] md:min-h-[650px]"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
