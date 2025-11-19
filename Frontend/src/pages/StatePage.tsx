@@ -200,7 +200,7 @@ export const StatePage: React.FC = () => {
             <div className="bg-gray-50 pt-12 pb-12" data-loading>
               <div className="container-responsive max-w-7xl mx-auto">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight">
-                  Empowering every voice with clarity, rights, and legal transparency.
+                  Making your right to information effortless and accessible.
                 </h1>
               </div>
             </div>
