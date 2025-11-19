@@ -164,7 +164,7 @@ const FooterComponent: React.FC = () => {
               {/* Left List */}
               <ul className="space-y-2.5 flex-1">
                 <li>
-                  <Link to="/services/seamless-online-filing" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
+                  <Link to="/services/custom-rti" className="text-gray-300 hover:text-white transition-colors text-sm inline-block">
                     File My RTI Now
                   </Link>
                 </li>
