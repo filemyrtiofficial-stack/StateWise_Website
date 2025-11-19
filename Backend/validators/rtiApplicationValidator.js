@@ -31,8 +31,14 @@ const createApplicationValidator = [
     .trim()
     .notEmpty()
     .withMessage('Mobile number is required')
-    .isMobilePhone('en-IN')
-    .withMessage('Please provide a valid mobile number'),
+    .custom((value) => {
+      const cleaned = value.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10 || length > 13) {
+        throw new Error('Mobile number must be between 10 and 13 digits');
+      }
+      return true;
+    }),
 
   body('email')
     .trim()

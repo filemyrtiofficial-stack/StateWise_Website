@@ -13,13 +13,13 @@ const isValidEmail = (email) => {
 };
 
 /**
- * Validate Indian mobile number
+ * Validate mobile number (10-13 digits)
  */
 const isValidMobile = (mobile) => {
   if (!mobile || typeof mobile !== 'string') return false;
-  // Indian mobile: 10 digits, may start with +91
-  const mobileRegex = /^(\+91)?[6-9]\d{9}$/;
-  return mobileRegex.test(mobile.replace(/\s/g, ''));
+  const cleaned = mobile.replace(/\D/g, '');
+  const length = cleaned.length;
+  return length >= 10 && length <= 13;
 };
 
 /**

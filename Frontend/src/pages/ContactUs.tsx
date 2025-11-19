@@ -41,8 +41,16 @@ export const ContactUs: React.FC = () => {
     }
     if (!formData.mobile.trim()) {
       newErrors.mobile = 'Mobile number is required';
-    } else if (!/^[0-9]{10}$/.test(formData.mobile.trim())) {
-      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
+    } else {
+      const cleaned = formData.mobile.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10) {
+        newErrors.mobile = 'Mobile number must be at least 10 digits';
+      } else if (length > 13) {
+        newErrors.mobile = 'Mobile number must not exceed 13 digits';
+      } else {
+        newErrors.mobile = '';
+      }
     }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';

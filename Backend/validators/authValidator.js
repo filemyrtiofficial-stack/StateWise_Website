@@ -32,8 +32,15 @@ const registerValidator = [
   body('phone')
     .optional()
     .trim()
-    .isMobilePhone('en-IN')
-    .withMessage('Please provide a valid phone number')
+    .custom((value) => {
+      if (!value) return true; // Optional field
+      const cleaned = value.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10 || length > 13) {
+        throw new Error('Phone number must be between 10 and 13 digits');
+      }
+      return true;
+    })
 ];
 
 const loginValidator = [

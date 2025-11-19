@@ -256,9 +256,9 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
   ];
 
   const validatePhone = (phone: string): boolean => {
-    // Indian mobile: 10 digits, may start with +91
-    const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
+    const cleaned = phone.replace(/\D/g, '');
+    const length = cleaned.length;
+    return length >= 10 && length <= 13;
   };
 
   const handleCallbackSubmit = async (e: React.FormEvent) => {
@@ -272,8 +272,16 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
       return;
     }
 
-    if (!validatePhone(phone)) {
-      setCallbackError('Please enter a valid 10-digit mobile number');
+    const cleaned = phone.replace(/\D/g, '');
+    const length = cleaned.length;
+    if (length < 10) {
+      setCallbackError('Mobile number must be at least 10 digits');
+      return;
+    } else if (length > 13) {
+      setCallbackError('Mobile number must not exceed 13 digits');
+      return;
+    } else if (!validatePhone(phone)) {
+      setCallbackError('Please enter a valid mobile number (10-13 digits)');
       return;
     }
 
@@ -347,8 +355,16 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
     if (!mobile) {
       errors.mobile = 'Mobile number is required';
-    } else if (!validatePhone(mobile)) {
-      errors.mobile = 'Please enter a valid 10-digit mobile number';
+    } else {
+      const cleaned = mobile.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10) {
+        errors.mobile = 'Mobile number must be at least 10 digits';
+      } else if (length > 13) {
+        errors.mobile = 'Mobile number must not exceed 13 digits';
+      } else if (!validatePhone(mobile)) {
+        errors.mobile = 'Please enter a valid mobile number (10-13 digits)';
+      }
     }
     // Address, pinCode, and acceptTerms are now optional - no validation needed
 

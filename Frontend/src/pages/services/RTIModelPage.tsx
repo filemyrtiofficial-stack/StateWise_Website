@@ -109,8 +109,16 @@ export const RTIModelPage: React.FC = () => {
         validationErrors.push('Valid email is required');
       }
 
-      if (!data.mobile || !/^[6-9]\d{9}$/.test(data.mobile.replace(/\D/g, ''))) {
-        validationErrors.push('Valid 10-digit mobile number is required');
+      if (!data.mobile) {
+        validationErrors.push('Mobile number is required');
+      } else {
+        const cleaned = data.mobile.replace(/\D/g, '');
+        const length = cleaned.length;
+        if (length < 10) {
+          validationErrors.push('Mobile number must be at least 10 digits');
+        } else if (length > 13) {
+          validationErrors.push('Mobile number must not exceed 13 digits');
+        }
       }
 
       // All other fields (rtiQuery, address, pincode) are optional - no validation needed
@@ -252,8 +260,16 @@ export const RTIModelPage: React.FC = () => {
         validationErrors.push('Valid email is required');
       }
 
-      if (!data.mobile || !/^[6-9]\d{9}$/.test(data.mobile.replace(/\D/g, ''))) {
-        validationErrors.push('Valid 10-digit mobile number is required');
+      if (!data.mobile) {
+        validationErrors.push('Mobile number is required');
+      } else {
+        const cleaned = data.mobile.replace(/\D/g, '');
+        const length = cleaned.length;
+        if (length < 10) {
+          validationErrors.push('Mobile number must be at least 10 digits');
+        } else if (length > 13) {
+          validationErrors.push('Mobile number must not exceed 13 digits');
+        }
       }
 
       // All other fields (rtiQuery, address, pincode) are optional - no validation needed

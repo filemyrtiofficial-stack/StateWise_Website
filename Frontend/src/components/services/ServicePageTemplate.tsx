@@ -55,8 +55,19 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
-    else if (!/^[6-9]\d{9}$/.test(formData.phone.replace(/\D/g, ''))) newErrors.phone = 'Invalid phone number';
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone is required';
+    } else {
+      const cleaned = formData.phone.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10) {
+        newErrors.phone = 'Phone number must be at least 10 digits';
+      } else if (length > 13) {
+        newErrors.phone = 'Phone number must not exceed 13 digits';
+      } else {
+        newErrors.phone = '';
+      }
+    }
     // All other fields (pincode, address, department, state, query, urgency, preferredLanguage, acceptTerms) are optional
 
     if (Object.keys(newErrors).length > 0) {

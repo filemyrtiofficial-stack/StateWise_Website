@@ -78,8 +78,16 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!validateMobile(formData.phone)) {
-      newErrors.phone = 'Please enter a valid 10-digit mobile number';
+    } else {
+      const cleaned = formData.phone.replace(/\D/g, '');
+      const length = cleaned.length;
+      if (length < 10) {
+        newErrors.phone = 'Phone number must be at least 10 digits';
+      } else if (length > 13) {
+        newErrors.phone = 'Phone number must not exceed 13 digits';
+      } else if (!validateMobile(formData.phone)) {
+        newErrors.phone = 'Please enter a valid mobile number (10-13 digits)';
+      }
     }
 
     // RTI Query is optional, no validation needed

@@ -21,11 +21,11 @@ const createCallbackRequest = async (req, res, next) => {
       return sendError(res, 'Phone number is required', 400);
     }
 
-    // Mobile validation (Indian format)
-    const mobileRegex = /^[6-9]\d{9}$/;
+    // Mobile validation (10-13 digits)
     const cleanPhone = phone.replace(/\D/g, '');
-    if (!mobileRegex.test(cleanPhone)) {
-      return sendError(res, 'Invalid phone number format', 400);
+    const length = cleanPhone.length;
+    if (length < 10 || length > 13) {
+      return sendError(res, 'Phone number must be between 10 and 13 digits', 400);
     }
 
     // Create callback request

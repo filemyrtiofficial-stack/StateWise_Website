@@ -49,11 +49,11 @@ const createConsultation = async (req, res, next) => {
       return sendError(res, 'Invalid email format', 400);
     }
 
-    // Mobile validation (Indian format)
-    const mobileRegex = /^[6-9]\d{9}$/;
+    // Mobile validation (10-13 digits)
     const cleanMobile = mobile.replace(/\D/g, '');
-    if (!mobileRegex.test(cleanMobile)) {
-      return sendError(res, 'Invalid mobile number format', 400);
+    const length = cleanMobile.length;
+    if (length < 10 || length > 13) {
+      return sendError(res, 'Mobile number must be between 10 and 13 digits', 400);
     }
 
     // Address and pincode are optional - use empty string if not provided

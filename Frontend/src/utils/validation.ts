@@ -8,8 +8,9 @@ export const validateEmail = (email: string): boolean => {
 };
 
 export const validateMobile = (mobile: string): boolean => {
-  const mobileRegex = /^[6-9]\d{9}$/;
-  return mobileRegex.test(mobile.replace(/\D/g, ''));
+  const cleaned = mobile.replace(/\D/g, '');
+  const length = cleaned.length;
+  return length >= 10 && length <= 13;
 };
 
 export const validatePincode = (pincode: string): boolean => {
@@ -35,8 +36,16 @@ export const validateFormData = (data: {
 
   if (!data.mobile.trim()) {
     errors.mobile = 'Mobile number is required';
-  } else if (!validateMobile(data.mobile)) {
-    errors.mobile = 'Please enter a valid 10-digit mobile number';
+  } else {
+    const cleaned = data.mobile.replace(/\D/g, '');
+    const length = cleaned.length;
+    if (length < 10) {
+      errors.mobile = 'Mobile number must be at least 10 digits';
+    } else if (length > 13) {
+      errors.mobile = 'Mobile number must not exceed 13 digits';
+    } else if (!validateMobile(data.mobile)) {
+      errors.mobile = 'Please enter a valid mobile number (10-13 digits)';
+    }
   }
 
   if (!data.email.trim()) {
