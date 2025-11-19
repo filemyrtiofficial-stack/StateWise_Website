@@ -361,11 +361,40 @@ export const careersAPI = {
     phone: string;
     position: string;
     coverLetter?: string;
+    resume?: File | null;
   }) => {
-    return apiRequest(API_ENDPOINTS.CAREERS.CREATE_PUBLIC, {
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('phone', data.phone);
+    formData.append('position', data.position);
+    if (data.coverLetter) {
+      formData.append('coverLetter', data.coverLetter);
+    }
+    if (data.resume) {
+      formData.append('resume', data.resume);
+    }
+
+    // Use fetch directly for FormData (don't use apiRequest which expects JSON)
+    const response = await fetch(API_ENDPOINTS.CAREERS.CREATE_PUBLIC, {
       method: 'POST',
-      body: JSON.stringify(data)
+      body: formData
+      // Don't set Content-Type header - browser will set it with boundary for multipart/form-data
     });
+
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: 'Failed to submit application' };
+      }
+      throw new Error(errorData.message || errorData.error || 'Failed to submit application');
+    }
+
+    const result = await response.json();
+    return result;
   }
 };
 

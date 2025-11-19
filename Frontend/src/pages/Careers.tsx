@@ -264,13 +264,14 @@ export const Careers: React.FC = () => {
       // Clean phone number (remove non-digits)
       const cleanPhone = applicationForm.phone.replace(/\D/g, '');
 
-      // Prepare data for career API
+      // Prepare data for career API (including resume file)
       const careerData = {
         name: applicationForm.name.trim(),
         email: applicationForm.email.trim().toLowerCase(),
         phone: cleanPhone,
         position: applicationForm.position.trim(),
-        coverLetter: applicationForm.coverLetter.trim() || undefined
+        coverLetter: applicationForm.coverLetter.trim() || undefined,
+        resume: applicationForm.resume || null
       };
 
       const result = await careersAPI.createPublic(careerData);

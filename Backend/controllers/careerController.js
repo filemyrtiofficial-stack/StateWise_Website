@@ -13,8 +13,13 @@ const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp')
  */
 const createCareerApplication = async (req, res, next) => {
   try {
+    // Handle multer errors (file upload errors)
+    if (req.fileValidationError) {
+      return sendError(res, req.fileValidationError, 400);
+    }
+
     logger.info('Career application submission received:', {
-      body: { ...req.body, resume: req.body.resume ? 'File attached' : 'No file' },
+      body: { ...req.body, resume: req.file ? `File: ${req.file.originalname}` : 'No file' },
       ip: req.ip
     });
 
@@ -45,9 +50,17 @@ const createCareerApplication = async (req, res, next) => {
       'Phone': cleanPhone,
       'Position Applied For': position.trim(),
       'Cover Letter': coverLetter ? coverLetter.trim() : '(Not provided)',
-      'Resume': req.file ? `Attached: ${req.file.originalname}` : '(Not provided)',
+      'Resume': req.file ? `Attached: ${req.file.originalname} (${(req.file.size / 1024).toFixed(2)} KB)` : '(Not provided)',
+      'Resume File': req.file ? req.file.filename : 'No file uploaded',
       'Submission Time': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     };
+
+    // Log file upload info
+    if (req.file) {
+      logger.info(`📎 Resume uploaded: ${req.file.originalname} -> ${req.file.filename} (${(req.file.size / 1024).toFixed(2)} KB)`);
+    } else {
+      logger.info('📎 No resume file uploaded');
+    }
 
     // Send email notification (non-blocking)
     sendFormSubmissionEmail('Career Application', formData).catch(err => {
