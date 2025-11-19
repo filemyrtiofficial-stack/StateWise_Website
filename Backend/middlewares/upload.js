@@ -6,7 +6,19 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const logger = require('../utils/logger');
+
+// Try to require logger, but don't fail if it doesn't exist
+let logger;
+try {
+  logger = require('../utils/logger');
+} catch (err) {
+  // Fallback logger if utils/logger doesn't exist
+  logger = {
+    info: (...args) => console.log('[INFO]', ...args),
+    error: (...args) => console.error('[ERROR]', ...args),
+    warn: (...args) => console.warn('[WARN]', ...args)
+  };
+}
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, '../uploads/resumes');
