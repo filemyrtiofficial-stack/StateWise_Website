@@ -82,7 +82,7 @@ export const RTIModelPage: React.FC = () => {
   } = useConsultationForm();
   const { paymentState, initiatePayment, resetPayment } = usePayment();
   const { shouldLoadVideo, videoRef } = useVideoLazyLoad();
-  const videoConfig = getVideoConfigForService(modelSlug);
+  const videoConfig = getVideoConfigForService(modelSlug ?? undefined);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -545,7 +545,7 @@ export const RTIModelPage: React.FC = () => {
 
       <div className="min-h-screen flex flex-col">
         {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}
-        <ServiceSidebar model={model} onCTAClick={handleCTAClick} serviceSlug={modelSlug} />
+        <ServiceSidebar model={model} onCTAClick={handleCTAClick} serviceSlug={modelSlug ?? undefined} />
 
         {/* Navbar - Responsive */}
         <div
