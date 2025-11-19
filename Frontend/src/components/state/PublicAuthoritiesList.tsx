@@ -218,7 +218,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
             className="flex-1 overflow-y-auto overflow-x-hidden public-authorities-scroll"
             style={{
               scrollbarWidth: 'thin',
-              scrollbarColor: '#f97316 #fef3c7',
+              scrollbarColor: '#026CB6 #e6f2fa',
               WebkitOverflowScrolling: 'touch',
             }}
             onWheel={() => setIsUserScrolling(true)}

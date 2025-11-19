@@ -140,7 +140,7 @@ export const StateDepartments: React.FC<StateDepartmentsProps> = ({ stateName })
             overflowY: 'auto',
             overflowX: 'hidden',
             scrollbarWidth: 'thin',
-            scrollbarColor: '#9ca3af #f3f4f6',
+            scrollbarColor: '#026CB6 #e6f2fa',
           }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}

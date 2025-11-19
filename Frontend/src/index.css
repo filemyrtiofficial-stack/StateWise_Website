@@ -70,13 +70,36 @@
   }
 }
 
+/* Global scrollbar styling for main page */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #026CB6 #e6f2fa;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: #e6f2fa;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #026CB6;
+  border-radius: 5px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: #015a9a;
+}
+
 /* Departments scrollable container */
 .departments-scroll-container {
   height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #9ca3af #f3f4f6;
+  scrollbar-color: #026CB6 #e6f2fa;
 }
 
 .departments-scroll-container::-webkit-scrollbar {
@@ -84,17 +107,17 @@
 }
 
 .departments-scroll-container::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: #e6f2fa;
   border-radius: 4px;
 }
 
 .departments-scroll-container::-webkit-scrollbar-thumb {
-  background: #9ca3af;
+  background: #026CB6;
   border-radius: 4px;
 }
 
 .departments-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: #015a9a;
 }
 
 /* Public Authorities List scrollbar styling */
@@ -103,17 +126,17 @@
 }
 
 .public-authorities-scroll::-webkit-scrollbar-track {
-  background: #fef3c7;
+  background: #e6f2fa;
   border-radius: 4px;
 }
 
 .public-authorities-scroll::-webkit-scrollbar-thumb {
-  background: #f97316;
+  background: #026CB6;
   border-radius: 4px;
 }
 
 .public-authorities-scroll::-webkit-scrollbar-thumb:hover {
-  background: #ea580c;
+  background: #015a9a;
 }
 
 /* RTI Models scrollable container */
