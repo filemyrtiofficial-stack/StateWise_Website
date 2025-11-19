@@ -7,16 +7,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RTIModel } from '../../types/services';
 import { useVideoLazyLoad } from '../../hooks/useVideoLazyLoad';
-import { YOUTUBE_VIDEO_CONFIG } from '../../constants/services';
+import { getVideoConfigForService } from '../../constants/services';
 
 interface ServiceSidebarProps {
   model: RTIModel;
   onCTAClick: () => void;
+  serviceSlug?: string;
 }
 
-export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model, onCTAClick }) => {
+export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model, onCTAClick, serviceSlug }) => {
   const navigate = useNavigate();
   const { shouldLoadVideo, videoRef } = useVideoLazyLoad();
+  const videoConfig = getVideoConfigForService(serviceSlug);
 
   return (
     <>
@@ -62,7 +64,7 @@ export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model
                 {shouldLoadVideo ? (
                   <iframe
                     className="absolute top-0 left-0 w-full h-full rounded-lg"
-                    src={YOUTUBE_VIDEO_CONFIG.embedUrl}
+                    src={videoConfig.embedUrl}
                     title="RTI Service Video"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -133,7 +135,7 @@ export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model
             {shouldLoadVideo ? (
               <iframe
                 className="absolute top-0 left-0 w-full h-full rounded-lg"
-                src={YOUTUBE_VIDEO_CONFIG.embedUrl}
+                src={videoConfig.embedUrl}
                 title="RTI Service Video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

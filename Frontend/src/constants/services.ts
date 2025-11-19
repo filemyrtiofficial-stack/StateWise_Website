@@ -25,11 +25,41 @@ export const SERVICE_IMAGES_X: ServiceImageMapping = {
   '15-minute-consultation': '/images/15miX.webp'
 };
 
-// YouTube video configuration
+// YouTube video configuration - default video
 export const YOUTUBE_VIDEO_CONFIG = {
   videoId: 'fKam-c_Rugo',
   startTime: 8,
   embedUrl: 'https://www.youtube.com/embed/fKam-c_Rugo?start=8'
+};
+
+// Service-specific video mapping
+export const SERVICE_VIDEO_CONFIG: Record<string, { videoId: string; startTime?: number }> = {
+  '15-minute-consultation': {
+    videoId: 'EPnOzGGTStw',
+    startTime: 0
+  }
+};
+
+/**
+ * Get YouTube video configuration for a specific service
+ * @param serviceSlug - The service slug (e.g., '15-minute-consultation')
+ * @returns YouTube video configuration object
+ */
+export const getVideoConfigForService = (serviceSlug?: string): typeof YOUTUBE_VIDEO_CONFIG => {
+  if (serviceSlug && SERVICE_VIDEO_CONFIG[serviceSlug]) {
+    const config = SERVICE_VIDEO_CONFIG[serviceSlug];
+    const startTime = config.startTime !== undefined ? config.startTime : 0;
+    const embedUrl = startTime > 0
+      ? `https://www.youtube.com/embed/${config.videoId}?start=${startTime}&rel=0`
+      : `https://www.youtube.com/embed/${config.videoId}?rel=0`;
+
+    return {
+      videoId: config.videoId,
+      startTime: startTime,
+      embedUrl: embedUrl
+    };
+  }
+  return YOUTUBE_VIDEO_CONFIG;
 };
 
 // SEO Configuration

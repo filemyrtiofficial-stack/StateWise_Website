@@ -23,7 +23,7 @@ import { useRTIService } from '../../hooks/useRTIService';
 import { useConsultationForm } from '../../hooks/useConsultationForm';
 import { usePayment } from '../../hooks/usePayment';
 import { useVideoLazyLoad } from '../../hooks/useVideoLazyLoad';
-import { SERVICE_IMAGES, SERVICE_IMAGES_X, YOUTUBE_VIDEO_CONFIG } from '../../constants/services';
+import { SERVICE_IMAGES, SERVICE_IMAGES_X, getVideoConfigForService } from '../../constants/services';
 import { generateServiceStructuredData, generateBreadcrumbStructuredData, generateFAQStructuredData, generateCanonicalUrl, generatePageTitle, generateMetaKeywords } from '../../utils/seo';
 import { FAQ } from '../../types/services';
 
@@ -82,6 +82,7 @@ export const RTIModelPage: React.FC = () => {
   } = useConsultationForm();
   const { paymentState, initiatePayment, resetPayment } = usePayment();
   const { shouldLoadVideo, videoRef } = useVideoLazyLoad();
+  const videoConfig = getVideoConfigForService(modelSlug);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -544,7 +545,7 @@ export const RTIModelPage: React.FC = () => {
 
       <div className="min-h-screen flex flex-col">
         {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}
-        <ServiceSidebar model={model} onCTAClick={handleCTAClick} />
+        <ServiceSidebar model={model} onCTAClick={handleCTAClick} serviceSlug={modelSlug} />
 
         {/* Navbar - Responsive */}
         <div
@@ -597,7 +598,7 @@ export const RTIModelPage: React.FC = () => {
                     {shouldLoadVideo ? (
                       <iframe
                         className="absolute top-0 left-0 w-full h-full rounded-lg"
-                        src={YOUTUBE_VIDEO_CONFIG.embedUrl}
+                        src={videoConfig.embedUrl}
                         title="RTI Service Video"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
