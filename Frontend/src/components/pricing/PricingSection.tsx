@@ -306,21 +306,6 @@ export const PricingSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Application Tracking */}
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-gray-900 mb-0.5">Application Tracking</h4>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                    Track your RTI application status in real-time and receive regular updates via email and SMS throughout the entire process.
-                  </p>
-                </div>
-              </div>
-
               {/* Quick Processing */}
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
