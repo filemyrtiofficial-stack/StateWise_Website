@@ -234,7 +234,7 @@ const FooterComponent: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                className="w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-lg disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Subscribing...' : 'Sign up'}
               </button>

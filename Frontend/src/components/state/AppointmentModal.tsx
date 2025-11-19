@@ -290,7 +290,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold py-1.5 px-3 rounded-lg transition-colors text-xs disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+                className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-1.5 px-3 rounded-lg transition-colors text-xs disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
               >
                 {status === 'submitting' ? (
                   <>

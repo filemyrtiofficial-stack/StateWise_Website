@@ -346,7 +346,7 @@ export const ContactUs: React.FC = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-sm sm:text-base"
+                      className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-sm sm:text-base"
                     >
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
@@ -371,7 +371,7 @@ export const ContactUs: React.FC = () => {
                       </div>
                       <div className="text-left">
                         <p className="text-xs text-gray-600">Phone</p>
-                        <a href="tel:+919911100589" className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                        <a href="tel:+919911100589" className="text-base font-semibold text-gray-900 hover:text-primary-600 transition-colors">
                           +91 99111 00589
                         </a>
                       </div>
@@ -385,7 +385,7 @@ export const ContactUs: React.FC = () => {
                       </div>
                       <div className="text-left">
                         <p className="text-xs text-gray-600">Email</p>
-                        <a href="mailto:Admin@filemyrti.com" className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                        <a href="mailto:Admin@filemyrti.com" className="text-base font-semibold text-gray-900 hover:text-primary-600 transition-colors">
                           Admin@filemyrti.com
                         </a>
                       </div>
@@ -398,7 +398,7 @@ export const ContactUs: React.FC = () => {
                       href="https://www.linkedin.com/company/105639903/admin/dashboard/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-gray-100 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors group"
+                      className="w-10 h-10 bg-gray-100 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors group"
                       aria-label="LinkedIn"
                     >
                       <svg className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
@@ -410,7 +410,7 @@ export const ContactUs: React.FC = () => {
                       href="https://www.facebook.com/profile.php?id=61572512135057"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-gray-100 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors group"
+                      className="w-10 h-10 bg-gray-100 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors group"
                       aria-label="Facebook"
                     >
                       <svg className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">

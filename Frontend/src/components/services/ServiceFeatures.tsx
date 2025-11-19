@@ -19,13 +19,13 @@ export const ServiceFeatures: React.FC = React.memo(() => {
     },
     {
       icon: (
-        <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       ),
       title: 'Fast Response',
       description: 'Get quick responses and timely updates on your RTI application status',
-      bgColor: 'bg-blue-100'
+      bgColor: 'bg-primary-100'
     },
     {
       icon: (

@@ -198,11 +198,10 @@ export const Services: React.FC = () => {
                     {/* CTA Button */}
                     <Link
                       to={service.route}
-                      className={`w-full text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 text-center shadow-sm hover:shadow-md active:scale-95 ${
-                        service.buttonText === 'File Now' || service.buttonText === 'Start Anonymously' || service.buttonText === 'Appeal Now'
-                          ? 'bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+                      className={`w-full text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 text-center shadow-sm hover:shadow-md active:scale-95 ${service.buttonText === 'File Now' || service.buttonText === 'Start Anonymously' || service.buttonText === 'Appeal Now'
+                          ? 'bg-gradient-to-b from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800'
                           : 'bg-primary-600 hover:bg-primary-700'
-                      }`}
+                        }`}
                     >
                       {service.buttonText}
                     </Link>

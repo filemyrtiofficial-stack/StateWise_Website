@@ -133,9 +133,9 @@ export const TrackMyRTI: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {/* Application No */}
                   <div>
-                    <label 
-                      htmlFor="applicationNo" 
-                      className="block text-base sm:text-lg font-medium text-blue-500 mb-3"
+                    <label
+                      htmlFor="applicationNo"
+                      className="block text-base sm:text-lg font-medium text-primary-600 mb-3"
                     >
                       Application No
                     </label>
@@ -146,11 +146,10 @@ export const TrackMyRTI: React.FC = () => {
                       value={formData.applicationNo}
                       onChange={handleChange}
                       placeholder="Enter application number"
-                      className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${
-                        errors.applicationNo 
-                          ? 'border-red-500' 
-                          : 'border-blue-500'
-                      }`}
+                      className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${errors.applicationNo
+                          ? 'border-red-500'
+                          : 'border-primary-600'
+                        }`}
                     />
                     {errors.applicationNo && (
                       <p className="text-xs text-red-500 mt-2">{errors.applicationNo}</p>
@@ -159,9 +158,9 @@ export const TrackMyRTI: React.FC = () => {
 
                   {/* Email Id */}
                   <div>
-                    <label 
-                      htmlFor="emailId" 
-                      className="block text-base sm:text-lg font-medium text-blue-500 mb-3"
+                    <label
+                      htmlFor="emailId"
+                      className="block text-base sm:text-lg font-medium text-primary-600 mb-3"
                     >
                       Email Id
                     </label>
@@ -172,11 +171,10 @@ export const TrackMyRTI: React.FC = () => {
                       value={formData.emailId}
                       onChange={handleChange}
                       placeholder="Enter your email"
-                      className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${
-                        errors.emailId 
-                          ? 'border-red-500' 
-                          : 'border-blue-500'
-                      }`}
+                      className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${errors.emailId
+                          ? 'border-red-500'
+                          : 'border-primary-600'
+                        }`}
                     />
                     {errors.emailId && (
                       <p className="text-xs text-red-500 mt-2">{errors.emailId}</p>
@@ -206,7 +204,7 @@ export const TrackMyRTI: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-base sm:text-lg disabled:cursor-not-allowed"
+                    className="bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-base sm:text-lg disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit'}
                   </button>

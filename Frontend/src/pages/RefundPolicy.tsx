@@ -161,11 +161,11 @@ export const RefundPolicy: React.FC = () => {
                           </span>
                         </td>
                       </tr>
-                      <tr className="hover:bg-blue-50 transition-colors">
+                      <tr className="hover:bg-primary-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                              <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex-shrink-0 w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                              <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                             </div>
@@ -173,7 +173,7 @@ export const RefundPolicy: React.FC = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-primary-100 text-primary-800">
                             95% refund of total amount
                           </span>
                         </td>
@@ -218,9 +218,9 @@ export const RefundPolicy: React.FC = () => {
               </section>
 
               {/* Refund Timelines */}
-              <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 sm:p-8 border border-blue-100">
+              <section className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 sm:p-8 border border-primary-200">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
                     <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -231,12 +231,12 @@ export const RefundPolicy: React.FC = () => {
                     </h2>
                     <div className="space-y-3">
                       <p className="text-gray-700 leading-relaxed">
-                        Once your refund is confirmed by our team, we'll process it within <span className="font-bold text-blue-700">2–3 business days</span>.
+                        Once your refund is confirmed by our team, we'll process it within <span className="font-bold text-primary-700">2–3 business days</span>.
                       </p>
                       <p className="text-gray-700 leading-relaxed">
-                        Depending on your bank or payment provider, it may take up to <span className="font-bold text-blue-700">7 working days</span> for the amount to reflect in your account.
+                        Depending on your bank or payment provider, it may take up to <span className="font-bold text-primary-700">7 working days</span> for the amount to reflect in your account.
                       </p>
-                      <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
+                      <div className="mt-4 p-4 bg-white rounded-lg border border-primary-200">
                         <p className="text-gray-700 leading-relaxed flex items-start">
                           <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

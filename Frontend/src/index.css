@@ -122,7 +122,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #3b82f6 #dbeafe;
+  scrollbar-color: #026CB6 #e6f2fa;
 }
 
 .rti-models-scroll-container::-webkit-scrollbar {
@@ -130,17 +130,17 @@
 }
 
 .rti-models-scroll-container::-webkit-scrollbar-track {
-  background: #dbeafe;
+  background: #e6f2fa;
   border-radius: 4px;
 }
 
 .rti-models-scroll-container::-webkit-scrollbar-thumb {
-  background: #3b82f6;
+  background: #026CB6;
   border-radius: 4px;
 }
 
 .rti-models-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: #015a9a;
 }
 
 /* Sidebar features list scrollbar styling */

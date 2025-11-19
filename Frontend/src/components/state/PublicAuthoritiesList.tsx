@@ -235,7 +235,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
               {duplicatedAuthorities.map((authority, index) => (
                 <li
                   key={`${authority}-${index}`}
-                  className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-1.5 sm:py-2 text-blue-600 font-medium text-xs sm:text-sm md:text-base leading-relaxed hover:text-blue-700 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-1.5 sm:py-2 text-primary-600 font-medium text-xs sm:text-sm md:text-base leading-relaxed hover:text-primary-700 transition-colors"
                   style={{
                     fontFamily: 'sans-serif',
                     marginLeft: '0.5rem',
@@ -248,7 +248,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
                   <span className="flex-1 min-w-0 pr-2 sm:pr-0">{authority}</span>
                   <button
                     onClick={() => handleApplyNow(authority)}
-                    className="flex-shrink-0 self-start sm:self-auto px-3 py-1.5 sm:px-2.5 sm:py-1 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white text-[10px] sm:text-xs font-semibold rounded transition-all whitespace-nowrap shadow-sm hover:shadow-md"
+                    className="flex-shrink-0 self-start sm:self-auto px-3 py-1.5 sm:px-2.5 sm:py-1 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-[10px] sm:text-xs font-semibold rounded transition-all whitespace-nowrap shadow-sm hover:shadow-md"
                     title={`Apply for RTI to ${authority}`}
                   >
                     Apply Now

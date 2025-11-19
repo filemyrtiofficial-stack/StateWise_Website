@@ -56,7 +56,7 @@ export const WhyThisService: React.FC<WhyThisServiceProps> = React.memo(({ servi
       {/* Title with underline */}
       <div className="mb-6 md:mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Why This Service?</h2>
-        <div className="h-1 bg-blue-600 w-48 rounded"></div>
+        <div className="h-1 bg-primary-600 w-48 rounded"></div>
       </div>
 
       {/* Main Content: Large 4 and Cards Grid */}
@@ -69,7 +69,7 @@ export const WhyThisService: React.FC<WhyThisServiceProps> = React.memo(({ servi
               <span
                 className="text-[180px] font-bold text-primary-600 leading-none"
                 style={{
-                  WebkitTextStroke: '6px #0284c7',
+                  WebkitTextStroke: '6px #026CB6',
                   WebkitTextFillColor: 'transparent',
                   fontFamily: 'Arial, sans-serif',
                   letterSpacing: '-0.02em'

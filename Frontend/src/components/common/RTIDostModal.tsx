@@ -82,20 +82,20 @@ export const RTIDostModal: React.FC<RTIDostModalProps> = memo(({ isOpen, onClose
         </div>
 
         {/* Note Section */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mb-4">
           <h3 className="font-semibold text-gray-900 mb-1.5 text-sm">Note</h3>
           <div className="text-xs text-gray-700 space-y-1.5">
             <p>RTI Dost prepares your RTI draft automatically.</p>
             <p>Filing must be done by you on the official government RTI websites — they're simple and OTP-based.</p>
             <p>
               If you need help filing, our support team is just a call away at{' '}
-              <a href="tel:+919911100589" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+              <a href="tel:+919911100589" className="text-primary-600 hover:text-primary-700 underline font-semibold">
                 +91 99111 00589
               </a>
               {' '}or{' '}
               <button
                 onClick={onDraft}
-                className="text-blue-600 hover:text-blue-700 underline font-semibold"
+                className="text-primary-600 hover:text-primary-700 underline font-semibold"
               >
                 Apply Now
               </button>
@@ -107,7 +107,7 @@ export const RTIDostModal: React.FC<RTIDostModalProps> = memo(({ isOpen, onClose
         {/* Draft With RTI Dost Button */}
         <button
           onClick={onDraft}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl text-sm"
+          className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl text-sm"
         >
           Draft With RTI Dost
         </button>

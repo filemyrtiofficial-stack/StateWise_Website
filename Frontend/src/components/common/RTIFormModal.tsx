@@ -260,7 +260,7 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
               />
             </div>
 
-            <div className="flex items-start gap-1.5 p-2 bg-blue-50 rounded-md border border-blue-200">
+            <div className="flex items-start gap-1.5 p-2 bg-primary-50 rounded-md border border-primary-200">
               <input
                 type="checkbox"
                 id="terms"

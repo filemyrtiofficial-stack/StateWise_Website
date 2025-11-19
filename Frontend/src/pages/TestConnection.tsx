@@ -18,7 +18,7 @@ export const TestConnection: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Backend Connection Test</h1>
           <ConnectionTest />
 
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="mt-8 p-4 bg-primary-50 rounded-lg border border-primary-200">
             <h2 className="text-lg font-semibold mb-2">How to Test:</h2>
             <ol className="list-decimal list-inside space-y-2 text-sm">
               <li>Make sure backend server is running: <code className="bg-gray-100 px-2 py-1 rounded">cd Backend && npm run dev</code></li>

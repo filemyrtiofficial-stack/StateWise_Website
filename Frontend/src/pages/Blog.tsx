@@ -455,7 +455,7 @@ export const Blog: React.FC = () => {
                 </p>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                   aria-label="Subscribe to newsletter"
                 >
                   Subscribe Now

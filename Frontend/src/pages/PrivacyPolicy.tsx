@@ -320,7 +320,7 @@ export const PrivacyPolicy: React.FC = () => {
               </section>
 
               {/* Agreement Statement */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-8">
+              <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mt-8">
                 <p className="text-gray-900 text-sm sm:text-base font-semibold">
                   By using FileMyRTI.com, you acknowledge that you have read and understood this Privacy Policy and consent to the collection, use, and disclosure of your personal data as described herein, in compliance with the Digital Personal Data Protection Act, 2023.
                 </p>

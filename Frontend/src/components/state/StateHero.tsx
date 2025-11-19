@@ -479,7 +479,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     <button
                       type="submit"
                       disabled={callbackStatus === 'submitting'}
-                      className="px-3 py-2.5 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-3 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-md font-semibold flex items-center justify-center gap-1 transition-colors text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {callbackStatus === 'submitting' ? (
                         <>
@@ -501,7 +501,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                   </form>
                   <button
                     onClick={() => setIsAppointmentModalOpen(true)}
-                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-md font-semibold flex items-center justify-center gap-1.5 transition-colors text-xs whitespace-nowrap"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -537,7 +537,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                         </p>
                         <button
                           onClick={() => setShowSuccessPopup(false)}
-                          className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold transition-colors"
+                          className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-md font-semibold transition-colors"
                         >
                           OK
                         </button>
@@ -552,7 +552,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                 {statistics.map((stat, index) => (
                   <div
                     key={index}
-                    className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
+                    className="bg-primary-600 text-white p-2.5 sm:p-3 rounded-lg text-center"
                   >
                     <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
                       {stat.value}
@@ -736,7 +736,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       <button
                         type="submit"
                         disabled={consultationStatus === 'submitting'}
-                        className="w-full px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+                        className="w-full px-2 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
                       >
                         {consultationStatus === 'submitting' ? (
                           <>
@@ -770,7 +770,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       </p>
                       <button
                         onClick={resetConsultationForm}
-                        className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm sm:text-base"
+                        className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors text-sm sm:text-base"
                       >
                         Submit Another Response
                       </button>
@@ -794,7 +794,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                       </p>
                       <button
                         onClick={resetConsultationForm}
-                        className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors text-sm sm:text-base"
+                        className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors text-sm sm:text-base"
                       >
                         Try Again
                       </button>
@@ -847,7 +847,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                 {rtiModels.map((model) => (
                   <div
                     key={model.id}
-                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md hover:border-blue-400 transition-all duration-200 flex flex-col h-full group"
+                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md hover:border-primary-400 transition-all duration-200 flex flex-col h-full group"
                   >
                     {/* Icon Section */}
                     <div className="mb-3 flex flex-col items-center -mx-3 sm:-mx-4 -mt-3 sm:-mt-4">
@@ -876,8 +876,8 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     <button
                       onClick={() => navigate(model.route)}
                       className={`w-full text-white font-semibold py-2 px-2 rounded-md transition-all duration-200 text-xs sm:text-xs shadow-sm hover:shadow-md active:scale-95 ${model.buttonText === 'Apply Now' || model.buttonText === 'File Now' || model.buttonText === 'Start Anonymously' || model.buttonText === 'Appeal Now'
-                        ? 'bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
-                        : 'bg-blue-600 hover:bg-blue-700'
+                        ? 'bg-gradient-to-b from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800'
+                        : 'bg-primary-600 hover:bg-primary-700'
                         }`}
                     >
                       {model.buttonText}

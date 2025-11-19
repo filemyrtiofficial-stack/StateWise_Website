@@ -428,7 +428,7 @@ export const Careers: React.FC = () => {
                             setApplicationForm(prev => ({ ...prev, position: job.title }));
                             document.getElementById('application-form')?.scrollIntoView({ behavior: 'smooth' });
                           }}
-                          className="mt-4 px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
+                          className="mt-4 px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors"
                         >
                           Apply for this Position
                         </button>

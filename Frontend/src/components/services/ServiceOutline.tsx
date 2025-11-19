@@ -15,7 +15,7 @@ export const ServiceOutline: React.FC = React.memo(() => {
       {/* Title with underline */}
       <div className="mb-4 md:mb-6">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Service Outline</h2>
-        <div className="h-1 bg-blue-600 w-48 rounded"></div>
+        <div className="h-1 bg-primary-600 w-48 rounded"></div>
       </div>
 
       {/* Descriptive paragraph */}
@@ -34,7 +34,7 @@ export const ServiceOutline: React.FC = React.memo(() => {
               cy="70"
               r="55"
               fill="none"
-              stroke="#e0f2fe"
+              stroke="#e6f2fa"
               strokeWidth="24"
             />
             {/* Filled arc */}
@@ -43,7 +43,7 @@ export const ServiceOutline: React.FC = React.memo(() => {
               cy="70"
               r="55"
               fill="none"
-              stroke="#0284c7"
+              stroke="#026CB6"
               strokeWidth="24"
               strokeDasharray={`${filledLength} ${circumference}`}
               strokeLinecap="round"
@@ -77,8 +77,8 @@ export const ServiceOutline: React.FC = React.memo(() => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {/* Card 1 - Expert Drafting */}
         <div className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-          <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-            <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center mb-4">
+            <svg className="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
