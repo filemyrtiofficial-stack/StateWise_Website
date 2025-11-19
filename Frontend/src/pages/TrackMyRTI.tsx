@@ -147,8 +147,8 @@ export const TrackMyRTI: React.FC = () => {
                       onChange={handleChange}
                       placeholder="Enter application number"
                       className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${errors.applicationNo
-                          ? 'border-red-500'
-                          : 'border-primary-600'
+                        ? 'border-red-500'
+                        : 'border-primary-600'
                         }`}
                     />
                     {errors.applicationNo && (
@@ -172,8 +172,8 @@ export const TrackMyRTI: React.FC = () => {
                       onChange={handleChange}
                       placeholder="Enter your email"
                       className={`w-full px-4 py-3 sm:py-4 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base ${errors.emailId
-                          ? 'border-red-500'
-                          : 'border-primary-600'
+                        ? 'border-red-500'
+                        : 'border-primary-600'
                         }`}
                     />
                     {errors.emailId && (
