@@ -28,6 +28,7 @@ export const Careers: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [validationError, setValidationError] = useState<string>('');
 
   const jobOpenings: JobOpening[] = [
     {
@@ -171,6 +172,10 @@ export const Careers: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setApplicationForm(prev => ({ ...prev, [name]: value }));
+    // Clear validation error when user starts typing
+    if (validationError) {
+      setValidationError('');
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,8 +184,44 @@ export const Careers: React.FC = () => {
     }
   };
 
+  const validateForm = (): boolean => {
+    setValidationError('');
+
+    if (!applicationForm.name.trim()) {
+      setValidationError('Please enter your full name');
+      return false;
+    }
+    if (!applicationForm.email.trim()) {
+      setValidationError('Please enter your email address');
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(applicationForm.email.trim())) {
+      setValidationError('Please enter a valid email address');
+      return false;
+    }
+    if (!applicationForm.phone.trim()) {
+      setValidationError('Please enter your phone number');
+      return false;
+    }
+    const cleanPhone = applicationForm.phone.replace(/\D/g, '');
+    if (cleanPhone.length < 10 || cleanPhone.length > 13) {
+      setValidationError('Phone number must be between 10 and 13 digits');
+      return false;
+    }
+    if (!applicationForm.position.trim()) {
+      setValidationError('Please select a position');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -210,35 +251,29 @@ export const Careers: React.FC = () => {
           coverLetter: ''
         });
 
-        // Reset success message after 5 seconds
+        // Reset success message after 8 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 8000);
+      } else {
+        setSubmitStatus('error');
+        // Show error message for 5 seconds
         setTimeout(() => {
           setSubmitStatus('idle');
         }, 5000);
-      } else {
-        setSubmitStatus('error');
       }
     } catch (error: any) {
       console.error('Error submitting application:', error);
       setSubmitStatus('error');
 
-      // Show specific error message if available
-      if (error.errors && error.errors.length > 0) {
-        const fieldErrors: Record<string, string> = {};
-        error.errors.forEach((err: { field: string; message: string }) => {
-          // Map backend field names to frontend field names
-          if (err.field === 'name') {
-            fieldErrors.name = err.message;
-          } else if (err.field === 'phone') {
-            fieldErrors.phone = err.message;
-          } else if (err.field === 'email') {
-            fieldErrors.email = err.message;
-          } else if (err.field === 'position') {
-            fieldErrors.position = err.message;
-          }
-        });
-        // Note: We don't have a setErrors state, but we could add it if needed
-        // For now, the error status will show a general error message
-      }
+      // Show error message with details
+      const errorMsg = error.message || 'Failed to submit application. Please try again.';
+      console.error('Error details:', errorMsg);
+
+      // Show error message for 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -515,7 +550,6 @@ export const Careers: React.FC = () => {
                         value={applicationForm.phone}
                         onChange={handleInputChange}
                         required
-                        maxLength={10}
                         className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
@@ -543,7 +577,7 @@ export const Careers: React.FC = () => {
 
                   <div>
                     <label htmlFor="resume" className="block text-sm font-medium text-gray-700 mb-2">
-                      Resume/CV <span className="text-red-500">*</span>
+                      Resume/CV <span className="text-gray-500 text-xs">(Optional)</span>
                     </label>
                     <input
                       type="file"
@@ -551,10 +585,9 @@ export const Careers: React.FC = () => {
                       name="resume"
                       onChange={handleFileChange}
                       accept=".pdf,.doc,.docx"
-                      required
                       className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX (Max 5MB)</p>
+                    <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX (Max 5MB). You can also send it later via email.</p>
                   </div>
 
                   <div>
@@ -573,18 +606,51 @@ export const Careers: React.FC = () => {
                   </div>
 
                   {submitStatus === 'success' && (
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                      <p className="text-sm text-green-700">
-                        Thank you for your application! We've received your information and will get back to you soon.
-                      </p>
+                    <div className="p-4 bg-green-50 border-2 border-green-500 rounded-lg animate-fadeIn">
+                      <div className="flex items-start gap-3">
+                        <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="text-sm font-semibold text-green-800 mb-1">
+                            Application Submitted Successfully!
+                          </p>
+                          <p className="text-sm text-green-700">
+                            Thank you for your interest! We've received your application and will review it shortly. Our team will get back to you soon via email or phone.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {validationError && (
+                    <div className="p-4 bg-yellow-50 border-2 border-yellow-500 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <svg className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <p className="text-sm font-semibold text-yellow-800">
+                          {validationError}
+                        </p>
+                      </div>
                     </div>
                   )}
 
                   {submitStatus === 'error' && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-sm text-red-700">
-                        Something went wrong. Please try again or contact us directly at admin@filemyrti.com
-                      </p>
+                    <div className="p-4 bg-red-50 border-2 border-red-500 rounded-lg animate-fadeIn">
+                      <div className="flex items-start gap-3">
+                        <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="text-sm font-semibold text-red-800 mb-1">
+                            Submission Failed
+                          </p>
+                          <p className="text-sm text-red-700">
+                            Something went wrong while submitting your application. Please check your internet connection and try again, or contact us directly at <a href="mailto:admin@filemyrti.com" className="underline font-semibold">admin@filemyrti.com</a>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
 

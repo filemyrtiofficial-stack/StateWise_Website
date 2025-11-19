@@ -48,8 +48,6 @@ export const ContactUs: React.FC = () => {
         newErrors.mobile = 'Mobile number must be at least 10 digits';
       } else if (length > 13) {
         newErrors.mobile = 'Mobile number must not exceed 13 digits';
-      } else {
-        newErrors.mobile = '';
       }
     }
     if (!formData.email.trim()) {
@@ -58,8 +56,16 @@ export const ContactUs: React.FC = () => {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // Filter out empty error messages
+    const filteredErrors: Record<string, string> = {};
+    Object.keys(newErrors).forEach(key => {
+      if (newErrors[key]) {
+        filteredErrors[key] = newErrors[key];
+      }
+    });
+
+    setErrors(filteredErrors);
+    return Object.keys(filteredErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,16 +103,25 @@ export const ContactUs: React.FC = () => {
           message: ''
         });
 
-        // Reset success message after 5 seconds
+        // Reset success message after 8 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 8000);
+      } else {
+        setSubmitStatus('error');
+        // Show error message for 5 seconds
         setTimeout(() => {
           setSubmitStatus('idle');
         }, 5000);
-      } else {
-        setSubmitStatus('error');
       }
     } catch (error: any) {
       console.error('Error submitting contact form:', error);
       setSubmitStatus('error');
+
+      // Show error message for 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
 
       // Show specific error message if available
       if (error.errors && error.errors.length > 0) {
@@ -287,7 +302,6 @@ export const ContactUs: React.FC = () => {
                         name="mobile"
                         value={formData.mobile}
                         onChange={handleChange}
-                        maxLength={10}
                         className={`w-full px-4 py-2.5 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm ${errors.mobile ? 'border-red-500' : 'border-gray-300'
                           }`}
                       />
@@ -332,18 +346,38 @@ export const ContactUs: React.FC = () => {
 
                     {/* Success/Error Messages */}
                     {submitStatus === 'success' && (
-                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                        <p className="text-sm text-green-700">
-                          Thank you! Your message has been sent successfully. We'll get back to you soon.
-                        </p>
+                      <div className="p-4 bg-green-50 border-2 border-green-500 rounded-lg animate-fadeIn">
+                        <div className="flex items-start gap-3">
+                          <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <div>
+                            <p className="text-sm font-semibold text-green-800 mb-1">
+                              Message Sent Successfully!
+                            </p>
+                            <p className="text-sm text-green-700">
+                              Thank you for contacting us! We've received your message and will get back to you as soon as possible via email or phone.
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     )}
 
                     {submitStatus === 'error' && (
-                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm text-red-700">
-                          Something went wrong. Please try again or contact us directly.
-                        </p>
+                      <div className="p-4 bg-red-50 border-2 border-red-500 rounded-lg animate-fadeIn">
+                        <div className="flex items-start gap-3">
+                          <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <div>
+                            <p className="text-sm font-semibold text-red-800 mb-1">
+                              Failed to Send Message
+                            </p>
+                            <p className="text-sm text-red-700">
+                              Something went wrong while sending your message. Please check your internet connection and try again, or contact us directly at <a href="mailto:admin@filemyrti.com" className="underline font-semibold">admin@filemyrti.com</a> or call <a href="tel:+919911100589" className="underline font-semibold">91 99111 00589</a>.
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     )}
 
