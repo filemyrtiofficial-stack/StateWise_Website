@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/icons/logo.webp';
 
@@ -6,6 +6,8 @@ const NavbarComponent: React.FC = () => {
   const location = useLocation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Check if we're on a service page (has sidebar)
   const isServicePage = location.pathname.startsWith('/services/');
@@ -17,6 +19,45 @@ const NavbarComponent: React.FC = () => {
   const handleServicesMouseEnter = useCallback(() => setIsServicesOpen(true), []);
   const handleServicesMouseLeave = useCallback(() => setIsServicesOpen(false), []);
   const toggleMobileMenu = useCallback(() => setIsMobileMenuOpen(prev => !prev), []);
+  const toggleMobileServices = useCallback(() => setIsMobileServicesOpen(prev => !prev), []);
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+    setIsMobileServicesOpen(false);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        closeMobileMenu();
+      }
+    };
+
+    // Close on escape key
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isMobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen, closeMobileMenu]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    closeMobileMenu();
+  }, [location.pathname, closeMobileMenu]);
 
   return (
     <>
@@ -204,51 +245,148 @@ const NavbarComponent: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu Overlay */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-gray-200 py-4">
-              <div className="flex flex-col space-y-4">
-                <Link to="/about-us" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
+            <div
+              className="lg:hidden fixed inset-0 bg-black/50 z-[99] transition-opacity duration-300"
+              onClick={closeMobileMenu}
+              aria-hidden="true"
+            />
+          )}
+
+          {/* Mobile Menu Panel - Slides in from left */}
+          <div
+            ref={mobileMenuRef}
+            className={`lg:hidden fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[100] transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+              }`}
+          >
+            {/* Mobile Menu Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+              <Link to="/" onClick={closeMobileMenu} className="flex items-center">
+                <img
+                  src={logo}
+                  alt="FileMyRTI Logo"
+                  className="h-8 w-auto"
+                  loading="eager"
+                  width="120"
+                  height="32"
+                />
+              </Link>
+              <button
+                onClick={closeMobileMenu}
+                className="text-gray-700 hover:text-primary-600 transition-colors p-2"
+                aria-label="Close mobile menu"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile Menu Content */}
+            <div className="overflow-y-auto h-[calc(100vh-64px)] py-4">
+              <div className="flex flex-col space-y-1">
+                <Link
+                  to="/about-us"
+                  onClick={closeMobileMenu}
+                  className="text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors font-medium px-4 py-3"
+                >
                   About us
                 </Link>
 
                 {/* Services Dropdown in Mobile */}
-                <div className="px-2">
-                  <div className="text-gray-700 font-medium mb-2">Services</div>
-                  <div className="flex flex-col space-y-2 ml-4">
-                    <Link to="/services/anonymous" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      Anonymous RTI
-                    </Link>
-                    <Link to="/services/bulk" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      Bulk RTI Filing
-                    </Link>
-                    <Link to="/services/seamless-online-filing" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      Seamless Online Filing
-                    </Link>
-                    <Link to="/services/15-minute-consultation" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      15 Minute Consultation
-                    </Link>
-                    <Link to="/services/1st-appeal" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      1st Appeal
-                    </Link>
-                    <Link to="/services/custom-rti" className="text-gray-600 hover:text-primary-600 transition-colors text-sm">
-                      Custom RTI
-                    </Link>
+                <div className="px-4">
+                  <button
+                    onClick={toggleMobileServices}
+                    className="w-full flex items-center justify-between text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors font-medium py-3"
+                    aria-expanded={isMobileServicesOpen}
+                    aria-label="Toggle Services menu"
+                  >
+                    <span>Services</span>
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-300 ${isMobileServicesOpen ? 'rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isMobileServicesOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      }`}
+                  >
+                    <div className="flex flex-col space-y-1 ml-4 mt-1">
+                      <Link
+                        to="/services/anonymous"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        Anonymous RTI
+                      </Link>
+                      <Link
+                        to="/services/bulk"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        Bulk RTI Filing
+                      </Link>
+                      <Link
+                        to="/services/seamless-online-filing"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        Seamless Online Filing
+                      </Link>
+                      <Link
+                        to="/services/15-minute-consultation"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        15 Minute Consultation
+                      </Link>
+                      <Link
+                        to="/services/1st-appeal"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        1st Appeal
+                      </Link>
+                      <Link
+                        to="/services/custom-rti"
+                        onClick={closeMobileMenu}
+                        className="text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors text-sm px-4 py-2 rounded"
+                      >
+                        Custom RTI
+                      </Link>
+                    </div>
                   </div>
                 </div>
 
-                <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
+                <Link
+                  to="/pricing"
+                  onClick={closeMobileMenu}
+                  className="text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors font-medium px-4 py-3"
+                >
                   Pricing
                 </Link>
-                <Link to="/blogs" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
+                <Link
+                  to="/blogs"
+                  onClick={closeMobileMenu}
+                  className="text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors font-medium px-4 py-3"
+                >
                   Blogs
                 </Link>
-                <Link to="/contact" className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2">
+                <Link
+                  to="/contact"
+                  onClick={closeMobileMenu}
+                  className="text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors font-medium px-4 py-3"
+                >
                   Contact us
                 </Link>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </nav>
     </>
