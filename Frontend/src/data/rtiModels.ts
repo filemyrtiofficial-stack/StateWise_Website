@@ -102,7 +102,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Individual attention',
       'Complete customization'
     ],
-    price: 1999,
+    price: 699,
     originalPrice: 3499,
     buttonText: 'Custom RTI'
   },

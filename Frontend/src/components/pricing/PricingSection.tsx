@@ -21,19 +21,9 @@ export const PricingSection: React.FC = () => {
 
   const { paymentState, initiatePayment, resetPayment } = usePayment();
 
-  const handleModelClick = (modelSlug: string) => {
-    const model = getRTIModelBySlug(modelSlug);
-    if (!model) return;
-
-    // For bulk and custom RTI, navigate to service page
-    if (modelSlug === 'bulk' || modelSlug === 'custom-rti') {
-      navigate(`/services/${modelSlug}`);
-      return;
-    }
-
-    // For other models, open consultation modal
-    setSelectedModelSlug(modelSlug);
-    setIsModalOpen(true);
+  const handleApplyClick = (modelSlug: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent row click
+    navigate(`/services/${modelSlug}`);
   };
 
   const handleModalClose = () => {
@@ -107,17 +97,23 @@ export const PricingSection: React.FC = () => {
               Pricing Plans
             </h3>
 
-            {/* Pricing Table */}
-            <div className="overflow-x-auto mb-4">
+            {/* Pricing Table - Desktop */}
+            <div className="hidden md:block overflow-x-auto mb-4">
               <table className="w-full border-collapse">
+                <colgroup>
+                  <col style={{ width: '45%' }} />
+                  <col style={{ width: '25%' }} />
+                  <col style={{ width: '30%' }} />
+                </colgroup>
                 <thead>
-                  <tr className="border-b-2 border-gray-200">
-                    <th className="text-left py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Features</th>
-                    <th className="text-center py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Price</th>
+                  <tr className="border-b-2 border-gray-300 bg-gray-50">
+                    <th className="text-left py-3 px-3 text-sm font-semibold text-gray-900">Features</th>
+                    <th className="text-center py-3 px-3 text-sm font-semibold text-gray-900">Price</th>
+                    <th className="text-center py-3 px-3 text-sm font-semibold text-gray-900">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {allModels.map((model) => {
+                  {allModels.map((model, index) => {
                     const modelSlug = Object.keys(rtiModels).find(key => rtiModels[key].id === model.id) || '';
                     const displayPrice = model.price === 0 ? 'Request Quote' : `₹${model.price}`;
                     const hasDiscount = model.originalPrice > model.price && model.price > 0;
@@ -125,49 +121,107 @@ export const PricingSection: React.FC = () => {
                     return (
                       <tr
                         key={model.id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                        onClick={() => handleModelClick(modelSlug)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleModelClick(modelSlug);
-                          }
-                        }}
-                        aria-label={`Select ${model.name} plan for ${displayPrice}`}
+                        className={`border-b border-gray-200 hover:bg-primary-50 transition-all duration-200 ${index === allModels.length - 1 ? 'border-b-0' : ''
+                          }`}
                       >
-                        <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">
-                          {model.name}
+                        <td className="py-3 px-3 text-sm text-gray-900 align-middle">
+                          <span className="font-medium">{model.name}</span>
                         </td>
-                        <td className="py-2 px-3 text-center">
+                        <td className="py-3 px-3 text-center align-middle">
                           {model.price === 0 ? (
-                            <span className="text-xs sm:text-sm text-primary-600 font-medium">
+                            <span className="text-sm text-primary-600 font-semibold">
                               {displayPrice}
                             </span>
                           ) : (
-                            <div className="flex items-center justify-center gap-1.5">
-                              <div className="flex flex-col items-center">
-                                <span className="text-xs sm:text-sm text-gray-900 font-medium">
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="flex flex-col items-center justify-center">
+                                <span className="text-sm text-gray-900 font-semibold">
                                   {displayPrice}
                                 </span>
                                 {hasDiscount && (
-                                  <span className="text-xs text-gray-500 line-through">
+                                  <span className="text-xs text-gray-400 line-through leading-tight">
                                     ₹{model.originalPrice}
                                   </span>
                                 )}
                               </div>
-                              <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
+                              {hasDiscount && (
+                                <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
                             </div>
                           )}
+                        </td>
+                        <td className="py-3 px-3 text-center align-middle">
+                          <button
+                            onClick={(e) => handleApplyClick(modelSlug, e)}
+                            className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-5 rounded-lg transition-all duration-200 text-sm shadow-sm hover:shadow-md whitespace-nowrap min-w-[80px]"
+                            aria-label={`Apply for ${model.name}`}
+                          >
+                            Apply
+                          </button>
                         </td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
+            </div>
+
+            {/* Pricing Cards - Mobile */}
+            <div className="md:hidden space-y-3 mb-4">
+              {allModels.map((model) => {
+                const modelSlug = Object.keys(rtiModels).find(key => rtiModels[key].id === model.id) || '';
+                const displayPrice = model.price === 0 ? 'Request Quote' : `₹${model.price}`;
+                const hasDiscount = model.originalPrice > model.price && model.price > 0;
+
+                return (
+                  <div
+                    key={model.id}
+                    className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-primary-300 hover:shadow-md transition-all duration-200"
+                  >
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-semibold text-gray-900">{model.name}</h4>
+                      </div>
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <div className="flex items-center gap-2">
+                          {model.price === 0 ? (
+                            <span className="text-sm text-primary-600 font-semibold">
+                              {displayPrice}
+                            </span>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <div className="flex flex-col">
+                                <span className="text-sm text-gray-900 font-semibold">
+                                  {displayPrice}
+                                </span>
+                                {hasDiscount && (
+                                  <span className="text-xs text-gray-400 line-through">
+                                    ₹{model.originalPrice}
+                                  </span>
+                                )}
+                              </div>
+                              {hasDiscount && (
+                                <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          onClick={(e) => handleApplyClick(modelSlug, e)}
+                          className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-5 rounded-lg transition-all duration-200 text-sm shadow-sm hover:shadow-md whitespace-nowrap"
+                          aria-label={`Apply for ${model.name}`}
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Price Summary with GST */}
@@ -183,17 +237,6 @@ export const PricingSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Apply Now Button */}
-            <button
-              onClick={() => {
-                // Default to first available model (seamless-online-filing)
-                handleModelClick('seamless-online-filing');
-              }}
-              className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-sm"
-              aria-label="Apply Now"
-            >
-              Apply Now
-            </button>
           </div>
 
           {/* Right Column - What We Do For You */}
