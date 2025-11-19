@@ -79,7 +79,7 @@ export const FAQPage: React.FC = () => {
     },
     {
       q: 'Do you offer bulk RTI filing services?',
-      a: 'Yes, we offer bulk RTI filing services for organizations or individuals who need to file multiple RTI applications. We provide special pricing and streamlined processes for bulk filings. Contact us at +91 99111 00589 or email admin@filemyrti.com for a custom quote.'
+      a: 'Yes, we offer bulk RTI filing services for organizations or individuals who need to file multiple RTI applications. We provide special pricing and streamlined processes for bulk filings. Contact us at 91 99111 00589 or email admin@filemyrti.com for a custom quote.'
     },
     {
       q: 'Can I file RTI anonymously?',
@@ -107,7 +107,7 @@ export const FAQPage: React.FC = () => {
     },
     {
       q: 'Do you offer discounts for bulk RTI filings?',
-      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at +91 99111 00589 or email admin@filemyrti.com for a custom quote. We provide competitive rates for bulk orders.'
+      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at 91 99111 00589 or email admin@filemyrti.com for a custom quote. We provide competitive rates for bulk orders.'
     },
     {
       q: 'Can I get a refund if I change my mind?',
@@ -159,7 +159,7 @@ export const FAQPage: React.FC = () => {
     },
     {
       q: 'What if I don\'t receive updates?',
-      a: 'If you don\'t receive updates, please check your spam folder first. You can also contact our support team at +91 99111 00589 or email admin@filemyrti.com with your application reference number, and we\'ll provide you with the latest status.'
+      a: 'If you don\'t receive updates, please check your spam folder first. You can also contact our support team at 91 99111 00589 or email admin@filemyrti.com with your application reference number, and we\'ll provide you with the latest status.'
     },
     {
       q: 'How long should I wait for a response?',
@@ -191,7 +191,7 @@ export const FAQPage: React.FC = () => {
   const supportFAQs: FAQ[] = [
     {
       q: 'How can I contact FileMyRTI?',
-      a: 'You can contact us via phone at +91 99111 00589, email at admin@filemyrti.com, or through our contact form on the website. Our support team is available to assist you with any queries or concerns.'
+      a: 'You can contact us via phone at 91 99111 00589, email at admin@filemyrti.com, or through our contact form on the website. Our support team is available to assist you with any queries or concerns.'
     },
     {
       q: 'What are your support hours?',
@@ -370,7 +370,7 @@ export const FAQPage: React.FC = () => {
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    Call Us: +91 99111 00589
+                    Call Us: 91 99111 00589
                   </a>
                   <Link
                     to="/contact"

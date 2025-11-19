@@ -90,7 +90,7 @@ export const RTIDostModal: React.FC<RTIDostModalProps> = memo(({ isOpen, onClose
             <p>
               If you need help filing, our support team is just a call away at{' '}
               <a href="tel:+919911100589" className="text-primary-600 hover:text-primary-700 underline font-semibold">
-                +91 99111 00589
+                91 99111 00589
               </a>
               {' '}or{' '}
               <button
