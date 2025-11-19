@@ -49,20 +49,18 @@ const AboutFileMyRTIComponent: React.FC = () => {
             {/* Video Part - 68% width */}
             <div className="w-full lg:w-[68%] rounded-lg p-4 sm:p-6 flex">
               <div ref={videoRef} className="w-full flex">
-                <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-black">
+                <div className="relative w-full rounded-lg overflow-hidden border-2 border-black" style={{ paddingBottom: '56.25%' }}>
                   {shouldLoadVideo ? (
-                    <video
-                      className="w-full h-full object-cover"
-                      controls
-                      preload="metadata"
-                      poster="/images/video-poster.jpg"
-                      playsInline
-                    >
-                      <source src="/videos/filemyrti-intro.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full"
+                      src="https://www.youtube.com/embed/qKRffCrp71M"
+                      title="FileMyRTI About Video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      loading="lazy"
+                    />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100">
                       <div className="text-gray-400">Loading video...</div>
                     </div>
                   )}
