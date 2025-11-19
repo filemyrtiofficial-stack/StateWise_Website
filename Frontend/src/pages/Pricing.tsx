@@ -24,10 +24,6 @@ export const Pricing: React.FC = () => {
       a: 'Our service includes expert drafting of your RTI application, proper formatting, identification of the correct authority, online submission, and timely dispatch via registered or speed post. We also provide application tracking and status updates.'
     },
     {
-      q: 'Is the RTI fee of ₹10 included in the pricing?',
-      a: 'Yes, the official RTI fee of ₹10 is included in our service charges. We handle all fee payments digitally during the submission process, so you don\'t need to worry about separate payments.'
-    },
-    {
       q: 'What are the shipping charges for?',
       a: 'Shipping charges cover the cost of sending your RTI application via registered or speed post to the appropriate government authority. This ensures your application reaches the correct department safely and can be tracked.'
     },

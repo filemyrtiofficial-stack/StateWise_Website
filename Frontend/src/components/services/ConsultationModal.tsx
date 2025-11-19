@@ -210,8 +210,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
                 and{' '}
                 <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline">
                   Privacy Policy
-                </a>
-                . RTI fee ₹{PAYMENT_CONFIG.rtiFee} included.
+                </a>.
               </label>
             </div>
             {errors.acceptTerms && (

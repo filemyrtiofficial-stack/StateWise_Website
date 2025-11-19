@@ -40,10 +40,6 @@ const generateFAQs = (modelName: string, fullDescription: string): FAQ[] => [
     a: fullDescription
   },
   {
-    q: 'What is the official RTI fee?',
-    a: 'The official RTI fee is ₹10, which is included in our service. We handle all fee payments digitally during the submission process.'
-  },
-  {
     q: 'How long does it take to process?',
     a: 'Most RTI applications receive a response within 30 days as per the RTI Act. Our service ensures your application is filed correctly and on time.'
   },

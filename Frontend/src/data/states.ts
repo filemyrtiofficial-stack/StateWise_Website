@@ -104,11 +104,9 @@ export const states: Record<string, StateData> = {
     highlights: [
       "RTI governed by Delhi Information Commission (DIC)",
       "Applications can be filed in English or Hindi",
-      "Official RTI fee ₹10 handled digitally",
     ],
     faqs: [
       { q: "Can I file RTI in Hindi?", a: "Yes, RTIs in Delhi can be filed in English or Hindi." },
-      { q: "What is the official RTI fee?", a: "The official fee is ₹10, included in your online submission." },
       { q: "How long does it take to get a response?", a: "Typically, government departments respond within 30 days as per RTI Act guidelines." },
     ],
     process: {

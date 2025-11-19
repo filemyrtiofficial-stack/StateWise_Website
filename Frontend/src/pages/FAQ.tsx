@@ -94,16 +94,12 @@ export const FAQPage: React.FC = () => {
       a: 'Our service charges include: expert drafting of your RTI application, proper formatting and compliance with RTI Act requirements, identification of the correct authority and PIO, online submission or dispatch via registered/speed post, application tracking, status updates via email, and customer support throughout the process.'
     },
     {
-      q: 'Is the RTI fee of ₹10 included in the pricing?',
-      a: 'Yes, the official RTI fee of ₹10 is included in our service. We handle all fee payments digitally during the submission process, so you don\'t need to make separate payments to the government authority.'
-    },
-    {
       q: 'What payment methods do you accept?',
       a: 'We accept all major payment methods including credit cards, debit cards, UPI, net banking, and digital wallets through our secure payment gateway (Razorpay). All transactions are encrypted and secure. We do not store your payment card details.'
     },
     {
       q: 'Are there any hidden charges?',
-      a: 'No, there are no hidden charges. Our pricing is transparent and includes all costs: shipping charges, processing charges, RTI drafting charges, and GST. The only additional cost is the official RTI fee of ₹10, which is already included in our service.'
+      a: 'No, there are no hidden charges. Our pricing is transparent and includes all costs: shipping charges, processing charges, RTI drafting charges, and GST.'
     },
     {
       q: 'Do you offer discounts for bulk RTI filings?',

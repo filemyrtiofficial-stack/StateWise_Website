@@ -270,7 +270,7 @@ export const RTIFormModal: React.FC<RTIFormModalProps> = ({ stateName }) => {
                 className="w-3.5 h-3.5 mt-0.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
               />
               <label htmlFor="terms" className="text-xs text-gray-700 leading-tight">
-                I agree to the <a href="/terms-and-conditions" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. RTI fee ₹10 included. <span className="text-red-500">*</span>
+                I agree to the <a href="/terms-and-conditions" className="text-primary-600 hover:text-primary-700 underline">Terms and Conditions</a> and <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>. <span className="text-red-500">*</span>
               </label>
             </div>
 

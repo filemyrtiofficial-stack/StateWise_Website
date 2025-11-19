@@ -507,7 +507,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                           className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                         />
                         <label htmlFor="acceptTerms" className="text-xs text-gray-700 cursor-pointer leading-tight">
-                          I agree to the <a href="/terms-and-conditions" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>. RTI fee ₹10 included.
+                          I agree to the <a href="/terms-and-conditions" className="text-primary-600 hover:text-primary-700 underline font-semibold">Terms</a> and <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline font-semibold">Privacy Policy</a>.
                         </label>
                         {errors.acceptTerms && <p className="text-red-500 text-xs mt-1">{errors.acceptTerms}</p>}
                       </div>
