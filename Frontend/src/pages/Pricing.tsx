@@ -45,7 +45,7 @@ export const Pricing: React.FC = () => {
     },
     {
       q: 'Do you offer any discounts for bulk RTI filings?',
-      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at +91 99111 00589 or email admin@filemyrti.com for a custom quote.'
+      a: 'Yes, we offer special pricing for bulk RTI filings. If you need to file multiple RTI applications, please contact us at 91 99111 00589 or email admin@filemyrti.com for a custom quote.'
     },
     {
       q: 'What happens after I select a plan and make payment?',

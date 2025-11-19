@@ -310,7 +310,7 @@ export const PrivacyPolicy: React.FC = () => {
                   <p className="text-gray-700 text-sm sm:text-base">
                     <strong>Phone:</strong>{' '}
                     <a href="tel:+919911100589" className="text-primary-600 hover:text-primary-700 underline font-semibold">
-                      +91 99111 00589
+                      91 99111 00589
                     </a>
                   </p>
                 </div>

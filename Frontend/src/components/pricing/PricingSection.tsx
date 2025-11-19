@@ -311,7 +311,7 @@ export const PricingSection: React.FC = () => {
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               If your RTI needs are unique, we're here to help. Call{' '}
               <a href="tel:+919911100589" className="text-primary-600 hover:text-primary-700 font-semibold underline">
-                +91 99111 00589
+                91 99111 00589
               </a>
               {' '}or email{' '}
               <a href="mailto:admin@filemyrti.com" className="text-primary-600 hover:text-primary-700 font-semibold underline">

@@ -328,7 +328,7 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
                             Phone Number <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
-                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">+91</div>
+                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">91</div>
                             <input
                               type="tel"
                               id="phone"
