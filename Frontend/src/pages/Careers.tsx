@@ -38,7 +38,7 @@ export const Careers: React.FC = () => {
       description: 'We are looking for an experienced RTI Filing Specialist to help our clients file Right to Information applications. You will be responsible for drafting RTI applications, identifying correct authorities, and ensuring timely submissions.',
       requirements: [
         'Bachelor\'s degree in Law, Public Administration, or related field',
-        '2 years of experience in RTI filing or legal documentation',
+        '2+ years of experience in RTI filing or legal documentation',
         'Strong understanding of the Right to Information Act, 2005',
         'Excellent written and verbal communication skills',
         'Attention to detail and ability to work under deadlines'
@@ -60,7 +60,7 @@ export const Careers: React.FC = () => {
       description: 'Join our customer support team to help clients with their RTI filing needs. You will handle inquiries, provide guidance, and ensure excellent customer satisfaction.',
       requirements: [
         'Bachelor\'s degree in any field',
-        '1 year of experience in customer support',
+        '1+ years of experience in customer support',
         'Excellent communication skills in English and Hindi',
         'Patient and empathetic approach to customer service',
         'Basic knowledge of RTI process is a plus'
@@ -82,7 +82,7 @@ export const Careers: React.FC = () => {
       description: 'We are seeking a skilled Frontend Developer to enhance our web platform and create exceptional user experiences for our RTI filing service.',
       requirements: [
         'Bachelor\'s degree in Computer Science or related field',
-        '2 years of experience in frontend development',
+        '2+ years of experience in frontend development',
         'Proficiency in React, TypeScript, and modern CSS',
         'Experience with responsive design and mobile-first approach',
         'Strong problem-solving skills and attention to detail'

@@ -438,10 +438,10 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
 
   const statistics = [
     { value: '93%', label: 'Success Rate' },
-    { value: '130', label: 'Business Benefited' },
-    { value: '3,000', label: 'Consultation Delivered' },
-    { value: '50,000', label: 'RTI Filed' },
-    { value: '40,000', label: 'Happy User' },
+    { value: '130+', label: 'Business Benefited' },
+    { value: '3,000+', label: 'Consultation Delivered' },
+    { value: '50,000+', label: 'RTI Filed' },
+    { value: '40,000+', label: 'Happy User' },
   ];
 
   return (
@@ -606,7 +606,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
                     href="tel:+919911100589"
                     className="text-xs font-bold text-primary-600 hover:text-primary-700 transition-colors"
                   >
-                    91-99111-00589
+                    +91-99111-00589
                   </a>
                 </div>
 

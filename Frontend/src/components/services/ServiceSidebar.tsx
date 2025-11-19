@@ -103,6 +103,9 @@ export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model
               onClick={onCTAClick}
               className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg border-2 border-white flex items-center justify-center gap-2"
             >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
               {model.buttonText}
             </button>
           </div>
@@ -152,6 +155,9 @@ export const ServiceSidebar: React.FC<ServiceSidebarProps> = React.memo(({ model
           onClick={onCTAClick}
           className="w-full bg-white hover:bg-gray-50 text-primary-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
         >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
           {model.buttonText}
         </button>
       </div>

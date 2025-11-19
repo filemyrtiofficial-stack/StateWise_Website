@@ -54,6 +54,9 @@ export const ServiceHero: React.FC<ServiceHeroProps> = React.memo(({ model, onCT
           onClick={onCTAClick}
           className="w-full md:w-auto bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white px-6 py-3.5 md:py-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95 md:active:scale-100"
         >
+          <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+          </svg>
           <span className="whitespace-nowrap">{model.buttonText}</span>
         </button>
       </div>

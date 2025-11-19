@@ -149,7 +149,7 @@ export const ContactUs: React.FC = () => {
       "@type": "Organization",
       "name": "FileMyRTI",
       "email": "Admin@filemyrti.com",
-      "telephone": "91-99111-00589",
+      "telephone": "+91-99111-00589",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Flat No. 202, Radhakrishna Residency, Kalyannagar Phase 3",
@@ -380,7 +380,7 @@ export const ContactUs: React.FC = () => {
                       <div className="text-left">
                         <p className="text-xs text-gray-600">Phone</p>
                         <a href="tel:+919911100589" className="text-base font-semibold text-gray-900 hover:text-primary-600 transition-colors">
-                          91 99111 00589
+                          +91 99111 00589
                         </a>
                       </div>
                     </div>
