@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
+import { careersAPI } from '../services/api';
 
 interface JobOpening {
   id: string;
@@ -184,35 +185,39 @@ export const Careers: React.FC = () => {
     setSubmitStatus('idle');
 
     try {
-      // TODO: Add API call to submit job application
-      // const formData = new FormData();
-      // formData.append('name', applicationForm.name);
-      // formData.append('email', applicationForm.email);
-      // formData.append('phone', applicationForm.phone);
-      // formData.append('position', applicationForm.position);
-      // if (applicationForm.resume) {
-      //   formData.append('resume', applicationForm.resume);
-      // }
-      // formData.append('coverLetter', applicationForm.coverLetter);
-      // await careersAPI.submitApplication(formData);
+      // Clean phone number (remove non-digits)
+      const cleanPhone = applicationForm.phone.replace(/\D/g, '');
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Prepare data for career API
+      const careerData = {
+        name: applicationForm.name.trim(),
+        email: applicationForm.email.trim().toLowerCase(),
+        phone: cleanPhone,
+        position: applicationForm.position.trim(),
+        coverLetter: applicationForm.coverLetter.trim() || undefined
+      };
 
-      setSubmitStatus('success');
-      setApplicationForm({
-        name: '',
-        email: '',
-        phone: '',
-        position: '',
-        resume: null,
-        coverLetter: ''
-      });
+      const result = await careersAPI.createPublic(careerData);
 
-      setTimeout(() => {
-        setSubmitStatus('idle');
-      }, 5000);
-    } catch (error) {
+      if (result.success) {
+        setSubmitStatus('success');
+        setApplicationForm({
+          name: '',
+          email: '',
+          phone: '',
+          position: '',
+          resume: null,
+          coverLetter: ''
+        });
+
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error: any) {
       console.error('Error submitting application:', error);
       setSubmitStatus('error');
     } finally {

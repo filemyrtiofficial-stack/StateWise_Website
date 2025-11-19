@@ -99,6 +99,16 @@ export const API_ENDPOINTS = {
     UNSUBSCRIBE: `${API_BASE_URL}/newsletter/unsubscribe`
   },
 
+  // Contact
+  CONTACT: {
+    CREATE_PUBLIC: `${API_BASE_URL}/contact/public`
+  },
+
+  // Careers
+  CAREERS: {
+    CREATE_PUBLIC: `${API_BASE_URL}/careers/public`
+  },
+
   // Health Check
   HEALTH: `${BASE_URL}/health`
 };

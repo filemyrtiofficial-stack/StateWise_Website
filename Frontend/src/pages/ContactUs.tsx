@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
-import { consultationsAPI } from '../services/api';
+import { contactAPI } from '../services/api';
 
 export const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -73,24 +73,19 @@ export const ContactUs: React.FC = () => {
     setSubmitStatus('idle');
 
     try {
-      // Combine firstName and lastName into full_name
-      const fullName = `${formData.firstName.trim()} ${formData.lastName.trim()}`;
-
       // Clean mobile number (remove non-digits)
       const cleanMobile = formData.mobile.replace(/\D/g, '');
 
-      // Prepare data for consultation API
-      const consultationData = {
-        full_name: fullName,
+      // Prepare data for contact API
+      const contactData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
         email: formData.email.trim().toLowerCase(),
         mobile: cleanMobile,
-        address: formData.message.trim() || undefined,
-        pincode: undefined,
-        state_slug: undefined,
-        source: 'contact_page'
+        message: formData.message.trim() || undefined
       };
 
-      const result = await consultationsAPI.createPublic(consultationData);
+      const result = await contactAPI.createPublic(contactData);
 
       if (result.success) {
         setSubmitStatus('success');

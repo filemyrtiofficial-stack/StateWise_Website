@@ -334,6 +334,42 @@ export const paymentsAPI = {
 };
 
 /**
+ * Contact API
+ */
+export const contactAPI = {
+  createPublic: async (data: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobile: string;
+    message?: string;
+  }) => {
+    return apiRequest(API_ENDPOINTS.CONTACT.CREATE_PUBLIC, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+};
+
+/**
+ * Careers API
+ */
+export const careersAPI = {
+  createPublic: async (data: {
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+    coverLetter?: string;
+  }) => {
+    return apiRequest(API_ENDPOINTS.CAREERS.CREATE_PUBLIC, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+};
+
+/**
  * Health Check API
  */
 export const healthAPI = {

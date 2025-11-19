@@ -16,6 +16,8 @@ const consultationRoutes = require('./consultationRoutes');
 const callbackRoutes = require('./callbackRoutes');
 const paymentRoutes = require('./paymentRoutes');
 const newsletterRoutes = require('./newsletterRoutes');
+const contactRoutes = require('./contactRoutes');
+const careerRoutes = require('./careerRoutes');
 
 // API version prefix
 const API_PREFIX = '/api/v1';
@@ -30,6 +32,8 @@ router.use(`${API_PREFIX}/consultations`, consultationRoutes);
 router.use(`${API_PREFIX}/callback-requests`, callbackRoutes);
 router.use(`${API_PREFIX}/payments`, paymentRoutes);
 router.use(`${API_PREFIX}/newsletter`, newsletterRoutes);
+router.use(`${API_PREFIX}/contact`, contactRoutes);
+router.use(`${API_PREFIX}/careers`, careerRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {
