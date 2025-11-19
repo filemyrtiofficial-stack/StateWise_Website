@@ -427,6 +427,10 @@ export const RTIModelPage: React.FC = () => {
           // Payment failed
           alert(`❌ Payment failed: ${errorMessage}\n\nPlease try again.`);
           setIsProcessingPayment(false);
+        },
+        () => {
+          // Payment cancelled - close modal and reset form
+          handleModalClose();
         }
       );
     } catch (error) {

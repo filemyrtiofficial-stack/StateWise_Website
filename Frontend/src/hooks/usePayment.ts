@@ -27,7 +27,8 @@ export interface UsePaymentReturn {
       mobile: string;
     },
     onSuccess: (paymentId: string, orderId: string) => void | Promise<void>,
-    onError?: (error: string) => void
+    onError?: (error: string) => void,
+    onCancel?: () => void
   ) => Promise<void>;
   resetPayment: () => void;
 }
@@ -56,7 +57,8 @@ export const usePayment = (): UsePaymentReturn => {
       model: RTIModel,
       userData: { name: string; email: string; mobile: string },
       onSuccess: (paymentId: string, orderId: string) => void | Promise<void>,
-      onError?: (error: string) => void
+      onError?: (error: string) => void,
+      onCancel?: () => void
     ) => {
       try {
         // Reset previous state
@@ -149,12 +151,16 @@ export const usePayment = (): UsePaymentReturn => {
             }
           },
           () => {
-            // Payment dismissed
+            // Payment dismissed/cancelled
             setPaymentState(prev => ({
               ...prev,
               status: 'idle',
-              error: 'Payment cancelled by user'
+              error: null // Clear error on cancellation
             }));
+            // Call onCancel callback to close modal and reset form
+            if (onCancel) {
+              onCancel();
+            }
           }
         );
       } catch (error) {

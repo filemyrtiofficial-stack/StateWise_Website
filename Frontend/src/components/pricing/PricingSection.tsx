@@ -60,6 +60,10 @@ export const PricingSection: React.FC = () => {
           },
           (errorMessage: string) => {
             alert(`Payment failed: ${errorMessage}`);
+          },
+          () => {
+            // Payment cancelled - close modal and reset form
+            handleModalClose();
           }
         );
       } catch (error) {

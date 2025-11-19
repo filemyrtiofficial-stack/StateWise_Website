@@ -234,7 +234,6 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = React.memo(({
             {paymentStatus === 'creating_order' && 'Creating payment order...'}
             {paymentStatus === 'processing' && 'Processing payment...'}
             {paymentStatus === 'verifying' && 'Verifying payment...'}
-            {paymentStatus === 'idle' && isSubmitting && 'Processing...'}
             {paymentStatus === 'idle' && !isSubmitting && (
               (model.price === 0 || model.price === null || model.price === undefined)
                 ? 'Submit Request'
