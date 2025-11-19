@@ -24,8 +24,8 @@ const ChatbotComponent: React.FC = () => {
       {/* Chat with AI Button */}
       <button
         onClick={handleChatClick}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-4 sm:px-6 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl z-[9999]"
-        style={{ position: 'fixed', pointerEvents: 'auto' }}
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-4 sm:px-5 md:px-6 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl z-[9999] text-sm sm:text-base"
+        style={{ position: 'fixed', pointerEvents: 'auto', minWidth: '120px', minHeight: '44px' }}
         aria-label="Chat with AI"
         title="Chat with AI"
       >

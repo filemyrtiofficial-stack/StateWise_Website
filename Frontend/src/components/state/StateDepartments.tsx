@@ -136,7 +136,6 @@ export const StateDepartments: React.FC<StateDepartmentsProps> = ({ stateName })
           ref={scrollContainerRef}
           className="departments-scroll-container relative"
           style={{
-            height: '450px',
             overflowY: 'auto',
             overflowX: 'hidden',
             scrollbarWidth: 'thin',

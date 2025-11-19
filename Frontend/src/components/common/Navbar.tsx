@@ -197,7 +197,7 @@ const NavbarComponent: React.FC = () => {
                 </button>
 
                 {isServicesOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-[min(224px,90vw)] max-w-[90vw] bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     <Link to="/services/anonymous" className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary-600 text-sm">
                       Anonymous RTI
                     </Link>
@@ -257,7 +257,7 @@ const NavbarComponent: React.FC = () => {
           {/* Mobile Menu Panel - Slides in from right */}
           <div
             ref={mobileMenuRef}
-            className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[100] transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            className={`lg:hidden fixed top-0 right-0 h-full w-[min(320px,85vw)] max-w-[85vw] bg-white shadow-2xl z-[100] transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
               }`}
           >
             {/* Mobile Menu Header */}

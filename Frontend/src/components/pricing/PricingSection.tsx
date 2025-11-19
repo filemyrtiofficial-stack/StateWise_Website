@@ -98,12 +98,12 @@ export const PricingSection: React.FC = () => {
             </h3>
 
             {/* Pricing Table - Desktop */}
-            <div className="hidden md:block overflow-x-auto mb-4">
-              <table className="w-full border-collapse">
+            <div className="hidden md:block overflow-x-auto mb-4 -mx-2 px-2">
+              <table className="w-full border-collapse min-w-full">
                 <colgroup>
-                  <col style={{ width: '45%' }} />
-                  <col style={{ width: '25%' }} />
-                  <col style={{ width: '30%' }} />
+                  <col style={{ width: '45%', minWidth: '150px' }} />
+                  <col style={{ width: '25%', minWidth: '100px' }} />
+                  <col style={{ width: '30%', minWidth: '100px' }} />
                 </colgroup>
                 <thead>
                   <tr className="border-b-2 border-gray-300 bg-gray-50">
@@ -155,7 +155,7 @@ export const PricingSection: React.FC = () => {
                         <td className="py-3 px-3 text-center align-middle">
                           <button
                             onClick={(e) => handleApplyClick(modelSlug, e)}
-                            className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-5 rounded-lg transition-all duration-200 text-sm shadow-sm hover:shadow-md whitespace-nowrap min-w-[80px]"
+                            className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-3 sm:px-5 rounded-lg transition-all duration-200 text-xs sm:text-sm shadow-sm hover:shadow-md whitespace-nowrap min-w-[70px] sm:min-w-[80px]"
                             aria-label={`Apply for ${model.name}`}
                           >
                             Apply

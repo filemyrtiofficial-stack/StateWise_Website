@@ -62,36 +62,63 @@
     display: none;
   }
 
-  /* Responsive Container with 0.75 inch (72px) margins on large screens */
+  /* Responsive Container with fluid padding that scales with zoom */
   .container-responsive {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem;
-    /* 16px on mobile */
-    padding-right: 1rem;
-    /* 16px on mobile */
+    padding-left: clamp(1rem, 4vw, 4.5rem);
+    padding-right: clamp(1rem, 4vw, 4.5rem);
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
-  /* Tablet: ~32px padding */
+  /* Ensure proper scaling at different breakpoints */
   @media (min-width: 640px) {
     .container-responsive {
-      padding-left: 2rem;
-      /* 32px */
-      padding-right: 2rem;
-      /* 32px */
+      padding-left: clamp(2rem, 3vw, 4.5rem);
+      padding-right: clamp(2rem, 3vw, 4.5rem);
     }
   }
 
-  /* Large screens: 0.75 inch (72px) fixed margins */
   @media (min-width: 1024px) {
     .container-responsive {
-      padding-left: 4.5rem;
-      /* 72px = 0.75 inch */
-      padding-right: 4.5rem;
-      /* 72px = 0.75 inch */
-      max-width: 100%;
+      padding-left: clamp(2rem, 5vw, 4.5rem);
+      padding-right: clamp(2rem, 5vw, 4.5rem);
     }
+  }
+
+  /* Prevent text from becoming too small on zoom */
+  .text-responsive {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  /* Responsive spacing utilities */
+  .spacing-responsive {
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  /* Prevent overflow on zoom */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Ensure images scale properly */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Prevent horizontal scroll on zoom */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  html {
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 
@@ -118,9 +145,11 @@ html::-webkit-scrollbar-thumb:hover {
   background: #015a9a;
 }
 
-/* Departments scrollable container */
+/* Departments scrollable container - responsive height */
 .departments-scroll-container {
-  height: 450px;
+  height: clamp(300px, 50vh, 500px);
+  min-height: 300px;
+  max-height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -164,9 +193,11 @@ html::-webkit-scrollbar-thumb:hover {
   background: #015a9a;
 }
 
-/* RTI Models scrollable container */
+/* RTI Models scrollable container - responsive height */
 .rti-models-scroll-container {
-  height: 400px;
+  height: clamp(300px, 45vh, 450px);
+  min-height: 300px;
+  max-height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -213,6 +244,69 @@ html::-webkit-scrollbar-thumb:hover {
 
 .sidebar-features-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive text scaling for zoom levels */
+@media (min-width: 320px) {
+  html {
+    font-size: clamp(14px, 2.5vw, 16px);
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: clamp(15px, 1.5vw, 16px);
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Prevent text from becoming unreadable on zoom */
+body {
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  line-height: 1.6;
+}
+
+/* Responsive images with proper aspect ratios */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Prevent layout shifts on zoom */
+* {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Ensure interactive elements remain clickable on zoom */
+button:not([class*="min-h"]):not([class*="h-"]),
+a.button-like:not([class*="min-h"]):not([class*="h-"]) {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Ensure buttons with text have proper touch targets */
+button[class*="py-"],
+a[class*="py-"] {
+  min-height: 44px;
+}
+
+/* Responsive table handling */
+table {
+  width: 100%;
+  table-layout: auto;
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+  }
 }
 
 /* Animations */
