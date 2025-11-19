@@ -452,7 +452,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
           {/* Main Hero Section */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12">
             {/* Left Column - Main Content (2/3 width) */}
-            <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-5 order-2 lg:order-1">
               {/* Main Headline - Critical for LCP, render immediately */}
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 leading-tight" style={{ contentVisibility: 'auto' }}>
@@ -594,7 +594,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
             </div>
 
             {/* Right Column - Consultation Form (1/3 width) */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 order-1 lg:order-2">
               <div className="bg-white border-2 border-black rounded-lg shadow-lg p-2 sm:p-3 lg:sticky lg:top-4 min-h-[350px] flex flex-col overflow-hidden">
                 {/* Call Us Phone Number - At the top */}
                 <div className="flex items-center justify-center gap-2 mb-1.5 p-1 bg-gray-50 rounded-lg border border-gray-200">
