@@ -112,20 +112,21 @@ export const PricingSection: React.FC = () => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
-                    <th className="text-left py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Features</th>
-                    <th className="text-center py-2 px-3 text-xs sm:text-sm font-semibold text-gray-700">Price</th>
+                    <th className="text-left py-3 px-4 text-xs sm:text-sm font-semibold text-gray-700">Features</th>
+                    <th className="text-right py-3 px-4 text-xs sm:text-sm font-semibold text-gray-700">Price</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {allModels.map((model) => {
+                  {allModels.map((model, index) => {
                     const modelSlug = Object.keys(rtiModels).find(key => rtiModels[key].id === model.id) || '';
                     const displayPrice = model.price === 0 ? 'Request Quote' : `₹${model.price}`;
                     const hasDiscount = model.originalPrice > model.price && model.price > 0;
+                    const isLastRow = index === allModels.length - 1;
 
                     return (
                       <tr
                         key={model.id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                        className={`border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer ${isLastRow ? 'border-b-0' : ''}`}
                         onClick={() => handleModelClick(modelSlug)}
                         role="button"
                         tabIndex={0}
@@ -137,27 +138,43 @@ export const PricingSection: React.FC = () => {
                         }}
                         aria-label={`Select ${model.name} plan for ${displayPrice}`}
                       >
-                        <td className="py-2 px-3 text-xs sm:text-sm text-gray-700">
-                          {model.name}
+                        <td className="py-3 px-4 text-xs sm:text-sm text-gray-700 align-middle">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            {/* Feature Icon */}
+                            <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
+                              {model.price === 0 ? (
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                </svg>
+                              ) : (
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="font-medium">{model.name}</span>
+                          </div>
                         </td>
-                        <td className="py-2 px-3 text-center">
+                        <td className="py-3 px-4 text-right align-middle">
                           {model.price === 0 ? (
-                            <span className="text-xs sm:text-sm text-primary-600 font-medium">
-                              {displayPrice}
-                            </span>
+                            <div className="flex items-center justify-end gap-2">
+                              <span className="text-xs sm:text-sm text-primary-600 font-semibold">
+                                {displayPrice}
+                              </span>
+                            </div>
                           ) : (
-                            <div className="flex items-center justify-center gap-1.5">
-                              <div className="flex flex-col items-center">
-                                <span className="text-xs sm:text-sm text-gray-900 font-medium">
+                            <div className="flex items-center justify-end gap-2">
+                              <div className="flex flex-col items-end">
+                                <span className="text-xs sm:text-sm text-gray-900 font-semibold leading-tight">
                                   {displayPrice}
                                 </span>
                                 {hasDiscount && (
-                                  <span className="text-xs text-gray-500 line-through">
+                                  <span className="text-[10px] sm:text-xs text-gray-400 line-through leading-tight mt-0.5">
                                     ₹{model.originalPrice}
                                   </span>
                                 )}
                               </div>
-                              <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
