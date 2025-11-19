@@ -443,6 +443,7 @@ const StateHeroComponent: React.FC<StateHeroProps> = ({ hero: _hero, stateName, 
     { value: '3,000', label: 'Consultation Delivered' },
     { value: '50,000', label: 'RTI Filed' },
     { value: '40,000', label: 'Happy User' },
+    { value: '4.8 ★', label: 'Rated by 40,000+ Users' },
   ];
 
   return (
