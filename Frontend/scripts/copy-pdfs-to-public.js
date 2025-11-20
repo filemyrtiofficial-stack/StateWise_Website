@@ -3,8 +3,12 @@
  * This allows PDFs to be served statically without requiring the backend
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const sourceDir = path.join(__dirname, '../src/assets/PDF');
 const targetDir = path.join(__dirname, '../public/assets/PDF');

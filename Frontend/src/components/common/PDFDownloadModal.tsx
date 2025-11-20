@@ -125,12 +125,22 @@ export const PDFDownloadModal: React.FC<PDFDownloadModalProps> = ({
       let downloadSuccess = false;
       let lastError: Error | null = null;
 
-      // Approach 1: Try backend API
+      // Approach 1: Try backend API (with timeout)
       try {
         const apiUrl = `${apiBaseUrl}/api/v1/pdf/${category}/${filename}`;
-        const response = await fetch(apiUrl);
 
-        if (response.ok) {
+        // Create a timeout promise
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Request timeout')), 5000)
+        );
+
+        // Race between fetch and timeout
+        const response = await Promise.race([
+          fetch(apiUrl),
+          timeoutPromise
+        ]) as Response;
+
+        if (response && response.ok) {
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
 
@@ -144,18 +154,22 @@ export const PDFDownloadModal: React.FC<PDFDownloadModalProps> = ({
           window.URL.revokeObjectURL(url);
           downloadSuccess = true;
         } else {
-          throw new Error(`Backend returned ${response.status}`);
+          throw new Error(`Backend returned ${response?.status || 'unknown status'}`);
         }
       } catch (backendError) {
-        console.log('Backend download failed, trying public folder...', backendError);
+        // Connection refused, timeout, or other network errors - try next approach
+        console.log('Backend download failed (connection refused or timeout), trying public folder...', backendError);
         lastError = backendError as Error;
       }
 
       // Approach 2: Try public folder (if PDFs are copied there)
       if (!downloadSuccess) {
         try {
-          // Try public folder path
-          const publicPath = `/assets/PDF/delhi/${category}/${filename}`;
+          // Try public folder path - decode the category and filename for the path
+          const decodedCategory = decodeURIComponent(category);
+          const decodedFilename = decodeURIComponent(filename);
+          const publicPath = `/assets/PDF/delhi/${decodedCategory}/${decodedFilename}`;
+
           const response = await fetch(publicPath);
 
           if (response.ok) {
@@ -171,6 +185,7 @@ export const PDFDownloadModal: React.FC<PDFDownloadModalProps> = ({
 
             window.URL.revokeObjectURL(url);
             downloadSuccess = true;
+            console.log('Successfully downloaded from public folder');
           } else {
             throw new Error(`Public folder returned ${response.status}`);
           }
