@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
@@ -272,6 +273,7 @@ export const Blog: React.FC = () => {
         )}
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow bg-gray-50">
           {/* Hero Section */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { careersAPI } from '../services/api';
@@ -385,6 +386,7 @@ export const Careers: React.FC = () => {
         </script>
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col bg-gray-50">
         <main className="flex-grow">
           {/* Hero Section */}

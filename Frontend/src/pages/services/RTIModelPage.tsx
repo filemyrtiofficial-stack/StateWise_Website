@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../../components/common/Navbar';
 import { Footer } from '../../components/common/Footer';
 import { LazyChatbot } from '../../components/common/LazyChatbot';
 import { Breadcrumb } from '../../components/common/Breadcrumb';
@@ -555,6 +556,7 @@ export const RTIModelPage: React.FC = () => {
         )}
       </Helmet>
 
+      <Navbar />
       <ResponsiveLayoutStyles />
       <div className="min-h-screen flex flex-col">
         {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}

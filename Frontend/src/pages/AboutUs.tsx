@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
@@ -85,6 +86,7 @@ export const AboutUs: React.FC = () => {
           {JSON.stringify(breadcrumbStructuredData)}
         </script>
       </Helmet>
+      <Navbar />
       <div className="min-h-screen flex flex-col bg-gray-50">
         <main className="flex-grow" role="main" aria-label="Main content" id="main-content">
           {/* Hero Section */}

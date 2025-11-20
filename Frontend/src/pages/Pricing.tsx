@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { PricingSection } from '../components/pricing/PricingSection';
@@ -110,6 +111,7 @@ export const Pricing: React.FC = () => {
         </script>
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col">
         <main id="main-content" className="flex-grow" role="main" aria-label="Main content">
           {/* Pricing Section */}

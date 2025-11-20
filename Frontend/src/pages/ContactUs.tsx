@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { contactAPI } from '../services/api';
@@ -198,6 +199,7 @@ export const ContactUs: React.FC = () => {
         </script>
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow bg-gray-50">
           {/* Hero Section */}

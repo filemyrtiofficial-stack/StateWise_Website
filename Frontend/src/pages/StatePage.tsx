@@ -4,7 +4,8 @@ import { useStateData, getStateSlugFromSubdomain } from '../hooks/useStateData';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
 
-// Lazy load Footer for better initial load
+// Lazy load Navbar and Footer for better initial load
+const Navbar = lazy(() => import('../components/common/Navbar').then(m => ({ default: m.Navbar })));
 const Footer = lazy(() => import('../components/common/Footer').then(m => ({ default: m.Footer })));
 
 // Lazy load heavy components for better performance
@@ -181,6 +182,9 @@ export const StatePage: React.FC = () => {
           </script>
         )}
       </Helmet>
+      <Suspense fallback={<div className="h-12 bg-white fixed top-0 z-[100] w-full" />}>
+        <Navbar />
+      </Suspense>
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow" role="main" aria-label="Main content">
           {/* Hero section - critical for LCP, prioritize loading */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
@@ -116,6 +117,7 @@ export const TrackMyRTI: React.FC = () => {
         </script>
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col bg-white">
         <main className="flex-grow flex items-center justify-center py-12 sm:py-16 px-4">
           <div className="w-full max-w-4xl">

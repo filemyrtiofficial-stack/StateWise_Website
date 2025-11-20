@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
@@ -69,6 +70,7 @@ export const RefundPolicy: React.FC = () => {
         </script>
       </Helmet>
 
+      <Navbar />
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow bg-gradient-to-b from-gray-50 to-white">
           {/* Hero Section */}

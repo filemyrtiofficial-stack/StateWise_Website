@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 
@@ -17,6 +18,7 @@ export const NotFound: React.FC = () => {
         <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href={canonicalUrl} />
       </Helmet>
+      <Navbar />
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow flex items-center justify-center bg-gray-50">
           <div className="text-center px-4">
