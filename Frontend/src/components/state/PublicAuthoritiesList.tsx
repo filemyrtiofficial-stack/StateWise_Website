@@ -166,7 +166,7 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
     <div className="flex justify-center w-full">
       <div className="w-full max-w-full sm:max-w-lg lg:max-w-xl flex flex-col">
         <div
-          className="bg-white border-2 border-primary-600 rounded-lg overflow-hidden shadow-xl relative flex flex-col h-[550px] sm:h-[600px] md:h-[650px] min-h-[550px] sm:min-h-[600px] md:min-h-[650px]"
+          className="bg-white border-2 border-primary-600 rounded-lg overflow-hidden shadow-md relative flex flex-col h-[550px] sm:h-[600px] md:h-[650px] min-h-[550px] sm:min-h-[600px] md:min-h-[650px]"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -257,9 +257,6 @@ export const PublicAuthoritiesList: React.FC<PublicAuthoritiesListProps> = ({
             </ol>
           </div>
 
-          {/* Gradient fade on top and bottom */}
-          <div className="absolute top-20 sm:top-24 md:top-28 left-0 right-0 h-8 sm:h-10 md:h-12 bg-gradient-to-b from-white to-transparent pointer-events-none z-10"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 md:h-12 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
         </div>
       </div>
     </div>
