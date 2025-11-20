@@ -7,15 +7,6 @@ interface PDFMapping {
   [key: string]: string;
 }
 
-// Helper function to normalize department names for matching
-const normalizeDepartmentName = (dept: string): string => {
-  return dept
-    .replace(/RTI\s+Delhi\s+/gi, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-};
-
 // Helper function to create PDF path from category and department
 // Returns the relative path that can be used with import.meta.url or fetch
 const createPDFPath = (category: string, fileName: string): string => {
