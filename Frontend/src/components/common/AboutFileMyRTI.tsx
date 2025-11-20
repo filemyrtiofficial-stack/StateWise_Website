@@ -37,8 +37,6 @@ const AboutFileMyRTIComponent: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4">
             What is FileMyRTI all about?
           </h2>
-          
-
           {/* Video Section - Horizontal Layout */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8 items-stretch">
             {/* Video Part - 68% width */}
