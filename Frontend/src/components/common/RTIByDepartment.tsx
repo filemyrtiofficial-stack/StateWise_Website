@@ -124,20 +124,22 @@ const RTIByDepartmentComponent: React.FC = () => {
       <div className="container-responsive max-w-7xl mx-auto">
         {/* RTI by Department Columns */}
         <nav aria-label="RTI Department Navigation">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 lg:gap-8">
             {delhiDepartments.map((column, columnIndex) => (
-              <div key={columnIndex} className="space-y-1">
-                <h3 className="font-bold text-gray-900 mb-2 text-xs">{column.category}</h3>
-                {column.items.map((item, itemIndex) => (
-                  <button
-                    key={itemIndex}
-                    onClick={() => handleDepartmentClick(item)}
-                    className="block text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors py-0.5 text-left w-full"
-                    aria-label={`File RTI for ${item}`}
-                  >
-                    {item}
-                  </button>
-                ))}
+              <div key={columnIndex} className="flex flex-col">
+                <h3 className="font-bold text-gray-900 mb-2 text-sm leading-snug">{column.category}</h3>
+                <div className="flex flex-col space-y-1">
+                  {column.items.map((item, itemIndex) => (
+                    <button
+                      key={itemIndex}
+                      onClick={() => handleDepartmentClick(item)}
+                      className="block text-sm text-gray-700 hover:text-primary-600 hover:underline transition-colors text-left w-full leading-normal"
+                      aria-label={`File RTI for ${item}`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

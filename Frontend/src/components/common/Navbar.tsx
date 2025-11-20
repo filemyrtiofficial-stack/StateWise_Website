@@ -156,7 +156,7 @@ const NavbarComponent: React.FC = () => {
 
       {/* Main Navbar - Fresh implementation with proper sticky positioning */}
       <nav
-        className="bg-white shadow-md fixed top-0 z-[100] w-full"
+        className="fixed top-0 z-[100] w-full"
       >
         <div className={isServicePage ? "w-full pl-4 md:pl-6 pr-4 md:pr-6" : "container-responsive max-w-7xl mx-auto"}>
           <div className="flex justify-between items-center h-12">
