@@ -40,9 +40,9 @@ const AboutFileMyRTIComponent: React.FC = () => {
           {/* Video Section - Horizontal Layout */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-8 items-stretch">
             {/* Video Part - 68% width */}
-            <div className="w-full lg:w-[68%] bg-white border-2 border-black rounded-lg shadow-lg p-4 sm:p-6 flex flex-col">
-              <div ref={videoRef} className="w-full flex">
-                <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+            <div className="w-full lg:w-[68%] bg-white border-2 border-black rounded-lg shadow-lg overflow-hidden">
+              <div ref={videoRef} className="w-full">
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                   {shouldLoadVideo ? (
                     <iframe
                       className="absolute top-0 left-0 w-full h-full"
