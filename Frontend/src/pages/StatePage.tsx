@@ -4,8 +4,7 @@ import { useStateData, getStateSlugFromSubdomain } from '../hooks/useStateData';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { useParams, Link } from 'react-router-dom';
 
-// Lazy load Navbar and Footer for better initial load
-const Navbar = lazy(() => import('../components/common/Navbar').then(m => ({ default: m.Navbar })));
+// Lazy load Footer for better initial load
 const Footer = lazy(() => import('../components/common/Footer').then(m => ({ default: m.Footer })));
 
 // Lazy load heavy components for better performance
@@ -35,9 +34,6 @@ export const StatePage: React.FC = () => {
     return (
       <>
         <div className="min-h-screen flex flex-col">
-          <Suspense fallback={<div className="h-16 bg-white" />}>
-            <Navbar />
-          </Suspense>
           <main className="flex-grow flex items-center justify-center bg-gray-50">
             <div className="text-center px-4">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -59,9 +55,6 @@ export const StatePage: React.FC = () => {
     return (
       <>
         <div className="min-h-screen flex flex-col">
-          <Suspense fallback={<div className="h-16 bg-white" />}>
-            <Navbar />
-          </Suspense>
           <main className="flex-grow flex items-center justify-center bg-gray-50">
             <div className="text-center px-4">
               <h1 className="text-4xl font-bold text-gray-900 mb-4">State Not Found</h1>
@@ -189,11 +182,6 @@ export const StatePage: React.FC = () => {
         )}
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <header role="banner">
-          <Suspense fallback={<div className="h-16 bg-white" />}>
-            <Navbar />
-          </Suspense>
-        </header>
         <main className="flex-grow" role="main" aria-label="Main content">
           {/* Hero section - critical for LCP, prioritize loading */}
           <Suspense fallback={

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { ServiceFAQ } from '../components/services/ServiceFAQ';
@@ -310,7 +309,6 @@ export const FAQPage: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <main id="main-content" className="flex-grow bg-gray-50" role="main" aria-label="Main content">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">

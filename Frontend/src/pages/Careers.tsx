@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import { careersAPI } from '../services/api';
@@ -387,7 +386,6 @@ export const Careers: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">

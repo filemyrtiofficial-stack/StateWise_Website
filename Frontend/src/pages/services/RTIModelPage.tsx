@@ -5,7 +5,6 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navbar } from '../../components/common/Navbar';
 import { Footer } from '../../components/common/Footer';
 import { LazyChatbot } from '../../components/common/LazyChatbot';
 import { Breadcrumb } from '../../components/common/Breadcrumb';
@@ -470,7 +469,6 @@ export const RTIModelPage: React.FC = () => {
   if (isLoading) {
     return (
       <>
-        <Navbar />
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -487,7 +485,6 @@ export const RTIModelPage: React.FC = () => {
   if (!model || !modelSlug) {
     return (
       <>
-        <Navbar />
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Service Not Found</h1>
@@ -562,21 +559,6 @@ export const RTIModelPage: React.FC = () => {
       <div className="min-h-screen flex flex-col">
         {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}
         <ServiceSidebar model={model} onCTAClick={handleCTAClick} serviceSlug={modelSlug ?? undefined} />
-
-        {/* Navbar - Responsive */}
-        <div
-          className="w-full sticky top-0 z-[100] lg:max-w-full"
-          style={{
-            marginLeft: 0,
-            width: '100%',
-            maxWidth: '100%'
-          }}
-        >
-          <ResponsiveLayoutStyles />
-          <div className="navbar-responsive">
-            <Navbar />
-          </div>
-        </div>
 
         {/* Main Content - Responsive */}
         <main

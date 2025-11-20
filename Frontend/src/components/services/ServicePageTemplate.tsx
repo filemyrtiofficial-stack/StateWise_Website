@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navbar } from '../common/Navbar';
 import { Footer } from '../common/Footer';
 import { LazyChatbot } from '../common/LazyChatbot';
 import { API_ENDPOINTS } from '../../config/api';
@@ -157,7 +156,6 @@ const ServicePageTemplate: React.FC<ServicePageProps> = ({
         <meta name="description" content={seoDescription} />
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-purple-600 text-white py-12 md:py-16 lg:py-20">

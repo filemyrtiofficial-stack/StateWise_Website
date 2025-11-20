@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { LazyChatbot } from '../components/common/LazyChatbot';
 import SOFIcon from '../assets/images/SOFIcon.webp';
@@ -149,7 +148,6 @@ export const Services: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
         <main className="flex-grow">
           {/* Hero Section */}
           <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-12 md:py-16 lg:py-20">

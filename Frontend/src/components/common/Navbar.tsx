@@ -13,7 +13,6 @@ const NavbarComponent: React.FC = () => {
   const isServicePage = location.pathname.startsWith('/services/');
 
   // Check if we're on the homepage - show social media sidebar only on homepage
-  // FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar only on homepage
   const isHomepage = location.pathname === '/';
 
   const handleServicesMouseEnter = useCallback(() => setIsServicesOpen(true), []);
@@ -65,8 +64,8 @@ const NavbarComponent: React.FC = () => {
       <a href="#main-content" className="skip-to-main">
         Skip to main content
       </a>
-      {/* Social Media Bar - Only shown on homepage, hidden on small screens, visible on large screens */}
-      {/* FILE: Frontend/src/components/common/Navbar.tsx - Social media sidebar conditionally rendered only on homepage, hidden on mobile */}
+
+      {/* Social Media Bar - Only shown on homepage */}
       {isHomepage && (
         <div className="hidden lg:flex fixed right-0 top-1/2 -translate-y-1/2 z-[60] flex-col justify-start gap-1.5 bg-white border-t border-l border-gray-300 rounded-l-lg shadow-2xl p-1.5">
           {/* X (Twitter) */}
@@ -155,9 +154,10 @@ const NavbarComponent: React.FC = () => {
         </div>
       )}
 
-      {/* Main Navbar */}
-      {/* FILE: Frontend/src/components/common/Navbar.tsx - Conditional padding: Navbar background flush with sidebar, but content has responsive left padding (16px mobile, 24px desktop) for spacing */}
-      <nav className={`bg-white shadow-md sticky top-0 z-[100] ${isServicePage ? 'ml-0 pl-0' : ''}`}>
+      {/* Main Navbar - Fresh implementation with proper sticky positioning */}
+      <nav
+        className="bg-white shadow-md fixed top-0 z-[100] w-full"
+      >
         <div className={isServicePage ? "w-full pl-4 md:pl-6 pr-4 md:pr-6" : "container-responsive max-w-7xl mx-auto"}>
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
@@ -393,4 +393,3 @@ const NavbarComponent: React.FC = () => {
 };
 
 export const Navbar = memo(NavbarComponent);
-

@@ -5,14 +5,12 @@
 
 import React from 'react';
 import { ConnectionTest } from '../components/common/ConnectionTest';
-import { Navbar } from '../components/common/Navbar';
 import { Footer } from '../components/common/Footer';
 import { API_ENDPOINTS, API_BASE_URL_DISPLAY } from '../config/api';
 
 export const TestConnection: React.FC = () => {
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Backend Connection Test</h1>
