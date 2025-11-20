@@ -97,7 +97,7 @@ export const PDFDownloadModal: React.FC<PDFDownloadModalProps> = ({
       // Get API base URL once
       const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-      // Send user information to backend for tracking (non-blocking)
+      // Send user information to backend for tracking (non-blocking, don't wait for it)
       fetch(`${apiBaseUrl}/api/v1/pdf/pdf-downloads`, {
         method: 'POST',
         headers: {
@@ -111,44 +111,101 @@ export const PDFDownloadModal: React.FC<PDFDownloadModalProps> = ({
           downloadedAt: new Date().toISOString(),
         }),
       }).catch((apiError) => {
-        // Don't block download if tracking fails
-        console.warn('Failed to track download:', apiError);
+        // Don't block download if tracking fails - this is expected if backend is not running
+        console.warn('Failed to track download (non-critical):', apiError);
       });
 
-      // Download the PDF via backend API
-
+      // Download the PDF - try multiple approaches
       // Extract category and filename from pdfPath (format: "delhi/category/filename.pdf")
       const pathParts = pdfPath.split('/');
       // Skip "delhi" part, category is at index 1, filename is at index 2
       const category = encodeURIComponent(pathParts[1]);
       const filename = encodeURIComponent(pathParts[2]);
 
-      const apiUrl = `${apiBaseUrl}/api/v1/pdf/${category}/${filename}`;
+      let downloadSuccess = false;
+      let lastError: Error | null = null;
 
+      // Approach 1: Try backend API
       try {
+        const apiUrl = `${apiBaseUrl}/api/v1/pdf/${category}/${filename}`;
         const response = await fetch(apiUrl);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch PDF: ${response.status} ${response.statusText}`);
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${departmentName.replace(/RTI\s+Delhi\s+/gi, '').replace(/\s+/g, '_')}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          window.URL.revokeObjectURL(url);
+          downloadSuccess = true;
+        } else {
+          throw new Error(`Backend returned ${response.status}`);
         }
+      } catch (backendError) {
+        console.log('Backend download failed, trying public folder...', backendError);
+        lastError = backendError as Error;
+      }
 
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
+      // Approach 2: Try public folder (if PDFs are copied there)
+      if (!downloadSuccess) {
+        try {
+          // Try public folder path
+          const publicPath = `/assets/PDF/delhi/${category}/${filename}`;
+          const response = await fetch(publicPath);
 
-        // Create a temporary link and trigger download
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${departmentName.replace(/RTI\s+Delhi\s+/gi, '').replace(/\s+/g, '_')}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
 
-        // Clean up the object URL
-        window.URL.revokeObjectURL(url);
-      } catch (fetchError) {
-        console.error('PDF download error:', fetchError);
-        alert('Failed to download PDF. Please contact support or try again later.');
-        throw fetchError;
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${departmentName.replace(/RTI\s+Delhi\s+/gi, '').replace(/\s+/g, '_')}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            window.URL.revokeObjectURL(url);
+            downloadSuccess = true;
+          } else {
+            throw new Error(`Public folder returned ${response.status}`);
+          }
+        } catch (publicError) {
+          console.log('Public folder download failed, trying direct import...', publicError);
+          lastError = publicError as Error;
+        }
+      }
+
+      // Approach 3: Try direct import (for development)
+      if (!downloadSuccess) {
+        try {
+          // Use dynamic import for Vite
+          const pdfModule = await import(`../../assets/PDF/${pdfPath}`);
+          const pdfUrl = pdfModule.default || pdfModule;
+
+          const link = document.createElement('a');
+          link.href = pdfUrl;
+          link.download = `${departmentName.replace(/RTI\s+Delhi\s+/gi, '').replace(/\s+/g, '_')}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          downloadSuccess = true;
+        } catch (importError) {
+          console.error('All download approaches failed:', importError);
+          lastError = importError as Error;
+        }
+      }
+
+      if (!downloadSuccess) {
+        alert(
+          'Failed to download PDF. Please ensure the backend server is running, or contact support.\n\n' +
+          'Error: ' + (lastError?.message || 'Unknown error')
+        );
+        throw lastError || new Error('PDF download failed');
       }
 
       // Close modal after successful download
