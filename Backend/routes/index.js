@@ -18,6 +18,7 @@ const paymentRoutes = require('./paymentRoutes');
 const newsletterRoutes = require('./newsletterRoutes');
 const contactRoutes = require('./contactRoutes');
 const careerRoutes = require('./careerRoutes');
+const pdfRoutes = require('./pdfRoutes');
 
 // API version prefix
 const API_PREFIX = '/api/v1';
@@ -34,6 +35,7 @@ router.use(`${API_PREFIX}/payments`, paymentRoutes);
 router.use(`${API_PREFIX}/newsletter`, newsletterRoutes);
 router.use(`${API_PREFIX}/contact`, contactRoutes);
 router.use(`${API_PREFIX}/careers`, careerRoutes);
+router.use(`${API_PREFIX}/pdf`, pdfRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

@@ -1,5 +1,6 @@
-import React, { memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo, useCallback, useState } from 'react';
+import { PDFDownloadModal } from './PDFDownloadModal';
+import { hasPDF } from '../../utils/pdfMapping';
 
 // Delhi departments organized in columns (similar to the image layout)
 const delhiDepartments = [
@@ -110,42 +111,66 @@ const delhiDepartments = [
 ];
 
 const RTIByDepartmentComponent: React.FC = () => {
-  const navigate = useNavigate();
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDepartmentClick = useCallback((department: string) => {
-    // Navigate to service page with department info - default to seamless online filing
-    navigate('/services/seamless-online-filing', {
-      state: { department, serviceName: 'Seamless Online Filing' },
-    });
-  }, [navigate]);
+    // Check if PDF exists for this department
+    if (hasPDF(department)) {
+      setSelectedDepartment(department);
+      setIsModalOpen(true);
+    } else {
+      // If no PDF, navigate to service page (fallback behavior)
+      // You can remove this if you want to only show PDF downloads
+      console.warn(`No PDF found for department: ${department}`);
+      // Optionally show an alert or handle differently
+      alert('PDF template not available for this department yet. Please contact support.');
+    }
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedDepartment(null);
+  }, []);
 
   return (
-    <section className="py-12 md:py-16 lg:py-20 bg-white" aria-label="RTI Services by Delhi Department">
-      <div className="container-responsive max-w-7xl mx-auto">
-        {/* RTI by Department Columns */}
-        <nav aria-label="RTI Department Navigation">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 lg:gap-8">
-            {delhiDepartments.map((column, columnIndex) => (
-              <div key={columnIndex} className="flex flex-col">
-                <h3 className="font-bold text-gray-900 mb-2 text-sm leading-snug">{column.category}</h3>
-                <div className="flex flex-col space-y-1">
-                  {column.items.map((item, itemIndex) => (
-                    <button
-                      key={itemIndex}
-                      onClick={() => handleDepartmentClick(item)}
-                      className="block text-sm text-gray-700 hover:text-primary-600 hover:underline transition-colors text-left w-full leading-normal"
-                      aria-label={`File RTI for ${item}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
+    <>
+      <section className="py-12 md:py-16 lg:py-20 bg-white" aria-label="RTI Services by Delhi Department">
+        <div className="container-responsive max-w-7xl mx-auto">
+          {/* RTI by Department Columns */}
+          <nav aria-label="RTI Department Navigation">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 lg:gap-8">
+              {delhiDepartments.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col">
+                  <h3 className="font-bold text-gray-900 mb-2 text-sm leading-snug">{column.category}</h3>
+                  <div className="flex flex-col space-y-1">
+                    {column.items.map((item, itemIndex) => (
+                      <button
+                        key={itemIndex}
+                        onClick={() => handleDepartmentClick(item)}
+                        className="block text-sm text-gray-700 hover:text-primary-600 hover:underline transition-colors text-left w-full leading-normal"
+                        aria-label={`Download RTI template for ${item}`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </nav>
-      </div>
-    </section>
+              ))}
+            </div>
+          </nav>
+        </div>
+      </section>
+
+      {/* PDF Download Modal */}
+      {selectedDepartment && (
+        <PDFDownloadModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          departmentName={selectedDepartment}
+        />
+      )}
+    </>
   );
 };
 
