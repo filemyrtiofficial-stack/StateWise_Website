@@ -49,12 +49,11 @@ const generateFAQs = (modelName: string, fullDescription: string): FAQ[] => [
 ];
 
 /**
- * Responsive layout styles for sidebar offset
+ * Responsive layout styles for sidebar offset (main content and footer)
  */
 const ResponsiveLayoutStyles: React.FC = () => (
   <style>{`
     @media (min-width: 1024px) {
-      .navbar-responsive,
       .main-content-responsive,
       .footer-responsive {
         margin-left: min(30vw, 384px) !important;
@@ -556,6 +555,7 @@ export const RTIModelPage: React.FC = () => {
         )}
       </Helmet>
 
+      <ResponsiveLayoutStyles />
       <div className="min-h-screen flex flex-col">
         {/* Desktop Sidebar - Fixed on left (hidden on mobile) */}
         <ServiceSidebar model={model} onCTAClick={handleCTAClick} serviceSlug={modelSlug ?? undefined} />
