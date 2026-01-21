@@ -14,7 +14,7 @@ async function updateServicePrices() {
       { slug: 'seamless-online-filing', price: 399.00, name: 'Seamless Online Filing' },
       { slug: '15-minute-consultation', price: 199.00, name: '15 min RTI' },
       { slug: 'anonymous', price: 699.00, name: 'Anonymous RTI Filing' },
-      { slug: '1st-appeal', price: 699.00, name: 'Online First Appeal Filing' },
+      { slug: '1st-appeal', price: 399.00, name: 'Online First Appeal Filing' },
       { slug: 'bulk', price: 0.00, name: 'Efficient Bulk RTI Filing' }
     ];
 
