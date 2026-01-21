@@ -43,7 +43,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Privacy guaranteed'
     ],
     price: 699,
-    originalPrice: 5999,
+    originalPrice: 999,
     buttonText: 'Start Anonymously'
   },
   '1st-appeal': {
@@ -62,8 +62,8 @@ export const rtiModels: Record<string, RTIModel> = {
       'Legal guidance',
       'Timely filing'
     ],
-    price: 699,
-    originalPrice: 3999,
+    price: 399,
+    originalPrice: 549,
     buttonText: 'Appeal Now'
   },
   'bulk': {
@@ -102,8 +102,8 @@ export const rtiModels: Record<string, RTIModel> = {
       'Individual attention',
       'Complete customization'
     ],
-    price: 699,
-    originalPrice: 3499,
+    price: 399,
+    originalPrice: 549,
     buttonText: 'Custom RTI'
   },
   '15-minute-consultation': {
@@ -123,7 +123,7 @@ export const rtiModels: Record<string, RTIModel> = {
       'Best practices sharing'
     ],
     price: 199,
-    originalPrice: 499,
+    originalPrice: 399,
     buttonText: 'Pay Now'
   }
 };
