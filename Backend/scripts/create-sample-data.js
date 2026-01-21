@@ -27,8 +27,8 @@ async function createSampleData() {
           slug: 'seamless-online-filing',
           description: 'File RTI applications online easily with expert drafting, submission, and timely dispatch.',
           full_description: 'Filing RTI applications online has never been easier. Our seamless online filing service handles everything for you - from expert drafting to submission and timely dispatch.',
-          price: 699.00,
-          original_price: 4999.00,
+          price: 399.00,
+          original_price:599.00,
           button_text: 'File Now',
           icon: '⚡',
           icon_text: 'Seamless Online Filing'
@@ -39,7 +39,7 @@ async function createSampleData() {
           description: 'Protect your identity with our discreet service for filing RTI applications on your behalf.',
           full_description: 'Privacy matters when filing RTI applications. Our anonymous RTI filing service protects your identity while ensuring your application is filed correctly.',
           price: 699.00,
-          original_price: 5999.00,
+          original_price: 799.00,
           button_text: 'Start Anonymously',
           icon: '🎭',
           icon_text: 'ANONYMOUS RTI Filing'
@@ -49,8 +49,8 @@ async function createSampleData() {
           slug: '1st-appeal',
           description: 'File your First Appeal online with expert drafting, review, and quick submission.',
           full_description: 'If your RTI application was rejected or you didn\'t receive a satisfactory response, filing a First Appeal is your next step.',
-          price: 699.00,
-          original_price: 3999.00,
+          price: 399.00,
+          original_price: 599.00,
           button_text: 'Appeal Now',
           icon: '📋',
           icon_text: 'First Appeal'
@@ -71,8 +71,8 @@ async function createSampleData() {
           slug: 'custom-rti',
           description: 'Can\'t find the right RTI? Create a personalized application designed for your exact information need.',
           full_description: 'Every information need is unique. Our custom RTI service creates a personalized application designed specifically for your exact requirements.',
-          price: 1999.00,
-          original_price: 3499.00,
+          price: 399.00,
+          original_price: 499.00,
           button_text: 'Custom RTI',
           icon: '✏️',
           icon_text: 'Custom RTI'
