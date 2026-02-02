@@ -105,7 +105,7 @@ const createConsultation = async (req, res, next) => {
       logger.error('WhatsApp notification error (non-critical):', err.message);
     });
     const customerSubject = 'Thank you for requesting a consultation';
-    const customerHtml = `<p>Dear ${fullName},</p><p>Thank you for requesting a consultation with FileMyRTI. Our team will contact you within 24 hours.</p><p>Your Consultation ID: ${consultationId}</p><p>Regards,<br/>FileMyRTI Team</p>`;
+    const customerHtml = `<p>Dear ${full_name.trim()},</p><p>Thank you for requesting a consultation with FileMyRTI. Our team will contact you within 24 hours.</p><p>Your Consultation ID: ${consultationId}</p><p>Regards,<br/>FileMyRTI Team</p>`;
     sendCustomerAcknowledgementEmail(email.trim().toLowerCase(), customerSubject, customerHtml).catch(err => {
       logger.error('Customer acknowledgement email error (non-critical):', err.message);
     });
