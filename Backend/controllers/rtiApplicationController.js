@@ -9,7 +9,7 @@ const Service = require('../models/Service');
 const State = require('../models/State');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
-const { sendFormSubmissionEmail } = require('../utils/email');
+const { sendFormSubmissionEmail, sendCustomerAcknowledgementEmail } = require('../utils/email');
 const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp');
 
 /**
@@ -124,7 +124,8 @@ const createApplicationPublic = async (req, res, next) => {
     logger.info(`✅ RTI application created (public): ID ${applicationId}, Email: ${applicationData.email}, Payment ID: ${applicationData.payment_id || 'none'}`);
 
     // Send email notification (non-blocking)
-    sendFormSubmissionEmail('RTI Application', {
+    const formType = applicationData.payment_id && applicationData.order_id ? 'RTI Application WITH PAYMENT' : 'RTI Application';
+    sendFormSubmissionEmail(formType, {
       'Application ID': applicationId,
       'Full Name': applicationData.full_name.trim(),
       'Email': applicationData.email.trim(),
@@ -141,6 +142,11 @@ const createApplicationPublic = async (req, res, next) => {
     }).catch(err => {
       // Already logged in email service, just ensure it doesn't break anything
       logger.error('Email notification error (non-critical):', err.message);
+    });
+    const customerSubject = 'Thank you for filing an RTI';
+    const customerHtml = `<p>Dear ${applicationData.full_name.trim()},</p><p>Thank you for filing an RTI with FileMyRTI. Our team will contact you within 24 hours.</p><p>Your Application ID: ${applicationId}</p><p>Regards,<br/>FileMyRTI Team</p>`;
+    sendCustomerAcknowledgementEmail(applicationData.email.trim(), customerSubject, customerHtml).catch(err => {
+      logger.error('Customer acknowledgement email error (non-critical):', err.message);
     });
 
     // Send WhatsApp notification (non-blocking)

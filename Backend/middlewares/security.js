@@ -97,6 +97,7 @@ const corsOptions = {
         'https://rtionlinesikkim.filemyrti.com',
         'https://www.rtionlinesikkim.filemyrti.com',
         'https://www.rtionlinesikkim.filemyrti.com',
+        'http://localhost:3000',
       );
     }
 

@@ -115,3 +115,34 @@ module.exports = {
   createTransporter
 };
 
+const sendCustomerAcknowledgementEmail = async (toEmail, subject, html) => {
+  try {
+    const transporter = createTransporter();
+    if (!transporter) {
+      logger.warn('Email service not configured. Skipping customer acknowledgement email.');
+      return false;
+    }
+    const fromEmail = String(config.EMAIL.SMTP_USER).replace(/^["']|["']$/g, '');
+    const mailOptions = {
+      from: `"FileMyRTI" <${fromEmail}>`,
+      to: toEmail,
+      subject,
+      html
+    };
+    const info = await transporter.sendMail(mailOptions);
+    logger.info('✅ Customer acknowledgement email sent:', {
+      messageId: info.messageId,
+      to: toEmail
+    });
+    return true;
+  } catch (error) {
+    logger.error('❌ Failed to send customer acknowledgement email:', {
+      error: error.message,
+      stack: error.stack
+    });
+    return false;
+  }
+};
+
+module.exports.sendCustomerAcknowledgementEmail = sendCustomerAcknowledgementEmail;
+

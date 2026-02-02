@@ -6,7 +6,7 @@
 const Consultation = require('../models/Consultation');
 const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
-const { sendFormSubmissionEmail } = require('../utils/email');
+const { sendFormSubmissionEmail, sendCustomerAcknowledgementEmail } = require('../utils/email');
 const { sendFormSubmissionNotification } = require('../utils/whatsapp/whatsapp');
 
 /**
@@ -76,7 +76,7 @@ const createConsultation = async (req, res, next) => {
     const consultation = await Consultation.findById(consultationId);
 
     // Send email notification (non-blocking)
-    sendFormSubmissionEmail('Consultation', {
+    sendFormSubmissionEmail('Consultation - Without Payment', {
       'Full Name': full_name.trim(),
       'Email': email.trim().toLowerCase(),
       'Mobile': cleanMobile,
@@ -103,6 +103,11 @@ const createConsultation = async (req, res, next) => {
     }).catch(err => {
       // Already logged in WhatsApp service, just ensure it doesn't break anything
       logger.error('WhatsApp notification error (non-critical):', err.message);
+    });
+    const customerSubject = 'Thank you for requesting a consultation';
+    const customerHtml = `<p>Dear ${fullName},</p><p>Thank you for requesting a consultation with FileMyRTI. Our team will contact you within 24 hours.</p><p>Your Consultation ID: ${consultationId}</p><p>Regards,<br/>FileMyRTI Team</p>`;
+    sendCustomerAcknowledgementEmail(email.trim().toLowerCase(), customerSubject, customerHtml).catch(err => {
+      logger.error('Customer acknowledgement email error (non-critical):', err.message);
     });
 
     return sendSuccess(res, 'Consultation submitted successfully', consultation, 201);
